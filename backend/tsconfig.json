@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "skipLibCheck": true,
+    "allowJs": false,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
