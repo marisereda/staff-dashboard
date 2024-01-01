@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "zod-validation-error": "^2.1.0"
+  }
+}
