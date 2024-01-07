@@ -1,14 +1,17 @@
 import cors from 'cors';
 import express from 'express';
 import { config } from './config';
-import { errorHandler, notFound } from './middlewares';
-import { employeesRouter } from './routes';
+import { employeesRouter } from './employees';
+import { errorHandler, notFound } from './lib/middlewares';
+import { storesRouter } from './stores';
 
 const app = express();
 
 app.use(cors());
 
 app.use('/employees', employeesRouter);
+
+app.use('/stores', storesRouter);
 
 app.use(notFound);
 

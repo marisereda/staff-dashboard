@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AsyncHandler } from '../types';
+import { AsyncHandler } from '../../types';
 
 export const handler =
   (handler: AsyncHandler) =>
@@ -7,6 +7,8 @@ export const handler =
     try {
       await handler(req, res, next);
     } catch (error) {
+      console.log('⚠️ error:', error);
+
       next(error);
     }
   };

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { employeesController } from '../controllers';
-import { handler, validator } from '../middlewares';
-import { GetEmployeeByIdSchema, GetEmployeesSchema } from '../schemas';
+import { handler, validator } from '../lib/middlewares';
+import * as employeesController from './employees.controller';
+import { GetEmployeeByIdSchema, GetEmployeesSchema } from './employees.schema';
 
 export const employeesRouter = Router();
 
