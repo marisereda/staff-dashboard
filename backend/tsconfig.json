@@ -1,23 +1,41 @@
 {
   "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016",
+    "lib": ["ESNext"],
+
+    /* Modules */
     "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    // "moduleResolution": "node10",
+    // "baseUrl": "./src",
+    // "paths": {},
+    "resolveJsonModule": true,
+
+    /* Emit */
     "sourceMap": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "strict": true,
     "outDir": "./dist",
-    "baseUrl": "./src"
+    "removeComments": true,
+
+    /* Interop Constraints */
+    // "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": true,
+
+    /* Completeness */
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

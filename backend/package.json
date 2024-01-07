@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
@@ -28,6 +28,8 @@
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "prisma": "^5.7.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

@@ -1,10 +1,10 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
 export const employers: Prisma.EmployerCreateInput[] = [
   {
-    name: "FOP1",
+    name: 'FOP1',
   },
   {
-    name: "FOP2",
+    name: 'FOP2',
   },
 ];
