@@ -1,4 +1,4 @@
-import { Employee } from '@prisma/client';
+import { Employee, Prisma } from '@prisma/client';
 import { prisma } from '../lib/services';
 import { PageData } from '../types';
 import { EmployeesQuery } from './employees.schema';
@@ -13,7 +13,7 @@ export const getAll = async ({
   page,
   pageSize,
 }: EmployeesQuery): Promise<PageData<Employee[]>> => {
-  let where = {};
+  const where: Prisma.EmployeeWhereInput = {};
   const orderBy = { [sortBy]: sortOrder };
   const skip = pageSize * (page - 1);
   const take = pageSize;
@@ -22,9 +22,11 @@ export const getAll = async ({
     const conditions = ['inn', 'name', 'phone', 'position'].map(item => ({
       [item]: { contains: q },
     }));
-    where = { ...where, OR: conditions };
+    where.OR = conditions;
   }
-  where = { ...where, isFop, employerId, storeId };
+  if (isFop !== undefined) where.isFop = isFop;
+  if (employerId) where.employerId = employerId;
+  if (storeId) where.storeId = storeId;
 
   const data = await prisma.employee.findMany({ where, orderBy, skip, take });
   const total = await prisma.employee.count({ where });
