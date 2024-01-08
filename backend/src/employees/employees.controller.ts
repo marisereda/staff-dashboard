@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
-import { HttpError } from '../lib/utils';
-import { AppRequest } from '../types';
+import { HttpError } from '~/lib/utils';
+import { AppRequest } from '~/types';
 import { GetEmployeeById, GetEmployees } from './employees.schema';
 import * as employeesService from './employees.service';
 

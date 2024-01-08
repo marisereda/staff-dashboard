@@ -1,1 +1,1 @@
-export * from './employees.router'
+export * from './employees.router';

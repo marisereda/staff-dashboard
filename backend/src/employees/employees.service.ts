@@ -1,6 +1,6 @@
 import { Employee, Prisma } from '@prisma/client';
-import { prisma } from '../lib/services';
-import { PageData } from '../types';
+import { prisma } from '~/lib/services';
+import { PageData } from '~/types';
 import { EmployeesQuery } from './employees.schema';
 
 export const getAll = async ({

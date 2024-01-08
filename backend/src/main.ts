@@ -11,13 +11,10 @@ const app = express();
 app.use(cors());
 
 app.use('/employees', employeesRouter);
-
 app.use('/stores', storesRouter);
-
 app.use('/employers', employersRouter);
 
 app.use(notFound);
-
 app.use(errorHandler);
 
 app.listen(config.PORT, () => console.log(`✅ Server is running on port ${config.PORT}`));

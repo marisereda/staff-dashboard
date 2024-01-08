@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { AppRequest } from '../types';
+import { AppRequest } from '~/types';
 import { GetStores } from './stores.schema';
 import * as storesService from './stores.service';
 

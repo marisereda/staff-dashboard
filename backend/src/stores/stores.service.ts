@@ -1,6 +1,6 @@
 import { Prisma, Store } from '@prisma/client';
-import { prisma } from '../lib/services';
-import { PageData } from '../types';
+import { prisma } from '~/lib/services';
+import { PageData } from '~/types';
 import { StoresQuery } from './stores.schema';
 
 export const getAll = async ({

@@ -1,13 +1,16 @@
 {
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
   "printWidth": 100,
-  "tabWidth": 2,
-  "useTabs": false,
+  "quoteProps": "as-needed",
   "semi": true,
   "singleQuote": true,
-  "quoteProps": "as-needed",
+  "tabWidth": 2,
   "trailingComma": "es5",
-  "bracketSpacing": true,
-  "bracketSameLine": false,
-  "arrowParens": "avoid",
-  "endOfLine": "lf"
+  "useTabs": false,
+
+  "plugins": ["prettier-plugin-organize-imports"],
+  "organizeImportsSkipDestructiveCodeActions": true
 }

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { handler, validator } from '../lib/middlewares';
+import { handler, validator } from '~/lib/middlewares';
 import * as employersController from './employers.controller';
 import { GetEmployersSchema } from './employers.schema';
 

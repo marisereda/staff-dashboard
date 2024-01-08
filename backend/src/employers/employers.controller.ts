@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { AppRequest } from '../types';
+import { AppRequest } from '~/types';
 import { GetEmployers } from './employers.schema';
 import * as employersService from './employers.service';
 

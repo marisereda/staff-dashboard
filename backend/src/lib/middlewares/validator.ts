@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { ZodError, ZodType } from 'zod';
 import { fromZodError } from 'zod-validation-error';
-import { AppRequest } from '../../types';
+import { AppRequest } from '~/types';
 import { HttpError } from '../utils';
 
 export const validator =
