@@ -16,7 +16,7 @@ const EmployerParamsSchema = z.object({
 const CreateEmployerBodySchema = z.object({
   inn: z.string().min(8).max(10).regex(/^\d+$/).optional(),
   name: z.string(),
-  stores: z.string().cuid().array().optional(),
+  stores: z.string().cuid().array(),
 });
 
 const UpdateEmployerBodySchema = CreateEmployerBodySchema.optional();

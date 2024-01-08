@@ -1,7 +1,7 @@
 import { Employer, Prisma } from '@prisma/client';
 import { prisma } from '~/lib/services';
 import { PageData } from '~/types';
-import { EmployersQuery } from './employers.schema';
+import { CreateEmployerBody, EmployersQuery } from './employers.schema';
 
 export const getAll = async ({
   q,
@@ -32,5 +32,17 @@ export const getAll = async ({
 
 export const getById = async (id: string): Promise<Employer | null> => {
   const employer = await prisma.employer.findUnique({ where: { id } });
+  return employer;
+};
+
+export const create = async ({
+  inn,
+  name,
+  stores,
+}: CreateEmployerBody): Promise<Employer | null> => {
+  const connect = stores.map(id => ({ id }));
+  const employer = await prisma.employer.create({
+    data: { inn: inn ?? null, name, stores: { connect } },
+  });
   return employer;
 };
