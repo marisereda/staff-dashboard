@@ -29,3 +29,8 @@ export const getAll = async ({
 
   return { data, page, pageSize, total };
 };
+
+export const getById = async (id: string): Promise<Employer | null> => {
+  const employer = await prisma.employer.findUnique({ where: { id } });
+  return employer;
+};
