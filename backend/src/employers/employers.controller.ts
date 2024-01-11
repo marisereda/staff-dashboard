@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { HttpError } from '~/lib/utils';
 import { AppRequest } from '~/types';
-import { CreateEmployer, EmployerById, GetEmployers } from './employers.schema';
+import { CreateEmployer, EmployerById, GetEmployers, UpdateEmployer } from './employers.schema';
 import * as employersService from './employers.service';
 
 export const getAll = async (req: AppRequest<GetEmployers>, res: Response): Promise<void> => {
@@ -25,5 +25,13 @@ export const getById = async (
 
 export const create = async (req: AppRequest<CreateEmployer>, res: Response): Promise<void> => {
   const employer = await employersService.create(req.state!.body);
+  res.status(200).json(employer);
+};
+
+export const update = async (req: AppRequest<UpdateEmployer>, res: Response): Promise<void> => {
+  const employer = await employersService.update({
+    params: req.state!.params,
+    body: req.state!.body,
+  });
   res.status(200).json(employer);
 };

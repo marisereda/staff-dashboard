@@ -1,7 +1,7 @@
 import { Employer, Prisma } from '@prisma/client';
 import { prisma } from '~/lib/services';
 import { PageData } from '~/types';
-import { CreateEmployerBody, EmployersQuery } from './employers.schema';
+import { CreateEmployerBody, EmployersQuery, UpdateEmployer } from './employers.schema';
 
 export const getAll = async ({
   q,
@@ -46,3 +46,31 @@ export const create = async ({
   });
   return employer;
 };
+
+export const update = async ({ params, body }: UpdateEmployer): Promise<Employer | null> => {
+  if (!body) {
+    return getById(params.id);
+  }
+
+  const connect = body.stores.map(id => ({ id }));
+  const employer = await prisma.employer.update({
+    where: {
+      id: params.id,
+    },
+    data: {
+      inn: body?.inn ?? null,
+      name: body?.name,
+      stores: { connect },
+    },
+  });
+  return employer;
+};
+
+// await prisma.user.update({
+//   where: {
+//     email: 'viola@prisma.io',
+//   },
+//   data: {
+//     name: 'Viola the Magnificent',
+//   },
+// });
