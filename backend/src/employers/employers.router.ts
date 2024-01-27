@@ -17,3 +17,9 @@ employersRouter.get('/:id', validator(EmployerByIdSchema), handler(employersCont
 employersRouter.post('/', validator(CreateEmployerSchema), handler(employersController.create));
 
 employersRouter.patch('/:id', validator(UpdateEmployerSchema), handler(employersController.update));
+
+employersRouter.delete(
+  '/:id',
+  validator(EmployerByIdSchema),
+  handler(employersController.deleteOne)
+);

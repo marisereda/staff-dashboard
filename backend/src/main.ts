@@ -4,6 +4,7 @@ import { config } from './config';
 import { employeesRouter } from './employees';
 import { employersRouter } from './employers';
 import { errorHandler, notFound } from './lib/middlewares';
+import { notesRouter } from './notes';
 import { storesRouter } from './stores';
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(json());
 app.use('/employees', employeesRouter);
 app.use('/stores', storesRouter);
 app.use('/employers', employersRouter);
+app.use('/notes', notesRouter);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -51,7 +51,6 @@ export const update = async ({ params, body }: UpdateEmployer): Promise<Employer
   if (!body) {
     return getById(params.id);
   }
-
   const connect = body.stores.map(id => ({ id }));
   const employer = await prisma.employer.update({
     where: {
@@ -66,11 +65,13 @@ export const update = async ({ params, body }: UpdateEmployer): Promise<Employer
   return employer;
 };
 
-// await prisma.user.update({
+export const deleteOne = async (id: string): Promise<Employer | null> => {
+  const employer = await prisma.employer.delete({ where: { id } });
+  return employer;
+};
+
+// const deleteUser = await prisma.user.delete({
 //   where: {
-//     email: 'viola@prisma.io',
+//     email: 'bert@prisma.io',
 //   },
-//   data: {
-//     name: 'Viola the Magnificent',
-//   },
-// });
+// })

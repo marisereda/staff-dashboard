@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Employee {
+  id               String   @id @default(cuid())
+  code1C           String?
+  inn              String?
+  name             String
+  isFop            Boolean? @default(false)
+  phone            String?
+  position         String?
+  positionBuh      String?
+  storeAddreessBuh String?
+  storeId          String?
+  employerId       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employer Employer? @relation(fields: [employerId], references: [id])
+  store    Store?    @relation(fields: [storeId], references: [id])
+  notes    Note[]
+}
+
+model Employer {
+  id   String  @id @default(cuid())
+  inn  String?
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employees Employee[]
+  stores    Store[]
+  notes     Note[]
+}
+
+model Store {
+  id             String @id @default(cuid())
+  code1C         String
+  address        String
+  checkoutNumber Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employees Employee[]
+  employers Employer[]
+  notes     Note[]
+}
+
+model Note {
+  id          String   @id @default(cuid())
+  ownerId     String?
+  title       String
+  content     String?
+  isDone      Boolean?
+  isImportant Boolean?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee Employee? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  employer Employer? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  store    Store?    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+}

@@ -35,3 +35,8 @@ export const update = async (req: AppRequest<UpdateEmployer>, res: Response): Pr
   });
   res.status(200).json(employer);
 };
+
+export const deleteOne = async (req: AppRequest<EmployerById>, res: Response): Promise<void> => {
+  await employersService.deleteOne(req.state!.params.id);
+  res.status(204).end();
+};

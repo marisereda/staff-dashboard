@@ -35,6 +35,6 @@ export const getAll = async ({
 };
 
 export const getById = async (id: string): Promise<Employee | null> => {
-  const employee = await prisma.employee.findUnique({ where: { id } });
+  const employee = await prisma.employee.findUniqueOrThrow({ where: { id } });
   return employee;
 };
