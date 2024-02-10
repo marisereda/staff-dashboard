@@ -9,8 +9,8 @@ datasource db {
 
 model Employee {
   id               String   @id @default(cuid())
-  code1C           String?  @unique
-  inn              String?  @unique
+  code1C           String   @unique
+  inn              String?
   name             String
   isFop            Boolean? @default(false)
   phone            String?

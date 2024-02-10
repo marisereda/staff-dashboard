@@ -1,8 +1,8 @@
 import { Prisma, Store } from '@prisma/client';
-import { HrReportStore } from '~/data-parser/type/hr-report.type';
 import { prisma } from '~/lib/services';
 import { PageData } from '~/types';
 import { StoresQuery } from './stores.schema';
+import { CreateStoreData } from './types';
 
 class StoresService {
   getAll = async ({
@@ -40,7 +40,7 @@ class StoresService {
     });
   };
 
-  updateByCode1C = async (stores: HrReportStore[]): Promise<void> => {
+  updateByCode1C = async (stores: CreateStoreData[]): Promise<void> => {
     const promises = stores.map(store =>
       prisma.store.upsert({
         where: { code1C: store.code1C },
@@ -49,6 +49,10 @@ class StoresService {
       })
     );
     await prisma.$transaction(promises);
+  };
+
+  getByCode1C = (code1C: Store['code1C']): Promise<Store | null> => {
+    return prisma.store.findUnique({ where: { code1C } });
   };
 }
 

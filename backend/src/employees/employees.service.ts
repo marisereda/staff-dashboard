@@ -1,7 +1,9 @@
 import { Employee, Prisma } from '@prisma/client';
 import { prisma } from '~/lib/services';
+import { storesService } from '~/stores/stores.service';
 import { PageData } from '~/types';
 import { EmployeesQuery } from './employees.schema';
+import { CreateEmployeeData } from './types';
 
 class EmployeesService {
   getAll = async ({
@@ -38,6 +40,56 @@ class EmployeesService {
   getById = async (id: string): Promise<Employee | null> => {
     const employee = await prisma.employee.findUniqueOrThrow({ where: { id } });
     return employee;
+  };
+
+  getByCode1C = (code1C: Employee['code1C']): Promise<Employee | null> => {
+    return prisma.employee.findUnique({ where: { code1C } });
+  };
+
+  markDeleteByCode1C = async (code1CList: Employee['code1C'][]): Promise<void> => {
+    await prisma.employee.updateMany({
+      where: {
+        code1C: {
+          notIn: code1CList,
+        },
+      },
+      data: {
+        markDelete: true,
+      },
+    });
+  };
+
+  create = async ({ store, ...data }: CreateEmployeeData): Promise<void> => {
+    const foundStore = await storesService.getByCode1C(store.code1C);
+    await prisma.employee.create({
+      data: { ...data, storeId: foundStore?.id ?? null },
+    });
+  };
+
+  update = async (
+    currentData: Employee,
+    { position, store, ...newData }: CreateEmployeeData
+  ): Promise<void> => {
+    const data: Partial<Employee> = { ...newData };
+
+    const newStore = await storesService.getByCode1C(store.code1C);
+    const newStoreId = newStore?.id ?? null;
+
+    data.newPosition = currentData.position !== position ? position : null;
+    data.newStoreId = currentData.storeId !== newStoreId ? newStoreId : null;
+
+    await prisma.employee.update({ where: { id: currentData.id }, data });
+  };
+
+  updateByCode1C = async (employees: CreateEmployeeData[]): Promise<void> => {
+    for (const employeeData of employees) {
+      const currentEmployee = await this.getByCode1C(employeeData.code1C);
+      if (!currentEmployee) {
+        await this.create(employeeData);
+      } else {
+        await this.update(currentEmployee, employeeData);
+      }
+    }
   };
 }
 
