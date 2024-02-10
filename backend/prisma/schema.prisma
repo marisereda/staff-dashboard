@@ -9,16 +9,19 @@ datasource db {
 
 model Employee {
   id               String   @id @default(cuid())
-  code1C           String?
-  inn              String?
+  code1C           String?  @unique
+  inn              String?  @unique
   name             String
   isFop            Boolean? @default(false)
   phone            String?
   position         String?
+  newPosition      String?
   positionBuh      String?
   storeAddreessBuh String?
   storeId          String?
+  newStoreId       String?
   employerId       String?
+  markDelete       Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -29,9 +32,10 @@ model Employee {
 }
 
 model Employer {
-  id   String  @id @default(cuid())
-  inn  String?
-  name String
+  id         String   @id @default(cuid())
+  inn        String?  @unique
+  name       String
+  markDelete Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,10 +46,11 @@ model Employer {
 }
 
 model Store {
-  id             String @id @default(cuid())
-  code1C         String
+  id             String   @id @default(cuid())
+  code1C         String   @unique
   address        String
   checkoutNumber Int?
+  markDelete     Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,6 +67,7 @@ model Note {
   content     String?
   isDone      Boolean?
   isImportant Boolean?
+  markDelete  Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

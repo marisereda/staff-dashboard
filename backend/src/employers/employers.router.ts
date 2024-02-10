@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { handler, validator } from '~/lib/middlewares';
-import * as employersController from './employers.controller';
+import { create, deleteOne, getAll, getById, update } from './employers.controller';
 import {
   CreateEmployerSchema,
   EmployerByIdSchema,
@@ -10,16 +10,12 @@ import {
 
 export const employersRouter = Router();
 
-employersRouter.get('/', validator(GetEmployersSchema), handler(employersController.getAll));
+employersRouter.get('/', validator(GetEmployersSchema), handler(getAll));
 
-employersRouter.get('/:id', validator(EmployerByIdSchema), handler(employersController.getById));
+employersRouter.get('/:id', validator(EmployerByIdSchema), handler(getById));
 
-employersRouter.post('/', validator(CreateEmployerSchema), handler(employersController.create));
+employersRouter.post('/', validator(CreateEmployerSchema), handler(create));
 
-employersRouter.patch('/:id', validator(UpdateEmployerSchema), handler(employersController.update));
+employersRouter.patch('/:id', validator(UpdateEmployerSchema), handler(update));
 
-employersRouter.delete(
-  '/:id',
-  validator(EmployerByIdSchema),
-  handler(employersController.deleteOne)
-);
+employersRouter.delete('/:id', validator(EmployerByIdSchema), handler(deleteOne));

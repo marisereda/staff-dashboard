@@ -1,12 +1,16 @@
-import * as buhParser from './buh-parser';
-import * as hrParser from './hr-parser';
+import { buhParser } from './buh-parser';
+import { hrParser } from './hr-parser';
 import { BuhReport } from './type/buh-report.type';
 import { HrReport } from './type/hr-report.type';
 
-export const parseHrReport = (fileName: string): HrReport => {
-  return hrParser.parseReport(fileName);
-};
+class DataParserService {
+  parseHrReport = (file: Buffer): HrReport => {
+    return hrParser.parseReport(file);
+  };
 
-export const parseBuhReport = (fileName: string): BuhReport => {
-  return buhParser.parseReport(fileName);
-};
+  parseBuhReport = (file: Buffer): BuhReport => {
+    return buhParser.parseReport(file);
+  };
+}
+
+export const dataParserService = new DataParserService();

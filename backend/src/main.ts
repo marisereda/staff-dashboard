@@ -6,6 +6,7 @@ import { employersRouter } from './employers';
 import { errorHandler, notFound } from './lib/middlewares';
 import { notesRouter } from './notes';
 import { storesRouter } from './stores';
+import { updateRouter } from './update';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/employees', employeesRouter);
 app.use('/stores', storesRouter);
 app.use('/employers', employersRouter);
 app.use('/notes', notesRouter);
+app.use('/update', updateRouter);
 
 app.use(notFound);
 app.use(errorHandler);
