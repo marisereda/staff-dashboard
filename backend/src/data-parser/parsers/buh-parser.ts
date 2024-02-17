@@ -6,13 +6,13 @@ import {
   readWorkSheet,
   readWorkSheetFromFile,
   rowLevel,
-} from '../lib/utils';
+} from '../../common/utils';
 import {
   BuhReport,
   BuhReportEmployee,
   BuhReportEmployer,
   BuhReportStore,
-} from './type/buh-report.type';
+} from '../types';
 
 class BuhParser {
   parseReportFromFile = (fileName: string): BuhReport => {

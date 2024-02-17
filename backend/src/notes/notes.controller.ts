@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { AppRequest } from '~/types';
-import { CreateNote, GetNoteById, GetNotes, UpdateNote } from './notes.schema';
+import { AppRequest } from '~/common/types';
 import { notesService } from './notes.service';
+import { GetNotes, GetNoteById, CreateNote, UpdateNote } from './types';
 
 export const getAll = async (req: AppRequest<GetNotes>, res: Response): Promise<void> => {
   const result = await notesService.getAll(req.state!.query);

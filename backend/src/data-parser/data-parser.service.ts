@@ -1,7 +1,6 @@
-import { buhParser } from './buh-parser';
-import { hrParser } from './hr-parser';
-import { BuhReport } from './type/buh-report.type';
-import { HrReport } from './type/hr-report.type';
+import { buhParser } from './parsers/buh-parser';
+import { hrParser } from './parsers/hr-parser';
+import { BuhReport, HrReport } from './types';
 
 class DataParserService {
   parseHrReport = (file: Buffer): HrReport => {

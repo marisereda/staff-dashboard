@@ -1,8 +1,7 @@
 import { Prisma, Store } from '@prisma/client';
-import { prisma } from '~/lib/services';
-import { PageData } from '~/types';
-import { StoresQuery } from './stores.schema';
-import { CreateStoreData } from './types';
+import { prisma } from '~/common/services';
+import { PageData } from '~/common/types';
+import { CreateStoreData, StoresQuery } from './types';
 
 class StoresService {
   getAll = async ({

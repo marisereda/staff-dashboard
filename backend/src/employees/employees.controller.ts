@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { AppRequest } from '~/types';
-import { GetEmployeeById, GetEmployees } from './employees.schema';
+import { AppRequest } from '~/common/types';
 import { employeesService } from './employees.service';
+import { GetEmployeeById, GetEmployees } from './types';
 
 export const getAll = async (req: AppRequest<GetEmployees>, res: Response): Promise<void> => {
   const result = await employeesService.getAll(req.state!.query);

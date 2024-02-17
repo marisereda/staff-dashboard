@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { AppRequest } from '~/types';
-import { UpdateBuh, UpdateHr } from './update.schema';
+import { AppRequest } from '~/common/types';
 import { updateService } from './update.service';
+import { UpdateBuh, UpdateHr } from './types';
 
 export const updateBuh = async (req: AppRequest<UpdateBuh>, res: Response): Promise<void> => {
   const file = req.state!.file.buffer;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const EmployersQuerySchema = z.object({
+export const EmployersQuerySchema = z.object({
   q: z.string().optional(),
   storeId: z.string().cuid().optional(),
   sortBy: z.enum(['inn', 'name']).default('name'),
@@ -13,13 +13,13 @@ const EmployerParamsSchema = z.object({
   id: z.string().cuid(),
 });
 
-const CreateEmployerBodySchema = z.object({
+export const CreateEmployerBodySchema = z.object({
   inn: z.string().min(8).max(10).regex(/^\d+$/).optional(),
   name: z.string(),
   stores: z.string().cuid().array(),
 });
 
-const UpdateEmployerBodySchema = CreateEmployerBodySchema.optional();
+export const UpdateEmployerBodySchema = CreateEmployerBodySchema.optional();
 
 export const GetEmployersSchema = z.object({
   query: EmployersQuerySchema,
@@ -37,12 +37,3 @@ export const UpdateEmployerSchema = z.object({
   params: EmployerParamsSchema,
   body: UpdateEmployerBodySchema,
 });
-
-export type EmployersQuery = z.infer<typeof EmployersQuerySchema>;
-export type CreateEmployerBody = z.infer<typeof CreateEmployerBodySchema>;
-export type UpdateEmployerBodySchema = z.infer<typeof UpdateEmployerBodySchema>;
-
-export type GetEmployers = z.infer<typeof GetEmployersSchema>;
-export type EmployerById = z.infer<typeof EmployerByIdSchema>;
-export type CreateEmployer = z.infer<typeof CreateEmployerSchema>;
-export type UpdateEmployer = z.infer<typeof UpdateEmployerSchema>;

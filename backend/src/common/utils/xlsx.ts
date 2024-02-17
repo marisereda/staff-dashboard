@@ -1,4 +1,5 @@
 import fs from 'fs';
+import R from 'ramda';
 import xlsx, { WorkSheet } from 'xlsx';
 
 export const readWorkSheetFromFile = (fileName: string): WorkSheet => {
@@ -42,4 +43,19 @@ export const isRowEmpty = (ws: WorkSheet, r: number, startC: number, colNum = 10
   return Array(colNum)
     .fill(null)
     .every((_, index) => !cell(ws, r, startC + index));
+};
+
+export const parseRow = <T extends Record<string, unknown>>(
+  ws: WorkSheet,
+  r: number,
+  parseOptions: Record<keyof T, number>
+): T => {
+  return R.map(c => cell(ws, r, c), parseOptions) as T;
+};
+
+export const isSheetValid = (
+  ws: WorkSheet,
+  validationOptions: { row: number; colsValues: string[] }[]
+): boolean => {
+  return validationOptions.every(({ row, colsValues }) => isRowValid(ws, row, 1, colsValues));
 };

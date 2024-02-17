@@ -1,9 +1,8 @@
 import { NextFunction, Response } from 'express';
-import { HttpError } from '~/lib/utils';
-import { AppRequest } from '~/types';
-import { CreateEmployer, EmployerById, GetEmployers, UpdateEmployer } from './employers.schema';
+import { AppRequest } from '~/common/types';
+import { HttpError } from '~/common/utils';
 import { employersService } from './employers.service';
-
+import { GetEmployers, EmployerById, CreateEmployer, UpdateEmployer } from './types';
 
 export const getAll = async (req: AppRequest<GetEmployers>, res: Response): Promise<void> => {
   const result = await employersService.getAll(req.state!.query);

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const StoresQuerySchema = z.object({
+export const StoresQuerySchema = z.object({
   q: z.string().optional(),
   employerId: z.string().cuid().optional(),
   sortBy: z.enum(['address']).default('address'),
@@ -12,6 +12,3 @@ const StoresQuerySchema = z.object({
 export const GetStoresSchema = z.object({
   query: StoresQuerySchema,
 });
-
-export type StoresQuery = z.infer<typeof StoresQuerySchema>;
-export type GetStores = z.infer<typeof GetStoresSchema>;

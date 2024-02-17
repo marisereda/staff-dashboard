@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const NotesQuerySchema = z.object({
+export const NotesQuerySchema = z.object({
   q: z.string().optional(),
   ownerId: z.string().cuid().optional(),
   sortBy: z.enum(['ownerId', 'title', 'isDone', 'isImportant']).default('ownerId'),
@@ -9,7 +9,7 @@ const NotesQuerySchema = z.object({
   pageSize: z.coerce.number().int().gte(1).lte(100).default(50),
 });
 
-const CreateNoteBodySchema = z.object({
+export const CreateNoteBodySchema = z.object({
   ownerId: z.string().cuid().optional(),
   ownerType: z.enum(['employee', 'employer', 'store']).optional(),
   title: z.string(),
@@ -18,7 +18,7 @@ const CreateNoteBodySchema = z.object({
   isImportant: z.boolean().default(false),
 });
 
-const UpdateNoteBodySchema = CreateNoteBodySchema.optional();
+export const UpdateNoteBodySchema = CreateNoteBodySchema.optional();
 
 const NoteParamSchema = z.object({
   id: z.string().cuid(),
@@ -40,12 +40,3 @@ export const UpdateNoteSchema = z.object({
   params: NoteParamSchema,
   body: UpdateNoteBodySchema,
 });
-
-export type NotesQuery = z.infer<typeof NotesQuerySchema>;
-export type CreateNoteBody = z.infer<typeof CreateNoteBodySchema>;
-export type UpdateNoteBody = z.infer<typeof UpdateNoteBodySchema>;
-
-export type GetNotes = z.infer<typeof GetNotesSchema>;
-export type GetNoteById = z.infer<typeof NoteByIdSchema>;
-export type CreateNote = z.infer<typeof CreateNoteSchema>;
-export type UpdateNote = z.infer<typeof UpdateNoteSchema>;

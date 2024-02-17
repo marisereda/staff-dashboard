@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { handler, validator } from '~/lib/middlewares';
+import { handler, validator } from '~/common/middlewares';
 import { getAll } from './stores.controller';
-import { GetStoresSchema } from './stores.schema';
+import { GetStoresSchema } from './validation';
 
 export const storesRouter = Router();
 

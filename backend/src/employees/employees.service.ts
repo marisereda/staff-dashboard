@@ -1,9 +1,8 @@
 import { Employee, Prisma } from '@prisma/client';
-import { prisma } from '~/lib/services';
+import { prisma } from '~/common/services';
+import { PageData } from '~/common/types';
 import { storesService } from '~/stores/stores.service';
-import { PageData } from '~/types';
-import { EmployeesQuery } from './employees.schema';
-import { CreateEmployeeData } from './types';
+import { CreateEmployeeData, EmployeesQuery } from './types';
 
 class EmployeesService {
   getAll = async ({
@@ -33,6 +32,7 @@ class EmployeesService {
 
     const data = await prisma.employee.findMany({ where, orderBy, skip, take });
     const total = await prisma.employee.count({ where });
+    console.log('⚠️ data:', data);
 
     return { data, page, pageSize, total };
   };

@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { handler, validator } from '~/lib/middlewares';
+import { handler, validator } from '~/common/middlewares';
 import * as updateController from './update.controller';
-import { UpdateBuhSchema, UpdateHrSchema } from './update.schema';
+import { UpdateBuhSchema, UpdateHrSchema } from './validation';
 
 export const upload = multer();
 

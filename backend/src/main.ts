@@ -1,9 +1,9 @@
 import cors from 'cors';
 import express, { json } from 'express';
+import { errorHandler, notFound } from './common/middlewares';
 import { config } from './config';
 import { employeesRouter } from './employees';
 import { employersRouter } from './employers';
-import { errorHandler, notFound } from './lib/middlewares';
 import { notesRouter } from './notes';
 import { storesRouter } from './stores';
 import { updateRouter } from './update';

@@ -1,13 +1,25 @@
 import { Store } from '@prisma/client';
 import { dataParserService } from '~/data-parser/data-parser.service';
-import { HrReport, HrReportStore } from '~/data-parser/type/hr-report.type';
+import { BuhReport, HrReport, HrReportStore } from '~/data-parser/types';
 import { employeesService } from '~/employees/employees.service';
 import { storesService } from '~/stores/stores.service';
 
 class UpdateService {
-  updateFromBuhReport = (file: Buffer, inn: string): void => {
+  updateFromBuhReport = async (file: Buffer, inn: string): Promise<void> => {
     const report = dataParserService.parseBuhReport(file);
+    console.log('⚠️ report:', report);
+    await this.UpdateEmployers(report, inn);
+    await this.updateEmployeesFromBuhReport(report, inn);
   };
+
+  private UpdateEmployers = async (report: BuhReport, inn: string): Promise<void> => {
+    const employer = { inn, name: report[0]?.employer.name };
+  };
+
+  private updateEmployeesFromBuhReport = async (
+    report: BuhReport,
+    inn: string
+  ): Promise<void> => {};
 
   updateFromHrReport = async (file: Buffer): Promise<void> => {
     const report = dataParserService.parseHrReport(file);

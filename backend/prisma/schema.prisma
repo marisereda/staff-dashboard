@@ -33,7 +33,7 @@ model Employee {
 
 model Employer {
   id         String   @id @default(cuid())
-  inn        String?  @unique
+  inn        String   @unique
   name       String
   markDelete Boolean? @default(false)
 

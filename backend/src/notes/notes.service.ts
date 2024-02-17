@@ -1,7 +1,7 @@
 import { Note, Prisma } from '@prisma/client';
-import { prisma } from '~/lib/services/prisma.service';
-import { PageData } from '~/types';
-import { CreateNoteBody, NotesQuery, UpdateNote } from './notes.schema';
+import { prisma } from '~/common/services/prisma.service';
+import { PageData } from '~/common/types';
+import { CreateNoteBody, NotesQuery, UpdateNote } from './types';
 
 class NotesService {
   getAll = async ({

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const EmployeesQuerySchema = z.object({
+export const EmployeesQuerySchema = z.object({
   q: z.string().optional(),
   isFop: z
     .enum(['true', 'false'])
@@ -25,9 +25,3 @@ export const GetEmployeesSchema = z.object({
 export const GetEmployeeByIdSchema = z.object({
   params: EmployeeParamsSchema,
 });
-
-export type EmployeesQuery = z.infer<typeof EmployeesQuerySchema>;
-export type EmployeeParams = z.infer<typeof GetEmployeesSchema>;
-
-export type GetEmployees = z.infer<typeof GetEmployeesSchema>;
-export type GetEmployeeById = z.infer<typeof GetEmployeeByIdSchema>;

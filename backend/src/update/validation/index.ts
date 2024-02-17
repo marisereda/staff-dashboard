@@ -1,9 +1,14 @@
 import { z } from 'zod';
 
+const EXCEL_MIME_TYPES = [
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+];
+
 const FileSchema = z
   .any()
   .refine((file: Express.Multer.File) => Boolean(file), { message: 'File is required' })
-  .refine((file: Express.Multer.File) => file?.mimetype === 'application/vnd.ms-excel', {
+  .refine((file: Express.Multer.File) => EXCEL_MIME_TYPES.includes(file?.mimetype), {
     message: 'Only .xls, .xlsx formats are supported',
   });
 
@@ -17,6 +22,3 @@ export const UpdateBuhSchema = z.object({
 export const UpdateHrSchema = z.object({
   file: FileSchema,
 });
-
-export type UpdateBuh = z.infer<typeof UpdateBuhSchema>;
-export type UpdateHr = z.infer<typeof UpdateHrSchema>;

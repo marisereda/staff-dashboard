@@ -1,7 +1,7 @@
 import { Employer, Prisma } from '@prisma/client';
-import { prisma } from '~/lib/services';
-import { PageData } from '~/types';
-import { CreateEmployerBody, EmployersQuery, UpdateEmployer } from './employers.schema';
+import { prisma } from '~/common/services';
+import { PageData } from '~/common/types';
+import { CreateEmployerBody, CreateEmployerData, EmployersQuery, UpdateEmployer } from './types';
 
 class EmployersService {
   getAll = async ({
@@ -60,6 +60,13 @@ class EmployersService {
       },
     });
     return employer;
+  };
+
+  updateByInn = async (employer: CreateEmployerData): Promise<void> => {
+    await prisma.employer.update({
+      where: { inn: employer.inn! },
+      data: {},
+    });
   };
 
   deleteOne = async (id: string): Promise<Employer | null> => {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AsyncHandler } from '~/types';
+import { AsyncHandler } from '~/common/types';
 
 export const handler =
   (handler: AsyncHandler) =>

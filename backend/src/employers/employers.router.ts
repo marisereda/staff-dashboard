@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { handler, validator } from '~/lib/middlewares';
+import { handler, validator } from '~/common/middlewares';
 import { create, deleteOne, getAll, getById, update } from './employers.controller';
 import {
   CreateEmployerSchema,
   EmployerByIdSchema,
   GetEmployersSchema,
   UpdateEmployerSchema,
-} from './employers.schema';
+} from './validation';
 
 export const employersRouter = Router();
 
