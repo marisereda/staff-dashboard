@@ -1,52 +1,74 @@
 import { WorkSheet } from 'xlsx';
-import {
-  cell,
-  isRowEmpty,
-  isRowValid,
-  readWorkSheet,
-  readWorkSheetFromFile,
-  rowLevel,
-} from '../../common/utils';
-import {
-  BuhReport,
-  BuhReportEmployee,
-  BuhReportEmployer,
-  BuhReportStore,
-} from '../types';
+import { isRowEmpty, isSheetValid, parseRow, readWorkSheet, rowLevel } from '../../common/utils';
+import { BuhReport, BuhReportEmployee, BuhReportEmployer, BuhReportStore } from '../types';
+
+const VALIDATION = {
+  header: [
+    { row: 1, colsValues: ['', 'Списки працівників організації'] },
+    {
+      row: 9,
+      colsValues: ['', 'Табельний номер (регл)', 'ПІБ (повністю)', 'Посада (регл)', 'Код за ДРФО'],
+    },
+  ],
+  employer: {
+    level: 0,
+  },
+  store: {
+    level: 1,
+  },
+  employee: {
+    level: 2,
+  },
+};
+
+const PARSE = {
+  startRow: 10,
+  colNumber: 5,
+  store: {
+    storeAddreessBuh: 2,
+  },
+  employee: {
+    inn: 5,
+    name: 3,
+    position: 4,
+  },
+  employer: {
+    name: 2,
+    inn: 5,
+  },
+};
 
 class BuhParser {
-  parseReportFromFile = (fileName: string): BuhReport => {
-    const ws = readWorkSheetFromFile(fileName);
-
-    if (!this.isSheetValid(ws)) throw new Error('Invalid sheet format');
-
-    return this.parseTable(ws);
-  };
-
   parseReport = (file: Buffer): BuhReport => {
     const ws = readWorkSheet(file);
 
-    if (!this.isSheetValid(ws)) throw new Error('Invalid sheet format');
+    if (!isSheetValid(ws, VALIDATION.header)) throw new Error('Invalid sheet format');
 
     return this.parseTable(ws);
   };
 
   private parseTable = (ws: WorkSheet): BuhReport => {
-    let row = 10;
+    let row = PARSE.startRow;
     let employer: BuhReportEmployer | null = null;
-    let storeAddreessBuh: BuhReportStore | null = null;
+    let store: BuhReportStore | null = null;
     const result: BuhReport = [];
 
-    while (!isRowEmpty(ws, row, 2, 4)) {
-      if (this.isEmployer(ws, row)) employer = this.parseEmployer(ws, row);
-      if (this.isStore(ws, row)) storeAddreessBuh = this.parseStore(ws, row);
+    while (!isRowEmpty(ws, row, 1, PARSE.colNumber)) {
+      if (this.isEmployer(ws, row)) {
+        employer = parseRow<BuhReportEmployer>(ws, row, PARSE.employer);
+      }
+
+      if (this.isStore(ws, row)) {
+        store = parseRow<BuhReportStore>(ws, row, PARSE.store);
+      }
 
       if (this.isEmployee(ws, row)) {
-        if (!employer || !storeAddreessBuh)
+        if (!employer || !store)
           throw new Error('Invalid table format (employer or store not found)');
+        const employee = parseRow<BuhReportEmployee>(ws, row, PARSE.employee);
         result.push({
           employer,
-          employee: { ...this.parseEmployee(ws, row), ...storeAddreessBuh },
+          employee: { ...employee, ...store },
         });
       }
 
@@ -56,44 +78,16 @@ class BuhParser {
     return result;
   };
 
-  private isSheetValid = (ws: WorkSheet): boolean => {
-    return (
-      isRowValid(ws, 1, 2, ['Списки працівників організації']) &&
-      isRowValid(ws, 9, 2, [
-        'Табельний номер (регл)',
-        'ПІБ (повністю)',
-        'Посада (регл)',
-        'Код за ДРФО',
-      ])
-    );
-  };
-
   private isEmployer = (ws: WorkSheet, r: number): boolean => {
-    return rowLevel(ws, r) === 0;
+    return rowLevel(ws, r) === VALIDATION.employer.level;
   };
 
   private isStore = (ws: WorkSheet, r: number): boolean => {
-    return rowLevel(ws, r) === 1;
+    return rowLevel(ws, r) === VALIDATION.store.level;
   };
 
   private isEmployee = (ws: WorkSheet, r: number): boolean => {
-    return rowLevel(ws, r) === 2;
-  };
-
-  private parseEmployer = (ws: WorkSheet, r: number): BuhReportEmployer => {
-    return { name: cell(ws, r, 2) };
-  };
-
-  private parseStore = (ws: WorkSheet, r: number): BuhReportStore => {
-    return { storeAddreessBuh: cell(ws, r, 2) };
-  };
-
-  private parseEmployee = (ws: WorkSheet, r: number): BuhReportEmployee => {
-    return {
-      inn: cell(ws, r, 5),
-      name: cell(ws, r, 3),
-      position: cell(ws, r, 4),
-    };
+    return rowLevel(ws, r) === VALIDATION.employee.level;
   };
 }
 

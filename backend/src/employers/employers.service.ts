@@ -39,7 +39,7 @@ class EmployersService {
   create = async ({ inn, name, stores }: CreateEmployerBody): Promise<Employer | null> => {
     const connect = stores.map(id => ({ id }));
     const employer = await prisma.employer.create({
-      data: { inn: inn ?? null, name, stores: { connect } },
+      data: { inn, name, stores: { connect } },
     });
     return employer;
   };
@@ -62,11 +62,14 @@ class EmployersService {
     return employer;
   };
 
-  updateByInn = async (employer: CreateEmployerData): Promise<void> => {
-    await prisma.employer.update({
-      where: { inn: employer.inn! },
-      data: {},
-    });
+  updateByInn = async (employers: CreateEmployerData[]): Promise<void> => {
+    for (const employerData of employers) {
+      await prisma.employer.upsert({
+        where: { inn: employerData.inn! },
+        update: employerData,
+        create: employerData,
+      });
+    }
   };
 
   deleteOne = async (id: string): Promise<Employer | null> => {

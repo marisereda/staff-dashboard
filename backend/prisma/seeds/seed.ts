@@ -33,12 +33,12 @@ async function main(): Promise<void> {
   });
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async e => {
-    console.error(e);
-    await prisma.$disconnect();
-    throw e;
-  });
+// main()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async e => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     throw e;
+//   });

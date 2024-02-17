@@ -26,6 +26,8 @@ const VALIDATION = {
 };
 
 const PARSE = {
+  startRow: 8,
+  colNumber: 6,
   store: {
     address: 1,
     code1C: 2,
@@ -50,11 +52,11 @@ class HrParser {
   };
 
   parseTable = (ws: WorkSheet): HrReport => {
-    let row = 8;
+    let row = PARSE.startRow;
     let store: HrReportStore | null = null;
     const result: HrReport = [];
 
-    while (!isRowEmpty(ws, row, 1, 6)) {
+    while (!isRowEmpty(ws, row, 1, PARSE.colNumber)) {
       if (this.isStore(ws, row)) {
         store = parseRow<HrReportStore>(ws, row, PARSE.store);
       }
