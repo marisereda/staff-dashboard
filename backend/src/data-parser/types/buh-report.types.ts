@@ -1,10 +1,8 @@
-import { Employee, Employer } from '@prisma/client';
+export type BuhReportEmployer = { name: string; inn: string };
 
-export type BuhReportEmployer = Pick<Employer, 'name' | 'inn'>;
+export type BuhReportStore = { storeAddreessBuh: string };
 
-export type BuhReportStore = Pick<Employee, 'storeAddreessBuh'>;
-
-export type BuhReportEmployee = Pick<Employee, 'inn' | 'name' | 'position'>;
+export type BuhReportEmployee = { inn: string; name: string; positionBuh: string };
 
 export type BuhReport = {
   employer: BuhReportEmployer;

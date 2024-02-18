@@ -36,6 +36,11 @@ class EmployersService {
     return employer;
   };
 
+  getByInn = async (inn: string): Promise<Employer | null> => {
+    const employer = await prisma.employer.findUnique({ where: { inn } });
+    return employer;
+  };
+
   create = async ({ inn, name, stores }: CreateEmployerBody): Promise<Employer | null> => {
     const connect = stores.map(id => ({ id }));
     const employer = await prisma.employer.create({

@@ -1,5 +1,6 @@
 import { dataParserService } from '~/data-parser/data-parser.service';
 import { BuhReport, BuhReportEmployer } from '~/data-parser/types';
+import { employeesService } from '~/employees/employees.service';
 import { employersService } from '~/employers/employers.service';
 
 class UpdateBuhService {
@@ -7,8 +8,9 @@ class UpdateBuhService {
     const report = dataParserService
       .parseBuhReport(file)
       .map(item => ({ ...item, employer: { ...item.employer, inn } }));
+
     await this.updateEmployers(report);
-    // await this.updateEmployeesFromBuhReport(report, inn);
+    await this.updateEmployees(report);
   };
 
   private updateEmployers = async (report: BuhReport): Promise<void> => {
@@ -16,8 +18,13 @@ class UpdateBuhService {
     await employersService.updateByInn(employers);
   };
 
-  private updateEmployeesFromReport = async (report: BuhReport, inn: string): Promise<void> => {};
-
+  private updateEmployees = async (report: BuhReport): Promise<void> => {
+    const employees = report.map(({ employee, employer }) => ({
+      ...employee,
+      employer: { inn: employer.inn },
+    }));
+    await employeesService.updateByInn(employees);
+  };
   private getEmployersFromReport = (report: BuhReport): BuhReportEmployer[] => {
     const employers: BuhReportEmployer[] = [];
     report.forEach(({ employer }) => {

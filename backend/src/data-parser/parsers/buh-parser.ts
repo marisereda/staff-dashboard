@@ -30,7 +30,7 @@ const PARSE = {
   employee: {
     inn: 5,
     name: 3,
-    position: 4,
+    positionBuh: 4,
   },
   employer: {
     name: 2,
