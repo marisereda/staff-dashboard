@@ -33,7 +33,6 @@ class EmployeesService {
 
     const data = await prisma.employee.findMany({ where, orderBy, skip, take });
     const total = await prisma.employee.count({ where });
-    console.log('⚠️ data:', data);
 
     return { data, page, pageSize, total };
   };
@@ -77,39 +76,42 @@ class EmployeesService {
     currentData: Employee,
     { position, store, employer, ...data }: CreateEmployeeData
   ): Promise<void> => {
-    const newStore = store ? await storesService.getByCode1C(store.code1C) : null;
-    const newStoreId = newStore?.id ?? null;
+    if (store) {
+      const newStore = await storesService.getByCode1C(store.code1C);
+      const newStoreId = newStore?.id ?? null;
+      console.log('⚠️ ', currentData.storeId, newStoreId);
+      data.newStoreId = currentData.storeId !== newStoreId ? newStoreId : null;
+    }
 
-    const newEmployer = employer ? await employersService.getByInn(employer.inn) : null;
+    if (employer) {
+      const newEmployer = await employersService.getByInn(employer.inn);
+      data.employerId = newEmployer?.id ?? null;
+    }
 
     if (position) {
       data.newPosition = currentData.position !== position ? position : null;
     }
-    data.newStoreId = currentData.storeId !== newStoreId ? newStoreId : null;
-    data.employerId = newEmployer?.id ?? null;
 
     await prisma.employee.update({ where: { id: currentData.id }, data });
   };
 
-  updateByCode1C = async (employees: CreateEmployeeData[]): Promise<void> => {
+  updateMany = async (employees: CreateEmployeeData[]): Promise<void> => {
     for (const employeeData of employees) {
-      const currentEmployee = employeeData.code1C
-        ? await this.getByCode1C(employeeData.code1C)
-        : null;
+      let currentEmployee: Employee | null = null;
 
-      if (!currentEmployee) {
-        await this.create(employeeData);
-      } else {
-        await this.update(currentEmployee, employeeData);
+      if (employeeData.id) {
+        currentEmployee = await this.getById(employeeData.id);
       }
-    }
-  };
+      if (!currentEmployee && employeeData.code1C) {
+        currentEmployee = await this.getByCode1C(employeeData.code1C);
+      }
+      if (!currentEmployee && employeeData.inn) {
+        console.log('⚠️', employeeData);
+        currentEmployee = await prisma.employee.findFirst({
+          where: { inn: employeeData.inn! },
+        });
+      }
 
-  updateByInn = async (employees: CreateEmployeeData[]): Promise<void> => {
-    for (const employeeData of employees) {
-      const currentEmployee = await prisma.employee.findFirst({
-        where: { inn: employeeData.inn! },
-      });
       if (!currentEmployee) {
         await this.create(employeeData);
       } else {

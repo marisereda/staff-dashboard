@@ -17,7 +17,7 @@ class UpdateHrService {
       store: { code1C: store.code1C },
     }));
     await employeesService.markDeleteByCode1C(codes1C);
-    await employeesService.updateByCode1C(employees);
+    await employeesService.updateMany(employees);
   };
 
   private updateStores = async (report: HrReport): Promise<void> => {

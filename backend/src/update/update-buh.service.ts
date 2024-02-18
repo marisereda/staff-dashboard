@@ -23,7 +23,7 @@ class UpdateBuhService {
       ...employee,
       employer: { inn: employer.inn },
     }));
-    await employeesService.updateByInn(employees);
+    await employeesService.updateMany(employees);
   };
   private getEmployersFromReport = (report: BuhReport): BuhReportEmployer[] => {
     const employers: BuhReportEmployer[] = [];
