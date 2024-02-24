@@ -5,6 +5,7 @@
   "description": "",
   "scripts": {
     "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend",
     "db:seed": "npm run db:seed --workspace backend",
     "db:migrate": "npm run db:migrate --workspace backend",
     "prisma:studio": "npm run prisma:studio --workspace backend",
@@ -15,7 +16,8 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "backend"
+    "backend",
+    "frontend"
   ],
   "devDependencies": {
     "@types/ramda": "^0.29.10",
