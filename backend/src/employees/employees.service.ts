@@ -31,7 +31,13 @@ class EmployeesService {
     if (employerId) where.employerId = employerId;
     if (storeId) where.storeId = storeId;
 
-    const data = await prisma.employee.findMany({ where, orderBy, skip, take });
+    const data = await prisma.employee.findMany({
+      where,
+      orderBy,
+      skip,
+      take,
+      include: { employer: true, store: true },
+    });
     const total = await prisma.employee.count({ where });
 
     return { data, page, pageSize, total };

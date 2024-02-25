@@ -1,7 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Stack, TextField } from '@mui/material';
 import { useState } from 'react';
-
 import { useDebounce } from 'use-debounce';
 import { EmployeesTable } from '../components';
 import { useEmployeesQuery } from '../queries';
