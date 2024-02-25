@@ -20,6 +20,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
     position,
     positionBuh,
   } = employee;
+
   return (
     <TableRow
       key={id}

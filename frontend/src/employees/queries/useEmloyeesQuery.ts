@@ -7,6 +7,8 @@ type SearchParams = {
   q: string;
   sortBy: string;
   sortOrder: string;
+  page: number;
+  pageSize: number;
 };
 
 const getEmployees = async (params: SearchParams) => {
