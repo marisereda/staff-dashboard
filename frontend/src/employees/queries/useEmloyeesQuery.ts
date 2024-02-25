@@ -5,6 +5,8 @@ import { Employee } from '../types';
 
 type SearchParams = {
   q: string;
+  sortBy: string;
+  sortOrder: string;
 };
 
 const getEmployees = async (params: SearchParams) => {

@@ -41,3 +41,5 @@ export type Store = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type EmployeesSortBy='name' | 'isFop' | 'position';

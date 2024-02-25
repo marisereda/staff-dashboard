@@ -4,3 +4,5 @@ export type PageData<TData> = {
   pageSize: number;
   total: number;
 };
+
+export type SortBy = 'asc' | 'desc';
