@@ -1,6 +1,6 @@
-import SearchIcon from '@mui/icons-material/Search';
-import { Stack, TablePagination, TextField } from '@mui/material';
+import { Divider, Stack, TablePagination } from '@mui/material';
 import { useDebounce } from 'use-debounce';
+import { StoresFilterBar } from '../components/StoresFilterBar';
 import { StoresTable } from '../components/StoresTable';
 import { useStoresQuery } from '../queries/useStoresQuery';
 import { useStoresStore } from '../state';
@@ -12,7 +12,6 @@ export const StoresPage = () => {
   const page = useStoresStore(s => s.page);
   const pageSize = useStoresStore(s => s.pageSize);
 
-  const setSearch = useStoresStore(s => s.setSearch);
   const setPage = useStoresStore(s => s.setPage);
   const setPageSize = useStoresStore(s => s.setPageSize);
 
@@ -28,21 +27,16 @@ export const StoresPage = () => {
 
   return (
     <Stack spacing={3}>
-      <TextField
-        id="outlined-basic"
-        variant="outlined"
-        InputProps={{ startAdornment: <SearchIcon /> }}
-        sx={{ maxWidth: 500, width: '100%', alignSelf: 'center' }}
-        value={search}
-        onChange={e => setSearch(e.currentTarget.value)}
-      />
+      <StoresFilterBar />
       {storesPage && (
         <>
           <StoresTable stores={storesPage.data} />
+          <Divider component="div" />
           <TablePagination
             component="div"
             count={storesPage.total}
             page={page - 1}
+            labelRowsPerPage="Рядків:"
             rowsPerPage={pageSize}
             rowsPerPageOptions={[5, 10, 25, 50]}
             onPageChange={(_, page) => setPage(page + 1)}

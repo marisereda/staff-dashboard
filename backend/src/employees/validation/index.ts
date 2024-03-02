@@ -8,7 +8,9 @@ export const EmployeesQuerySchema = z.object({
     .optional(),
   employerId: z.string().cuid().optional(),
   storeId: z.string().cuid().optional(),
-  sortBy: z.enum(['name', 'isFop', 'position']).default('name'),
+  sortBy: z
+    .enum(['name', 'isFop', 'position', 'inn', 'phone', 'employerName', 'storeAddress'])
+    .default('name'),
   sortOrder: z.enum(['asc', 'desc']).default('asc'),
   page: z.coerce.number().int().gte(1).default(1),
   pageSize: z.coerce.number().int().gte(1).lte(100).default(50),

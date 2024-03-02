@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { EmployeesPage } from '../employees/pages/EmployeesPage';
-import { EmployersPage } from '../employers/pages/EmployerPage';
+import { EmployersPage } from '../employers/pages/EmployersPage';
 import { StoresPage } from '../stores/pages/StoresPage';
 import { MainLayout } from './layouts/MainLayout';
 

@@ -15,7 +15,7 @@ export const STORES_HEAD_COLUMNS: HeadColumnOptions<StoresSortBy>[] = [
   {
     primaryLabel: 'Кіл-ть кас',
     secondaryLabel: null,
-    sortBy: null,
+    sortBy: 'checkoutNumber',
   },
 
   {

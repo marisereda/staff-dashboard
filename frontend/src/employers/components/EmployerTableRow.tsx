@@ -11,7 +11,7 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
   return (
     <TableRow
       sx={theme => ({
-        '&:nth-of-type(odd)': {
+        '&:nth-of-type(even)': {
           backgroundColor: theme.palette.action.hover,
         },
         '&:last-child td, &:last-child th': { border: 0 },

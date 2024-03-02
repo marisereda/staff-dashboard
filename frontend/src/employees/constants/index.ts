@@ -10,7 +10,7 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
   {
     primaryLabel: 'ДРФО',
     secondaryLabel: null,
-    sortBy: null,
+    sortBy: 'inn',
   },
   {
     primaryLabel: 'ПІБ',
@@ -25,21 +25,16 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
   {
     primaryLabel: 'Роботодавець',
     secondaryLabel: null,
-    sortBy: null,
+    sortBy: 'employerName',
   },
   {
     primaryLabel: 'Магазин',
     secondaryLabel: 'Магазин бух.',
-    sortBy: null,
+    sortBy: 'storeAddress',
   },
   {
     primaryLabel: 'Телефон',
     secondaryLabel: null,
-    sortBy: null,
-  },
-  {
-    primaryLabel: null,
-    secondaryLabel: null,
-    sortBy: null,
+    sortBy: 'phone',
   },
 ] as const;

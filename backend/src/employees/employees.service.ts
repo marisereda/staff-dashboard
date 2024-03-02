@@ -17,19 +17,33 @@ class EmployeesService {
     pageSize,
   }: EmployeesQuery): Promise<PageData<Employee[]>> => {
     const where: Prisma.EmployeeWhereInput = {};
-    const orderBy = { [sortBy]: sortOrder };
-    const skip = pageSize * (page - 1);
-    const take = pageSize;
-
     if (q) {
       const conditions = ['inn', 'name', 'phone', 'position'].map(item => ({
         [item]: { contains: q },
       }));
       where.OR = conditions;
     }
-    if (isFop !== undefined) where.isFop = isFop;
-    if (employerId) where.employerId = employerId;
-    if (storeId) where.storeId = storeId;
+    if (isFop !== undefined) {
+      where.isFop = isFop;
+    }
+    if (employerId) {
+      where.employerId = employerId;
+    }
+    if (storeId) {
+      where.storeId = storeId;
+    }
+
+    let orderBy;
+    if (sortBy === 'employerName') {
+      orderBy = { employer: { name: sortOrder } };
+    } else if (sortBy === 'storeAddress') {
+      orderBy = { store: { address: sortOrder } };
+    } else {
+      orderBy = { [sortBy]: sortOrder };
+    }
+
+    const skip = pageSize * (page - 1);
+    const take = pageSize;
 
     const data = await prisma.employee.findMany({
       where,

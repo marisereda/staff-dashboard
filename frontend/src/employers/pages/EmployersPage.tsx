@@ -1,7 +1,7 @@
-import SearchIcon from '@mui/icons-material/Search';
-import { Stack, TablePagination, TextField } from '@mui/material';
+import { Divider, Stack, TablePagination } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 
+import { EmployersFilterBar } from '../components/EmployersFilterBar';
 import { EmployersTable } from '../components/EmployersTable';
 import { useEmployersQuery } from '../queries/useEmployersQuery';
 import { useEmployersStore } from '../state';
@@ -13,7 +13,6 @@ export const EmployersPage = () => {
   const page = useEmployersStore(s => s.page);
   const pageSize = useEmployersStore(s => s.pageSize);
 
-  const setSearch = useEmployersStore(s => s.setSearch);
   const setPage = useEmployersStore(s => s.setPage);
   const setPageSize = useEmployersStore(s => s.setPageSize);
 
@@ -29,21 +28,16 @@ export const EmployersPage = () => {
 
   return (
     <Stack spacing={3}>
-      <TextField
-        id="outlined-basic"
-        variant="outlined"
-        InputProps={{ startAdornment: <SearchIcon /> }}
-        sx={{ maxWidth: 500, width: '100%', alignSelf: 'center' }}
-        value={search}
-        onChange={e => setSearch(e.currentTarget.value)}
-      />
+      <EmployersFilterBar />
       {employersPage && (
         <>
           <EmployersTable employers={employersPage.data} />
+          <Divider component="div" />
           <TablePagination
             component="div"
             count={employersPage.total}
             page={page - 1}
+            labelRowsPerPage="Рядків:"
             rowsPerPage={pageSize}
             rowsPerPageOptions={[5, 10, 25, 50]}
             onPageChange={(_, page) => setPage(page + 1)}

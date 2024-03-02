@@ -45,8 +45,7 @@ export const TableHead = <TSortBy,>({
             align="left"
             sortDirection="asc"
             sx={theme => ({
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.common.white,
+              backgroundColor: theme.palette.success.light,
             })}
           >
             <TableSortLabel
@@ -55,9 +54,9 @@ export const TableHead = <TSortBy,>({
               active={columnSortBy === sortBy}
               hideSortIcon={!columnSortBy}
               sx={theme => ({
-                '&.MuiTableSortLabel-root': { color: theme.palette.common.white },
+                '&.MuiTableSortLabel-root': { color: theme.palette.primary.contrastText },
                 '&.MuiTableSortLabel-root .MuiTableSortLabel-icon': {
-                  color: theme.palette.common.white,
+                  color: theme.palette.primary.contrastText,
                 },
               })}
               onClick={() => handleSortChange(columnSortBy)}

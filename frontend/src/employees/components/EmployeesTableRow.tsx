@@ -23,7 +23,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
   return (
     <TableRow
       sx={theme => ({
-        '&:nth-of-type(odd)': {
+        '&:nth-of-type(even)': {
           backgroundColor: theme.palette.action.hover,
         },
         '&:last-child td, &:last-child th': { border: 0 },
@@ -75,7 +75,6 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
           {phone}
         </Typography>
       </TableCell>
-      <TableCell align="left"></TableCell>
     </TableRow>
   );
 };

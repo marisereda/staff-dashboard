@@ -24,4 +24,11 @@ export type Employee = {
   store?: Store;
 };
 
-export type EmployeesSortBy = 'name' | 'isFop' | 'position';
+export type EmployeesSortBy =
+  | 'name'
+  | 'isFop'
+  | 'position'
+  | 'inn'
+  | 'phone'
+  | 'employerName'
+  | 'storeAddress';

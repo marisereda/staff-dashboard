@@ -13,4 +13,4 @@ export type Store = {
   employers?: Employer[];
 };
 
-export type StoresSortBy = 'address';
+export type StoresSortBy = 'address' | 'checkoutNumber';

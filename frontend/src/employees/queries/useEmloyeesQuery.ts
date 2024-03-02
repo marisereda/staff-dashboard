@@ -3,8 +3,9 @@ import { api } from '../../common/api';
 import { PageData } from '../../common/types';
 import { Employee } from '../types';
 
-type SearchParams = {
+export type SearchParams = {
   q: string;
+  isFop?: string;
   sortBy: string;
   sortOrder: string;
   page: number;
