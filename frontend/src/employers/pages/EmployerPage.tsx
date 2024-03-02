@@ -1,0 +1,56 @@
+import SearchIcon from '@mui/icons-material/Search';
+import { Stack, TablePagination, TextField } from '@mui/material';
+import { useDebounce } from 'use-debounce';
+
+import { EmployersTable } from '../components/EmployersTable';
+import { useEmployersQuery } from '../queries/useEmployersQuery';
+import { useEmployersStore } from '../state';
+
+export const EmployersPage = () => {
+  const search = useEmployersStore(s => s.search);
+  const sortBy = useEmployersStore(s => s.sortBy);
+  const sortOrder = useEmployersStore(s => s.sortOrder);
+  const page = useEmployersStore(s => s.page);
+  const pageSize = useEmployersStore(s => s.pageSize);
+
+  const setSearch = useEmployersStore(s => s.setSearch);
+  const setPage = useEmployersStore(s => s.setPage);
+  const setPageSize = useEmployersStore(s => s.setPageSize);
+
+  const [debouncedSearch] = useDebounce<string>(search, 500);
+
+  const { data: employersPage } = useEmployersQuery({
+    q: debouncedSearch,
+    sortBy,
+    sortOrder,
+    page,
+    pageSize,
+  });
+
+  return (
+    <Stack spacing={3}>
+      <TextField
+        id="outlined-basic"
+        variant="outlined"
+        InputProps={{ startAdornment: <SearchIcon /> }}
+        sx={{ maxWidth: 500, width: '100%', alignSelf: 'center' }}
+        value={search}
+        onChange={e => setSearch(e.currentTarget.value)}
+      />
+      {employersPage && (
+        <>
+          <EmployersTable employers={employersPage.data} />
+          <TablePagination
+            component="div"
+            count={employersPage.total}
+            page={page - 1}
+            rowsPerPage={pageSize}
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            onPageChange={(_, page) => setPage(page + 1)}
+            onRowsPerPageChange={e => setPageSize(Number(e.target.value))}
+          />
+        </>
+      )}
+    </Stack>
+  );
+};

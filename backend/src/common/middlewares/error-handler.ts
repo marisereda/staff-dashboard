@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../utils';
 
 const fromPrismaError = (error: PrismaClientKnownRequestError): string => {
-  console.log('⚠️ Prisma error:', error);
+  console.log('❌ Prisma error:', error);
   if (error.meta) {
     return `${error.meta?.['modelName']}: ${error.meta?.['cause']}`;
   }
@@ -21,7 +21,7 @@ export const errorHandler = (
   } else if (error instanceof PrismaClientKnownRequestError) {
     res.status(404).json({ message: fromPrismaError(error) });
   } else {
-    console.log('⚠️ Unknown error:', error);
+    console.log('❌ Unknown error:', error);
 
     res.status(500).json({ message: 'Internal Server Error' });
   }

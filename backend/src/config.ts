@@ -13,7 +13,7 @@ const createConfig = (): Config => {
     return ConfigSchema.parse(process.env);
   } catch (error) {
     const { message } = fromZodError(error as ZodError);
-    console.log('⚠️', message);
+    console.log('❌', message);
     process.exit(1);
   }
 };

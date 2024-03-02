@@ -85,7 +85,6 @@ class EmployeesService {
     if (store) {
       const newStore = await storesService.getByCode1C(store.code1C);
       const newStoreId = newStore?.id ?? null;
-      console.log('⚠️ ', currentData.storeId, newStoreId);
       data.newStoreId = currentData.storeId !== newStoreId ? newStoreId : null;
     }
 
@@ -112,7 +111,6 @@ class EmployeesService {
         currentEmployee = await this.getByCode1C(employeeData.code1C);
       }
       if (!currentEmployee && employeeData.inn) {
-        console.log('⚠️', employeeData);
         currentEmployee = await prisma.employee.findFirst({
           where: { inn: employeeData.inn! },
         });

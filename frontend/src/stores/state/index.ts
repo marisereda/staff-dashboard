@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { SortOrder } from '../../common/types';
-import { EmployeesSortBy } from '../types';
+import { StoresSortBy } from '../types';
 
 type State = {
   search: string;
-  sortBy: EmployeesSortBy;
+  sortBy: StoresSortBy;
   sortOrder: SortOrder;
   page: number;
   pageSize: number;
@@ -17,9 +17,9 @@ type Actions = {
   setPageSize: (pageSize: number) => void;
 };
 
-export const useEmployeesStore = create<State & Actions>(set => ({
+export const useStoresStore = create<State & Actions>(set => ({
   search: '',
-  sortBy: 'name',
+  sortBy: 'address',
   sortOrder: 'asc',
   page: 1,
   pageSize: 50,

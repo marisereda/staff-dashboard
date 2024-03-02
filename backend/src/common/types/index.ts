@@ -8,7 +8,7 @@ export type AppRequest<TState = object> = Request & {
 
 export type PageData<TData> = {
   data: TData;
-  page: number;
-  pageSize: number;
+  page: number | undefined;
+  pageSize: number | undefined;
   total: number;
 };

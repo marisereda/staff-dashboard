@@ -14,13 +14,26 @@ class StoresService {
   }: StoresQuery): Promise<PageData<Store[]>> => {
     const where: Prisma.StoreWhereInput = {};
     const orderBy = { [sortBy]: sortOrder };
-    const skip = pageSize * (page - 1);
-    const take = pageSize;
 
-    if (q) where.address = { contains: q };
-    if (employerId) where.employers = { some: { id: employerId } };
+    if (q) {
+      where.address = { contains: q };
+    }
+    if (employerId) {
+      where.employers = { some: { id: employerId } };
+    }
+    const pagination = pageSize
+      ? {
+          skip: pageSize * (page - 1),
+          take: pageSize,
+        }
+      : null;
 
-    const data = await prisma.store.findMany({ where, orderBy, skip, take });
+    const data = await prisma.store.findMany({
+      where,
+      orderBy,
+      ...pagination,
+      include: { employers: true },
+    });
     const total = await prisma.store.count({ where });
 
     return { data, page, pageSize, total };

@@ -15,7 +15,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const MENU_ITEMS = [
   {
@@ -36,6 +36,8 @@ const MENU_ITEMS = [
 ];
 
 export const MainLayout = () => {
+  const { pathname } = useLocation();
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <AppBar position="fixed" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
@@ -59,7 +61,7 @@ export const MainLayout = () => {
         <List>
           {MENU_ITEMS.map(({ label, icon: Icon, url }) => (
             <ListItem key={label} disablePadding>
-              <ListItemButton sx={{ pr: 4 }}>
+              <ListItemButton selected={pathname === url} sx={{ pr: 4 }}>
                 <ListItemIcon>
                   <Icon />
                 </ListItemIcon>

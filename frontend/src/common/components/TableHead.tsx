@@ -1,25 +1,45 @@
-import { Stack, TableCell, TableHead, TableRow, TableSortLabel, Typography } from '@mui/material';
-import { TABLE_HEAD } from '../constants';
-import { useEmployeesStore } from '../state';
-import { EmployeesSortBy } from '../types';
+import {
+  TableHead as MuiTableHead,
+  Stack,
+  TableCell,
+  TableRow,
+  TableSortLabel,
+  Typography,
+} from '@mui/material';
+import { SortOrder } from '../types';
 
-export const EmployeesTableHead = () => {
-  const currentSortBy = useEmployeesStore(s => s.sortBy);
-  const sortOrder = useEmployeesStore(s => s.sortOrder);
-  const setSorting = useEmployeesStore(s => s.setSorting);
+export type HeadColumnOptions<TSortBy> = {
+  primaryLabel: string | null;
+  secondaryLabel: string | null;
+  sortBy: TSortBy | null;
+};
 
-  const handleSortChange = (sortBy: EmployeesSortBy | null) => {
-    if (!sortBy) {
+type Props<TSortBy> = {
+  columns: HeadColumnOptions<TSortBy>[];
+  sortBy: TSortBy;
+  sortOrder: SortOrder;
+  onSortChange: (sortBy: TSortBy, sortOrder: SortOrder) => void;
+};
+
+export const TableHead = <TSortBy,>({
+  columns,
+  sortBy,
+  sortOrder,
+  onSortChange,
+}: Props<TSortBy>) => {
+  const handleSortChange = (newSortBy: TSortBy | null) => {
+    if (!newSortBy) {
       return;
     }
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSorting(sortBy, newSortOrder);
+
+    onSortChange(newSortBy, newSortOrder);
   };
 
   return (
-    <TableHead>
+    <MuiTableHead>
       <TableRow>
-        {TABLE_HEAD.map(({ primaryLabel, secondaryLabel, sortBy }, index) => (
+        {columns.map(({ primaryLabel, secondaryLabel, sortBy: columnSortBy }, index) => (
           <TableCell
             key={index}
             align="left"
@@ -32,14 +52,15 @@ export const EmployeesTableHead = () => {
             <TableSortLabel
               disabled={!sortBy}
               direction={sortOrder}
-              active={currentSortBy === sortBy}
+              active={columnSortBy === sortBy}
+              hideSortIcon={!columnSortBy}
               sx={theme => ({
                 '&.MuiTableSortLabel-root': { color: theme.palette.common.white },
                 '&.MuiTableSortLabel-root .MuiTableSortLabel-icon': {
                   color: theme.palette.common.white,
                 },
               })}
-              onClick={() => handleSortChange(sortBy)}
+              onClick={() => handleSortChange(columnSortBy)}
             >
               <Stack>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
@@ -51,6 +72,6 @@ export const EmployeesTableHead = () => {
           </TableCell>
         ))}
       </TableRow>
-    </TableHead>
+    </MuiTableHead>
   );
 };

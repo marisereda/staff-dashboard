@@ -8,7 +8,6 @@ type EmployeesTableRowProps = {
 
 export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
   const {
-    id,
     name,
     isFop,
     inn,
@@ -23,7 +22,6 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
   return (
     <TableRow
-      key={id}
       sx={theme => ({
         '&:nth-of-type(odd)': {
           backgroundColor: theme.palette.action.hover,

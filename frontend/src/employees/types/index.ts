@@ -1,3 +1,6 @@
+import { Employer } from '../../employers/types';
+import { Store } from '../../stores/types';
+
 export type Employee = {
   id: string;
   code1C: string;
@@ -21,25 +24,4 @@ export type Employee = {
   store?: Store;
 };
 
-export type Employer = {
-  id: string;
-  inn: string;
-  name: string;
-  markDelete: boolean;
-
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type Store = {
-  id: string;
-  code1C: string;
-  address: string;
-  checkoutNumber: number;
-  markDelete: boolean;
-
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type EmployeesSortBy='name' | 'isFop' | 'position';
+export type EmployeesSortBy = 'name' | 'isFop' | 'position';

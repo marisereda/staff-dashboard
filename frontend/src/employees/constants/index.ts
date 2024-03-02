@@ -1,14 +1,15 @@
-export const TABLE_HEAD = [
+import { HeadColumnOptions } from '../../common/components/TableHead';
+import { EmployeesSortBy } from '../types';
+
+export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
   {
     primaryLabel: 'ФОП',
     secondaryLabel: null,
-
     sortBy: 'isFop',
   },
   {
     primaryLabel: 'ДРФО',
     secondaryLabel: null,
-
     sortBy: null,
   },
   {
@@ -22,7 +23,7 @@ export const TABLE_HEAD = [
     sortBy: 'position',
   },
   {
-    primaryLabel: 'Работодавець',
+    primaryLabel: 'Роботодавець',
     secondaryLabel: null,
     sortBy: null,
   },

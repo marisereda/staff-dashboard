@@ -1,7 +1,8 @@
 import { Table, TableBody } from '@mui/material';
-
+import { TableHead } from '../../common/components/TableHead';
+import { EMPLOYEES_HEAD_COLUMNS } from '../constants';
+import { useEmployeesStore } from '../state';
 import { Employee } from '../types';
-import { EmployeesTableHead } from './EmployeesTableHead';
 import { EmployeesTableRow } from './EmployeesTableRow';
 
 type EmployeesTableProps = {
@@ -9,12 +10,21 @@ type EmployeesTableProps = {
 };
 
 export const EmployeesTable = ({ empoloyees }: EmployeesTableProps) => {
+  const sortBy = useEmployeesStore(s => s.sortBy);
+  const sortOrder = useEmployeesStore(s => s.sortOrder);
+  const setSorting = useEmployeesStore(s => s.setSorting);
+
   return (
     <Table aria-label="simple table">
-      <EmployeesTableHead />
+      <TableHead
+        columns={EMPLOYEES_HEAD_COLUMNS}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSortChange={setSorting}
+      />
       <TableBody>
         {empoloyees.map(empoloyee => (
-          <EmployeesTableRow employee={empoloyee} />
+          <EmployeesTableRow key={empoloyee.id} employee={empoloyee} />
         ))}
       </TableBody>
     </Table>

@@ -1,5 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { EmployeesPage } from '../employees/pages/EmployeesPage';
+import { EmployersPage } from '../employers/pages/EmployerPage';
+import { StoresPage } from '../stores/pages/StoresPage';
 import { MainLayout } from './layouts/MainLayout';
 
 export const router = createBrowserRouter([
@@ -17,11 +19,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'stores',
-        element: <div>Stores Page</div>,
+        element: <StoresPage />,
       },
       {
         path: 'employers',
-        element: <div>Employers Page</div>,
+        element: <EmployersPage />,
       },
     ],
   },
