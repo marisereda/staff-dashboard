@@ -5,6 +5,7 @@ import { EmployeesSortBy } from '../types';
 type State = {
   search: string;
   fopFilter: string;
+  storeId: string;
   sortBy: EmployeesSortBy;
   sortOrder: SortOrder;
   page: number;
@@ -14,6 +15,7 @@ type State = {
 type Actions = {
   setSearch: (search: string) => void;
   setFopFilter: (fopFilter: string) => void;
+  setStoreId: (storeId: string) => void;
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
@@ -21,7 +23,8 @@ type Actions = {
 
 export const useEmployeesStore = create<State & Actions>(set => ({
   search: '',
-  fopFilter: '',
+  fopFilter: 'all',
+  storeId: '',
   sortBy: 'name',
   sortOrder: 'asc',
   page: 1,
@@ -29,6 +32,7 @@ export const useEmployeesStore = create<State & Actions>(set => ({
 
   setSearch: search => set(() => ({ search })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
+  setStoreId: storeId => set(() => ({ storeId })),
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),

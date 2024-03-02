@@ -8,7 +8,7 @@ type SearchParams = {
   sortBy: string;
   sortOrder: string;
   page: number;
-  pageSize: number;
+  pageSize?: number;
 };
 
 const getStores = async (params: SearchParams) => {

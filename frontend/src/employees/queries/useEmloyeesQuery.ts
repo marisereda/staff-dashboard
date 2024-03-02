@@ -5,15 +5,25 @@ import { Employee } from '../types';
 
 export type SearchParams = {
   q: string;
-  isFop?: string;
+  fopFilter: string;
+  storeId: string;
   sortBy: string;
   sortOrder: string;
   page: number;
   pageSize: number;
 };
 
-const getEmployees = async (params: SearchParams) => {
-  const response = await api.get<PageData<Employee[]>>('employees', { params });
+const getEmployees = async ({ fopFilter, storeId, ...restSearchParams }: SearchParams) => {
+  const urlSerchParams: Record<string, unknown> = { ...restSearchParams };
+
+  if (storeId) {
+    urlSerchParams.storeId = storeId;
+  }
+  if (fopFilter !== 'all') {
+    urlSerchParams.isFop = fopFilter;
+  }
+
+  const response = await api.get<PageData<Employee[]>>('employees', { params: urlSerchParams });
   return response.data;
 };
 

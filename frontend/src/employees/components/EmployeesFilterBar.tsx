@@ -1,5 +1,14 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
+import { useStoresQuery } from '../../stores/queries/useStoresQuery';
 import { useEmployeesStore } from '../state';
 
 export function EmployeesFilterBar() {
@@ -7,10 +16,29 @@ export function EmployeesFilterBar() {
   const fopFilter = useEmployeesStore(s => s.fopFilter);
   const setSearch = useEmployeesStore(s => s.setSearch);
   const setFopFilter = useEmployeesStore(s => s.setFopFilter);
+  const setStoreId = useEmployeesStore(s => s.setStoreId);
+
+  const { data: storesPage } = useStoresQuery({
+    q: '',
+    sortBy: 'address',
+    sortOrder: 'asc',
+    page: 1,
+  });
+
+  const storesOptions =
+    storesPage?.data.map(store => ({ label: store.address, id: store.id })) ?? [];
 
   return (
     <Stack direction="row" spacing={3}>
-      <FormControl fullWidth>
+      <Autocomplete
+        disablePortal
+        options={storesOptions}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        sx={{ width: '40%' }}
+        onChange={(_, value) => setStoreId(value ? value.id : '')}
+        renderInput={params => <TextField {...params} label="Адреса магазина" />}
+      />
+      <FormControl sx={{ width: '20%' }}>
         <InputLabel id="demo-simple-select-label">Самозайнята особа</InputLabel>
         <Select
           labelId="demo-simple-select-label"
