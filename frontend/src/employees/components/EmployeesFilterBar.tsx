@@ -8,6 +8,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
+import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useStoresQuery } from '../../stores/queries/useStoresQuery';
 import { useEmployeesStore } from '../state';
 
@@ -17,6 +18,7 @@ export function EmployeesFilterBar() {
   const setSearch = useEmployeesStore(s => s.setSearch);
   const setFopFilter = useEmployeesStore(s => s.setFopFilter);
   const setStoreId = useEmployeesStore(s => s.setStoreId);
+  const setEmployerId = useEmployeesStore(s => s.setEmployerId);
 
   const { data: storesPage } = useStoresQuery({
     q: '',
@@ -28,8 +30,26 @@ export function EmployeesFilterBar() {
   const storesOptions =
     storesPage?.data.map(store => ({ label: store.address, id: store.id })) ?? [];
 
+  const { data: employersPage } = useEmployersQuery({
+    q: '',
+    sortBy: 'name',
+    sortOrder: 'asc',
+    page: 1,
+  });
+
+  const employersOptions =
+    employersPage?.data.map(employer => ({ label: employer.name, id: employer.id })) ?? [];
+
   return (
     <Stack direction="row" spacing={3}>
+      <Autocomplete
+        disablePortal
+        options={employersOptions}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        sx={{ width: '40%' }}
+        onChange={(_, value) => setEmployerId(value ? value.id : '')}
+        renderInput={params => <TextField {...params} label="Роботодавець" />}
+      />
       <Autocomplete
         disablePortal
         options={storesOptions}

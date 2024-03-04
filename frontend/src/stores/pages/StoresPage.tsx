@@ -7,6 +7,7 @@ import { useStoresStore } from '../state';
 
 export const StoresPage = () => {
   const search = useStoresStore(s => s.search);
+  const storeId = useStoresStore(s => s.storeId);
   const sortBy = useStoresStore(s => s.sortBy);
   const sortOrder = useStoresStore(s => s.sortOrder);
   const page = useStoresStore(s => s.page);
@@ -19,6 +20,7 @@ export const StoresPage = () => {
 
   const { data: storesPage } = useStoresQuery({
     q: debouncedSearch,
+    storeId,
     sortBy,
     sortOrder,
     page,

@@ -9,6 +9,7 @@ export const EmployeesPage = () => {
   const search = useEmployeesStore(s => s.search);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
   const storeId = useEmployeesStore(s => s.storeId);
+  const employerId = useEmployeesStore(s => s.employerId);
   const sortBy = useEmployeesStore(s => s.sortBy);
   const sortOrder = useEmployeesStore(s => s.sortOrder);
   const page = useEmployeesStore(s => s.page);
@@ -23,6 +24,7 @@ export const EmployeesPage = () => {
     q: debouncedSearch,
     fopFilter,
     storeId,
+    employerId,
     sortBy,
     sortOrder,
     page,

@@ -7,6 +7,7 @@ class EmployersService {
   getAll = async ({
     q,
     storeId,
+    employerId,
     sortBy,
     sortOrder,
     page,
@@ -24,7 +25,7 @@ class EmployersService {
       where.OR = conditions;
     }
     if (storeId) where.stores = { some: { id: storeId } };
-
+    if (employerId) where.id = { contains: employerId };
     const data = await prisma.employer.findMany({
       where,
       orderBy,

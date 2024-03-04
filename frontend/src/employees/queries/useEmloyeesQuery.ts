@@ -7,14 +7,24 @@ export type SearchParams = {
   q: string;
   fopFilter: string;
   storeId: string;
+  employerId: string;
   sortBy: string;
   sortOrder: string;
   page: number;
   pageSize: number;
 };
 
-const getEmployees = async ({ fopFilter, storeId, ...restSearchParams }: SearchParams) => {
+const getEmployees = async ({
+  fopFilter,
+  storeId,
+  employerId,
+  ...restSearchParams
+}: SearchParams) => {
   const urlSerchParams: Record<string, unknown> = { ...restSearchParams };
+
+  if (employerId) {
+    urlSerchParams.employerId = employerId;
+  }
 
   if (storeId) {
     urlSerchParams.storeId = storeId;

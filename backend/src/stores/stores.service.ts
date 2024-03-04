@@ -7,6 +7,7 @@ class StoresService {
   getAll = async ({
     q,
     employerId,
+    storeId,
     sortBy,
     sortOrder,
     page,
@@ -20,6 +21,9 @@ class StoresService {
     }
     if (employerId) {
       where.employers = { some: { id: employerId } };
+    }
+    if (storeId) {
+      where.id = { contains: storeId };
     }
     const pagination = pageSize
       ? {

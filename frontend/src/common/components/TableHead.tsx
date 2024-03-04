@@ -45,7 +45,7 @@ export const TableHead = <TSortBy,>({
             align="left"
             sortDirection="asc"
             sx={theme => ({
-              backgroundColor: theme.palette.success.light,
+              backgroundColor: theme.palette.grey.A700,
             })}
           >
             <TableSortLabel

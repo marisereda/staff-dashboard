@@ -8,6 +8,7 @@ import { useEmployersStore } from '../state';
 
 export const EmployersPage = () => {
   const search = useEmployersStore(s => s.search);
+  const employerId = useEmployersStore(s => s.employerId);
   const sortBy = useEmployersStore(s => s.sortBy);
   const sortOrder = useEmployersStore(s => s.sortOrder);
   const page = useEmployersStore(s => s.page);
@@ -20,6 +21,7 @@ export const EmployersPage = () => {
 
   const { data: employersPage } = useEmployersQuery({
     q: debouncedSearch,
+    employerId,
     sortBy,
     sortOrder,
     page,

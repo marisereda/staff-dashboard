@@ -5,14 +5,20 @@ import { Employer } from '../types';
 
 type SearchParams = {
   q: string;
+  employerId?: string;
   sortBy: string;
   sortOrder: string;
   page: number;
-  pageSize: number;
+  pageSize?: number;
 };
 
-const getEmployers = async (params: SearchParams) => {
-  const response = await api.get<PageData<Employer[]>>('employers', { params });
+const getEmployers = async ({ employerId, ...restSearchParams }: SearchParams) => {
+  const urlSerchParams: Record<string, unknown> = { ...restSearchParams };
+
+  if (employerId) {
+    urlSerchParams.employerId = employerId;
+  }
+  const response = await api.get<PageData<Employer[]>>('employers', { params: urlSerchParams });
   return response.data;
 };
 
