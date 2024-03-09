@@ -1,7 +1,7 @@
 import { Employer, Prisma } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { CreateEmployerBody, CreateEmployerData, EmployersQuery, UpdateEmployer } from './types';
+import { CreateEmployerBody, EmployersQuery, UpdateEmployerBody } from './types';
 
 class EmployersService {
   getAll = async ({
@@ -56,32 +56,19 @@ class EmployersService {
     return employer;
   };
 
-  update = async ({ params, body }: UpdateEmployer): Promise<Employer | null> => {
-    if (!body) {
-      return this.getById(params.id);
-    }
-    const connect = body.stores.map(id => ({ id }));
+  update = async (id: string, data: Partial<UpdateEmployerBody>): Promise<Employer | null> => {
+    const connectStores = data.stores?.map(id => ({ id })) ?? [];
     const employer = await prisma.employer.update({
       where: {
-        id: params.id,
+        id,
       },
       data: {
-        inn: body?.inn ?? null,
-        name: body?.name,
-        stores: { connect },
+        inn: data?.inn ?? '',
+        name: data?.name ?? '',
+        stores: { connect: connectStores },
       },
     });
     return employer;
-  };
-
-  updateByInn = async (employers: CreateEmployerData[]): Promise<void> => {
-    for (const employerData of employers) {
-      await prisma.employer.upsert({
-        where: { inn: employerData.inn! },
-        update: employerData,
-        create: employerData,
-      });
-    }
   };
 
   deleteOne = async (id: string): Promise<Employer | null> => {

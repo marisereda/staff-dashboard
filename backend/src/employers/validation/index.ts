@@ -20,7 +20,7 @@ export const CreateEmployerBodySchema = z.object({
   stores: z.string().cuid().array(),
 });
 
-export const UpdateEmployerBodySchema = CreateEmployerBodySchema.optional();
+export const UpdateEmployerBodySchema = CreateEmployerBodySchema;
 
 export const GetEmployersSchema = z.object({
   query: EmployersQuerySchema,

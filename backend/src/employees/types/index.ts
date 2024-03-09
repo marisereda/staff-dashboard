@@ -1,13 +1,10 @@
-import { Employer, Prisma, Store } from '@prisma/client';
+import { Prisma, Store } from '@prisma/client';
 import { z } from 'zod';
 import { EmployeesQuerySchema, GetEmployeeByIdSchema, GetEmployeesSchema } from '../validation';
 
 export type CreateEmployeeData = Prisma.EmployeeUncheckedCreateInput & {
   store?: {
     code1C: Store['code1C'];
-  };
-  employer?: {
-    inn: Employer['inn'];
   };
 };
 

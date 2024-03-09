@@ -6,7 +6,7 @@ import { updateHrService } from './update-hr.service';
 
 export const updateBuh = async (req: AppRequest<UpdateBuh>, res: Response): Promise<void> => {
   const file = req.state!.file.buffer;
-  updateBuhService.updateFromReport(file!, req.body.inn);
+  updateBuhService.updateFromReport(file!, req.state!.body.employerId);
 
   res.status(200).json('result');
 };

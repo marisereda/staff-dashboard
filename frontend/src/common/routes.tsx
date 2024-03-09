@@ -2,6 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { EmployeesPage } from '../employees/pages/EmployeesPage';
 import { EmployersPage } from '../employers/pages/EmployersPage';
 import { StoresPage } from '../stores/pages/StoresPage';
+import { SyncPage } from '../synchronisation/pages/SyncPage';
 import { MainLayout } from './layouts/MainLayout';
 
 export const router = createBrowserRouter([
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: 'employers',
         element: <EmployersPage />,
+      },
+      {
+        path: 'update',
+        element: <SyncPage />,
       },
     ],
   },

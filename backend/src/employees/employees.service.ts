@@ -1,7 +1,6 @@
 import { Employee, Prisma } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { employersService } from '~/employers/employers.service';
 import { storesService } from '~/stores/stores.service';
 import { CreateEmployeeData, EmployeesQuery } from './types';
 
@@ -79,32 +78,25 @@ class EmployeesService {
     });
   };
 
-  create = async ({ store, employer, ...data }: CreateEmployeeData): Promise<void> => {
+  create = async ({ store, ...data }: CreateEmployeeData): Promise<void> => {
     const foundStore = store ? await storesService.getByCode1C(store.code1C) : null;
-    const foundEmployer = employer ? await employersService.getByInn(employer.inn) : null;
 
     await prisma.employee.create({
       data: {
         ...data,
         storeId: foundStore?.id ?? null,
-        employerId: foundEmployer?.id ?? null,
       },
     });
   };
 
   update = async (
     currentData: Employee,
-    { position, store, employer, ...data }: CreateEmployeeData
+    { position, store, ...data }: CreateEmployeeData
   ): Promise<void> => {
     if (store) {
       const newStore = await storesService.getByCode1C(store.code1C);
       const newStoreId = newStore?.id ?? null;
       data.newStoreId = currentData.storeId !== newStoreId ? newStoreId : null;
-    }
-
-    if (employer) {
-      const newEmployer = await employersService.getByInn(employer.inn);
-      data.employerId = newEmployer?.id ?? null;
     }
 
     if (position) {

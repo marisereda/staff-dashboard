@@ -14,7 +14,7 @@ const FileSchema = z
 
 export const UpdateBuhSchema = z.object({
   body: z.object({
-    inn: z.string(),
+    employerId: z.string().cuid(),
   }),
   file: FileSchema,
 });

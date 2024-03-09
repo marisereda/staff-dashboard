@@ -1,4 +1,4 @@
-export type BuhReportEmployer = { name: string; inn: string };
+export type BuhReportEmployer = { name: string };
 
 export type BuhReportStore = { storeAddreessBuh: string };
 

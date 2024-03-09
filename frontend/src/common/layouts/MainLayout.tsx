@@ -1,3 +1,4 @@
+import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import GroupsIcon from '@mui/icons-material/Groups';
 import StoreIcon from '@mui/icons-material/Store';
@@ -21,7 +22,7 @@ const MENU_ITEMS = [
   {
     label: 'Працівники',
     icon: GroupsIcon,
-    url: '/employees',
+    url: '/',
   },
   {
     label: 'Магазини',
@@ -32,6 +33,11 @@ const MENU_ITEMS = [
     label: 'Роботадавці',
     icon: WorkIcon,
     url: '/employers',
+  },
+  {
+    label: 'Синхронізація',
+    icon: CloudSyncIcon,
+    url: '/update',
   },
 ];
 
@@ -63,7 +69,7 @@ export const MainLayout = () => {
             <ListItem key={label} disablePadding>
               <ListItemButton selected={pathname === url} sx={{ pr: 4 }}>
                 <ListItemIcon>
-                  <Icon />
+                  <Icon sx={theme => ({ fill: theme.palette.primary.main })} />
                 </ListItemIcon>
                 <ListItemText>
                   <Link to={url}>{label}</Link>

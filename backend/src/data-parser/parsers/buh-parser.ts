@@ -34,7 +34,6 @@ const PARSE = {
   },
   employer: {
     name: 2,
-    inn: 5,
   },
 };
 
