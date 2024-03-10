@@ -11,7 +11,7 @@ export type Employee = {
   position: string;
   newPosition: string;
   positionBuh: string;
-  storeAddreessBuh: string;
+  storeAddressBuh: string;
   storeId: string;
   newStoreId: string;
   employerId: string;

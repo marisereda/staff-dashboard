@@ -14,7 +14,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
     employer,
     code1C,
     store,
-    storeAddreessBuh,
+    storeAddressBuh,
     phone,
     position,
     positionBuh,
@@ -66,7 +66,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
           {store?.address ?? '-'}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {storeAddreessBuh ?? '-'}
+          {storeAddressBuh ?? '-'}
         </Typography>
       </TableCell>
 

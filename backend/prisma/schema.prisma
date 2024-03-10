@@ -8,20 +8,20 @@ datasource db {
 }
 
 model Employee {
-  id               String   @id @default(cuid())
-  code1C           String?
-  inn              String?
-  name             String
-  isFop            Boolean? @default(false)
-  phone            String?
-  position         String?
-  newPosition      String?
-  positionBuh      String?
-  storeAddreessBuh String?
-  storeId          String?
-  newStoreId       String?
-  employerId       String?
-  markDelete       Boolean? @default(false)
+  id              String   @id @default(cuid())
+  code1C          String?
+  inn             String?
+  name            String
+  isFop           Boolean? @default(false)
+  phone           String?
+  position        String?
+  newPosition     String?
+  positionBuh     String?
+  storeAddressBuh String?
+  storeId         String?
+  newStoreId      String?
+  employerId      String?
+  markDelete      Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

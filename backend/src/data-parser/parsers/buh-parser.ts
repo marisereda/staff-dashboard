@@ -25,7 +25,7 @@ const PARSE = {
   startRow: 10,
   colNumber: 5,
   store: {
-    storeAddreessBuh: 2,
+    storeAddressBuh: 2,
   },
   employee: {
     inn: 5,

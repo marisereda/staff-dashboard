@@ -9,7 +9,7 @@ CREATE TABLE "Employee" (
     "position" TEXT,
     "newPosition" TEXT,
     "positionBuh" TEXT,
-    "storeAddreessBuh" TEXT,
+    "storeAddressBuh" TEXT,
     "storeId" TEXT,
     "newStoreId" TEXT,
     "employerId" TEXT,
