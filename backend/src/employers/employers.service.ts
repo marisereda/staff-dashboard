@@ -56,15 +56,17 @@ class EmployersService {
     return employer;
   };
 
-  update = async (id: string, data: Partial<UpdateEmployerBody>): Promise<Employer | null> => {
-    const connectStores = data.stores?.map(id => ({ id })) ?? [];
+  update = async (
+    id: string,
+    { stores, ...restData }: Partial<UpdateEmployerBody>
+  ): Promise<Employer | null> => {
+    const connectStores = stores?.map(id => ({ id })) ?? [];
     const employer = await prisma.employer.update({
       where: {
         id,
       },
       data: {
-        inn: data?.inn ?? '',
-        name: data?.name ?? '',
+        ...restData,
         stores: { connect: connectStores },
       },
     });
