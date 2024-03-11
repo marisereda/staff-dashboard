@@ -1,33 +1,40 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Stack, TextField } from '@mui/material';
-import { useStoresQuery } from '../queries/useStoresQuery';
+import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useStoresStore } from '../state';
 
 export function StoresFilterBar() {
   const search = useStoresStore(s => s.search);
+  const employerId = useStoresStore(s => s.employerId);
   const setSearch = useStoresStore(s => s.setSearch);
-  const setStoreId = useStoresStore(s => s.setStoreId);
+  const setEmployerId = useStoresStore(s => s.setEmployerId);
 
-  const { data: storesPage } = useStoresQuery({
+  const { data: employersPage } = useEmployersQuery({
     q: '',
-    sortBy: 'address',
+    sortBy: 'name',
     sortOrder: 'asc',
     page: 1,
   });
 
-  const storesOptions =
-    storesPage?.data.map(store => ({ label: store.address, id: store.id })) ?? [];
+  const employersOptions =
+    employersPage?.data.map(employer => ({ label: employer.name, id: employer.id })) ?? [];
+
+  let currentEmployerOption;
+  if (employersOptions.length > 0 && employerId) {
+    currentEmployerOption = employersOptions.find(option => option.id === employerId);
+  }
 
   return (
     <Stack direction="row" spacing={3} sx={{ justifyContent: 'right' }}>
       <Autocomplete
         disablePortal
-        options={storesOptions}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
+        options={employersOptions}
+        value={currentEmployerOption || null}
         sx={{ width: '40%' }}
-        onChange={(_, value) => setStoreId(value ? value.id : '')}
-        renderInput={params => <TextField {...params} label="Адреса магазина" />}
+        onChange={(_, value) => setEmployerId(value ? value.id : '')}
+        renderInput={params => <TextField {...params} label="Роботодавець" />}
       />
+
       <TextField
         id="outlined-basic"
         label=""

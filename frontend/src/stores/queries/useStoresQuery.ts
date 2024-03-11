@@ -6,19 +6,24 @@ import { Store } from '../types';
 type SearchParams = {
   q: string;
   storeId?: string;
+  employerId?: string;
   sortBy: string;
   sortOrder: string;
   page: number;
   pageSize?: number;
 };
 
-const getStores = async ({ storeId, ...restSearchParams }: SearchParams) => {
+const getStores = async ({ storeId, employerId, ...restSearchParams }: SearchParams) => {
   const urlSearchParams: Record<string, unknown> = { ...restSearchParams };
   if (storeId) {
     urlSearchParams.storeId = storeId;
   }
+  if (employerId) {
+    urlSearchParams.employerId = employerId;
+  }
 
   const response = await api.get<PageData<Store[]>>('stores', { params: urlSearchParams });
+  console.log('⚠️ response:', response.data);
 
   return response.data;
 };
