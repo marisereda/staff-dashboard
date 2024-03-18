@@ -1,4 +1,7 @@
-import { TableCell, TableRow, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { useDeleteEmployer } from '../queries/useDeleteEmployer';
 import { Employer } from '../types';
 
 type EmployersTableRowProps = {
@@ -6,7 +9,10 @@ type EmployersTableRowProps = {
 };
 
 export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
-  const { inn, name, stores } = employer;
+  const { id, inn, name, storeAddressesBuh } = employer;
+  const { mutate, isPending } = useDeleteEmployer();
+
+  const stores = storeAddressesBuh ? storeAddressesBuh.split('\n') : undefined;
 
   return (
     <TableRow
@@ -28,9 +34,15 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
           {name}
         </Typography>
       </TableCell>
+      {/*
+      <TableCell align="left">
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+          {storeAddressesBuh}
+        </Typography>
+      </TableCell> */}
 
       <TableCell align="left">
-        {stores?.map(({ address }, index) => (
+        {stores?.map((address, index) => (
           <Typography
             key={index}
             variant="subtitle2"
@@ -39,6 +51,22 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
             {address ?? '-'}
           </Typography>
         ))}
+      </TableCell>
+
+      <TableCell align="right">
+        <IconButton color="success" disabled={isPending}>
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          color="error"
+          disabled={isPending}
+          onClick={() => {
+            console.log('idDeleting', id);
+            mutate(id);
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

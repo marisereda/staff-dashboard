@@ -49,24 +49,28 @@ class EmployersService {
   };
 
   create = async ({ inn, name, stores }: CreateEmployerBody): Promise<Employer | null> => {
-    const connect = stores.map(id => ({ id }));
+    const storesConnect = stores ? { stores: { connect: stores.map(id => ({ id })) } } : undefined;
+
     const employer = await prisma.employer.create({
-      data: { inn, name, stores: { connect } },
+      data: { inn, name, ...storesConnect },
     });
     return employer;
   };
 
   update = async (
     id: string,
-    { stores, ...restData }: Partial<UpdateEmployerBody>
+    { stores, storeAddressesBuh, ...restData }: Partial<UpdateEmployerBody>
   ): Promise<Employer | null> => {
     const connectStores = stores?.map(id => ({ id })) ?? [];
+    const storeAddressesBuhData = storeAddressesBuh ? { storeAddressesBuh } : undefined;
+
     const employer = await prisma.employer.update({
       where: {
         id,
       },
       data: {
         ...restData,
+        ...storeAddressesBuhData,
         stores: { connect: connectStores },
       },
     });

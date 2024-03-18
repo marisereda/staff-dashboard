@@ -1,6 +1,7 @@
 import { Divider, Stack, TablePagination } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 
+import { EmployerForm } from '../components/EmployerForm';
 import { EmployersFilterBar } from '../components/EmployersFilterBar';
 import { EmployersTable } from '../components/EmployersTable';
 import { useEmployersQuery } from '../queries/useEmployersQuery';
@@ -47,6 +48,7 @@ export const EmployersPage = () => {
           />
         </>
       )}
+      <EmployerForm />
     </Stack>
   );
 };

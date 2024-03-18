@@ -1,3 +1,4 @@
+import { forEach } from 'ramda';
 import { dataParserService } from '~/data-parser/data-parser.service';
 import { employeesService } from '~/employees/employees.service';
 import { employersService } from '~/employers/employers.service';
@@ -9,7 +10,24 @@ class UpdateBuhService {
       throw new Error('Invalid report structure');
     }
 
-    await employersService.update(employerId, report[0]!.employer);
+    const storeAddresses = report.map(({ employee }) => employee.storeAddressBuh);
+
+    const stores: string[] = [];
+    if (storeAddresses[0]) {
+      stores.push(storeAddresses[0]);
+
+      storeAddresses.forEach(address => {
+        if (!stores.includes(address)) {
+          stores.push(address);
+        }
+      });
+    }
+    const storeAddressesBuh = stores.join('\n');
+
+    await employersService.update(employerId, {
+      name: report[0]!.employer.name,
+      storeAddressesBuh,
+    });
 
     const employees = report.map(({ employee }) => ({
       ...employee,

@@ -32,10 +32,11 @@ model Employee {
 }
 
 model Employer {
-  id         String   @id @default(cuid())
-  inn        String   @unique
-  name       String
-  markDelete Boolean? @default(false)
+  id                String   @id @default(cuid())
+  inn               String   @unique
+  name              String
+  storeAddressesBuh String?
+  markDelete        Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

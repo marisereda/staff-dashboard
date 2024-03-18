@@ -6,6 +6,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
+import { ReactNode } from 'react';
 import { SortOrder } from '../types';
 
 export type HeadColumnOptions<TSortBy> = {
@@ -19,6 +20,7 @@ type Props<TSortBy> = {
   sortBy: TSortBy;
   sortOrder: SortOrder;
   onSortChange: (sortBy: TSortBy, sortOrder: SortOrder) => void;
+  renderActions?: () => ReactNode;
 };
 
 export const TableHead = <TSortBy,>({
@@ -26,6 +28,7 @@ export const TableHead = <TSortBy,>({
   sortBy,
   sortOrder,
   onSortChange,
+  renderActions: RenderActions,
 }: Props<TSortBy>) => {
   const handleSortChange = (newSortBy: TSortBy | null) => {
     if (!newSortBy) {
@@ -37,40 +40,54 @@ export const TableHead = <TSortBy,>({
   };
 
   return (
-    <MuiTableHead>
-      <TableRow>
-        {columns.map(({ primaryLabel, secondaryLabel, sortBy: columnSortBy }, index) => (
-          <TableCell
-            key={index}
-            align="left"
-            sortDirection="asc"
-            sx={theme => ({
-              backgroundColor: theme.palette.grey.A700,
-            })}
-          >
-            <TableSortLabel
-              disabled={!sortBy}
-              direction={sortOrder}
-              active={columnSortBy === sortBy}
-              hideSortIcon={!columnSortBy}
+    <>
+      <MuiTableHead>
+        <TableRow>
+          {columns.map(({ primaryLabel, secondaryLabel, sortBy: columnSortBy }, index) => (
+            <TableCell
+              key={index}
+              align="left"
+              sortDirection="asc"
               sx={theme => ({
-                '&.MuiTableSortLabel-root': { color: theme.palette.primary.contrastText },
-                '&.MuiTableSortLabel-root .MuiTableSortLabel-icon': {
-                  color: theme.palette.primary.contrastText,
-                },
+                backgroundColor: theme.palette.grey.A700,
               })}
-              onClick={() => handleSortChange(columnSortBy)}
             >
-              <Stack>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                  {primaryLabel}
-                </Typography>
-                <Typography variant="caption">{secondaryLabel}</Typography>
-              </Stack>
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </MuiTableHead>
+              <TableSortLabel
+                disabled={!sortBy}
+                direction={sortOrder}
+                active={columnSortBy === sortBy}
+                hideSortIcon={!columnSortBy}
+                sx={theme => ({
+                  '&.MuiTableSortLabel-root': { color: theme.palette.primary.contrastText },
+                  '&.MuiTableSortLabel-root .MuiTableSortLabel-icon': {
+                    color: theme.palette.primary.contrastText,
+                  },
+                })}
+                onClick={() => handleSortChange(columnSortBy)}
+              >
+                <Stack>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                    {primaryLabel}
+                  </Typography>
+                  <Typography variant="caption">{secondaryLabel}</Typography>
+                </Stack>
+              </TableSortLabel>
+            </TableCell>
+          ))}
+
+          {RenderActions && (
+            <TableCell
+              sx={theme => ({
+                backgroundColor: theme.palette.grey.A700,
+                color: theme.palette.primary.contrastText,
+              })}
+              align="right"
+            >
+              <RenderActions />
+            </TableCell>
+          )}
+        </TableRow>
+      </MuiTableHead>
+    </>
   );
 };

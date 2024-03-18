@@ -22,8 +22,8 @@ const getEmployers = async ({ employerId, storeId, ...restSearchParams }: Search
   if (storeId) {
     urlSerchParams.storeId = storeId;
   }
-  const response = await api.get<PageData<Employer[]>>('employers', { params: urlSerchParams });
-  return response.data;
+  const { data } = await api.get<PageData<Employer[]>>('employers', { params: urlSerchParams });
+  return data;
 };
 
 export const useEmployersQuery = (params: SearchParams) => {

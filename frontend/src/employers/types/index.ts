@@ -5,6 +5,7 @@ export type Employer = {
   inn: string;
   name: string;
   markDelete: boolean;
+  storeAddressesBuh: string;
 
   stores?: Store[];
 

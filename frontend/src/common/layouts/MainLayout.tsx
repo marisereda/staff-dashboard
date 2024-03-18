@@ -30,7 +30,7 @@ const MENU_ITEMS = [
     url: '/stores',
   },
   {
-    label: 'Роботадавці',
+    label: 'Роботодавці',
     icon: WorkIcon,
     url: '/employers',
   },

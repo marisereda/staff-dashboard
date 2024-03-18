@@ -1,4 +1,5 @@
-import { Table, TableBody } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { IconButton, Table, TableBody } from '@mui/material';
 import { TableHead } from '../../common/components/TableHead';
 import { EMPLOYERS_HEAD_COLUMNS } from '../constants';
 import { useEmployersStore } from '../state';
@@ -13,6 +14,7 @@ export const EmployersTable = ({ employers }: Props) => {
   const sortBy = useEmployersStore(s => s.sortBy);
   const sortOrder = useEmployersStore(s => s.sortOrder);
   const setSorting = useEmployersStore(s => s.setSorting);
+  const setIsFormOpen = useEmployersStore(s => s.setIsFormOpen);
 
   return (
     <Table aria-label="simple table">
@@ -21,6 +23,11 @@ export const EmployersTable = ({ employers }: Props) => {
         sortBy={sortBy}
         sortOrder={sortOrder}
         onSortChange={setSorting}
+        renderActions={() => (
+          <IconButton aria-label="delete" color="inherit" onClick={() => setIsFormOpen(true)}>
+            <AddCircleIcon />
+          </IconButton>
+        )}
       />
       <TableBody>
         {employers.map(employer => (
