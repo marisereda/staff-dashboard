@@ -2,6 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { useDeleteEmployer } from '../queries/useDeleteEmployer';
+import { useEmployersStore } from '../state';
 import { Employer } from '../types';
 
 type EmployersTableRowProps = {
@@ -12,7 +13,12 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
   const { id, inn, name, storeAddressesBuh } = employer;
   const { mutate, isPending } = useDeleteEmployer();
 
+  const openForm = useEmployersStore(s => s.openForm);
   const stores = storeAddressesBuh ? storeAddressesBuh.split('\n') : undefined;
+
+  const handleEditEmployer = () => {
+    openForm(employer);
+  };
 
   return (
     <TableRow
@@ -34,12 +40,6 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
           {name}
         </Typography>
       </TableCell>
-      {/*
-      <TableCell align="left">
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {storeAddressesBuh}
-        </Typography>
-      </TableCell> */}
 
       <TableCell align="left">
         {stores?.map((address, index) => (
@@ -54,14 +54,14 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
       </TableCell>
 
       <TableCell align="right">
-        <IconButton color="success" disabled={isPending}>
+        <IconButton color="success" disabled={isPending} onClick={handleEditEmployer}>
           <EditIcon />
         </IconButton>
+
         <IconButton
           color="error"
           disabled={isPending}
           onClick={() => {
-            console.log('idDeleting', id);
             mutate(id);
           }}
         >

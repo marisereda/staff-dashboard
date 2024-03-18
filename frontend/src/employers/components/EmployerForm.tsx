@@ -9,34 +9,59 @@ import {
   DialogTitle,
   Stack,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormTextField } from '../../common/components/FormTextField';
 import { useCreateEmployer } from '../queries/useCreateEmployer';
 import { useEmployersStore } from '../state';
+
+import { useUpdateEmployer } from '../queries/useUpdateEmployer';
 import { Inputs, inputSchema } from '../validation/employerFormSchema';
 
 export function EmployerForm() {
   const isFormOpen = useEmployersStore(s => s.isFormOpen);
-  const setIsFormOpen = useEmployersStore(s => s.setIsFormOpen);
-  const { mutate, isPending } = useCreateEmployer();
+  const editableEmployer = useEmployersStore(s => s.editableEmployer);
+  const closeForm = useEmployersStore(s => s.closeForm);
 
-  const { control, handleSubmit, reset } = useForm<Inputs>({
-    defaultValues: { inn: '', name: '' },
+  const { mutate: create, isPending: isPendingCreation } = useCreateEmployer();
+  const { mutate: update, isPending: isPendingUpdation } = useUpdateEmployer();
+
+  const { control, handleSubmit, reset, setValue } = useForm<Inputs>({
+    defaultValues: {
+      inn: '',
+      name: '',
+    },
     resolver: zodResolver(inputSchema),
   });
 
+  useEffect(() => {
+    setValue('inn', editableEmployer?.inn ?? '');
+    setValue('name', editableEmployer?.name ?? '');
+  }, [editableEmployer, setValue]);
+
   const onSubmit = (data: Inputs) => {
-    mutate(data, {
-      onSuccess: () => {
-        handleClose();
-        reset();
-      },
-    });
+    if (editableEmployer) {
+      update(
+        { ...data, id: editableEmployer?.id },
+        {
+          onSuccess: () => {
+            handleClose();
+            reset();
+          },
+        }
+      );
+    } else {
+      create(data, {
+        onSuccess: () => {
+          handleClose();
+          reset();
+        },
+      });
+    }
   };
 
   const handleClose = () => {
-    setIsFormOpen(false);
+    closeForm();
   };
 
   return (
@@ -49,7 +74,9 @@ export function EmployerForm() {
           onSubmit: handleSubmit(onSubmit),
         }}
       >
-        <DialogTitle>Створення нового роботодавця</DialogTitle>
+        <DialogTitle>
+          {editableEmployer ? 'Редагування роботодавця' : 'Створення нового роботодавця'}
+        </DialogTitle>
         <DialogContent>
           <Stack gap={3}>
             <DialogContentText></DialogContentText>
@@ -59,14 +86,18 @@ export function EmployerForm() {
         </DialogContent>
         <DialogActions>
           <Button
-            disabled={isPending}
+            disabled={isPendingCreation || isPendingUpdation}
             onClick={() => {
               handleClose(), reset();
             }}
           >
             Скасувати
           </Button>
-          <LoadingButton loading={isPending} disabled={isPending} type="submit">
+          <LoadingButton
+            loading={isPendingCreation || isPendingUpdation}
+            disabled={isPendingCreation || isPendingUpdation}
+            type="submit"
+          >
             Зберегти
           </LoadingButton>
         </DialogActions>

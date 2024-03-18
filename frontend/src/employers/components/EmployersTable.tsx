@@ -14,7 +14,7 @@ export const EmployersTable = ({ employers }: Props) => {
   const sortBy = useEmployersStore(s => s.sortBy);
   const sortOrder = useEmployersStore(s => s.sortOrder);
   const setSorting = useEmployersStore(s => s.setSorting);
-  const setIsFormOpen = useEmployersStore(s => s.setIsFormOpen);
+  const openForm = useEmployersStore(s => s.openForm);
 
   return (
     <Table aria-label="simple table">
@@ -24,7 +24,7 @@ export const EmployersTable = ({ employers }: Props) => {
         sortOrder={sortOrder}
         onSortChange={setSorting}
         renderActions={() => (
-          <IconButton aria-label="delete" color="inherit" onClick={() => setIsFormOpen(true)}>
+          <IconButton aria-label="delete" color="inherit" onClick={() => openForm(null)}>
             <AddCircleIcon />
           </IconButton>
         )}
