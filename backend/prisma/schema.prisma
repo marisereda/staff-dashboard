@@ -35,6 +35,7 @@ model Employer {
   id                String   @id @default(cuid())
   inn               String   @unique
   name              String
+  isSingleTax       Boolean? @default(false)
   storeAddressesBuh String?
   markDelete        Boolean? @default(false)
 

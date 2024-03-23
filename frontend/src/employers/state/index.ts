@@ -10,7 +10,7 @@ type State = {
   page: number;
   pageSize: number;
   isFormOpen: boolean;
-  editableEmployer: Pick<Employer, 'inn' | 'name' | 'id'> | null;
+  editableEmployer: Pick<Employer, 'inn' | 'name' | 'id' | 'isSingleTax'> | null;
 };
 
 type Actions = {
@@ -20,7 +20,9 @@ type Actions = {
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
-  openForm: (editableEmployer: Pick<Employer, 'inn' | 'name' | 'id'> | null) => void;
+  openForm: (
+    editableEmployer: Pick<Employer, 'inn' | 'name' | 'id' | 'isSingleTax'> | null
+  ) => void;
   closeForm: () => void;
 };
 

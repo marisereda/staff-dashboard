@@ -4,7 +4,7 @@ import { EmployersSortBy } from '../types';
 export const EMPLOYERS_HEAD_COLUMNS: HeadColumnOptions<EmployersSortBy>[] = [
   {
     primaryLabel: 'ДРФО',
-    secondaryLabel: null,
+    secondaryLabel: 'оподаткування',
     sortBy: 'inn',
   },
   {

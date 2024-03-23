@@ -10,7 +10,7 @@ type EmployersTableRowProps = {
 };
 
 export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
-  const { id, inn, name, storeAddressesBuh } = employer;
+  const { id, inn, name, isSingleTax, storeAddressesBuh } = employer;
   const { mutate, isPending } = useDeleteEmployer();
 
   const openForm = useEmployersStore(s => s.openForm);
@@ -32,6 +32,9 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
       <TableCell component="th" scope="row">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           {inn ?? '-'}
+        </Typography>
+        <Typography variant="subtitle2" sx={theme => ({ color: theme.palette.grey[600] })}>
+          {isSingleTax ? 'єдина система' : 'загальна система'}
         </Typography>
       </TableCell>
 

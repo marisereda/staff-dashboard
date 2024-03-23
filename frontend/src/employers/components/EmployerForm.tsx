@@ -7,15 +7,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
   Stack,
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { FormCheckBox } from '../../common/components/FormCheckBox';
 import { FormTextField } from '../../common/components/FormTextField';
 import { useCreateEmployer } from '../queries/useCreateEmployer';
-import { useEmployersStore } from '../state';
-
 import { useUpdateEmployer } from '../queries/useUpdateEmployer';
+import { useEmployersStore } from '../state';
 import { Inputs, inputSchema } from '../validation/employerFormSchema';
 
 export function EmployerForm() {
@@ -30,6 +32,7 @@ export function EmployerForm() {
     defaultValues: {
       inn: '',
       name: '',
+      isSingleTax: false,
     },
     resolver: zodResolver(inputSchema),
   });
@@ -37,6 +40,7 @@ export function EmployerForm() {
   useEffect(() => {
     setValue('inn', editableEmployer?.inn ?? '');
     setValue('name', editableEmployer?.name ?? '');
+    setValue('isSingleTax', editableEmployer?.isSingleTax ?? false);
   }, [editableEmployer, setValue]);
 
   const onSubmit = (data: Inputs) => {
@@ -82,6 +86,12 @@ export function EmployerForm() {
             <DialogContentText></DialogContentText>
             <FormTextField label="ІПН" name="inn" control={control} sx={{ minWidth: '500px' }} />
             <FormTextField label="ПІБ" name="name" control={control} sx={{ minWidth: '500px' }} />
+            <FormGroup>
+              <FormControlLabel
+                label="використовує єдину систему оподаткування"
+                control={<FormCheckBox name="isSingleTax" control={control} />}
+              />
+            </FormGroup>
           </Stack>
         </DialogContent>
         <DialogActions>
