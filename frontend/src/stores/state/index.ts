@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { SortOrder } from '../../common/types';
-import { StoresSortBy } from '../types';
+import { Store, StoresSortBy } from '../types';
 
 type State = {
   search: string;
@@ -10,6 +10,8 @@ type State = {
   sortOrder: SortOrder;
   page: number;
   pageSize: number;
+  isFormOpen: boolean;
+  store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C'> | null;
 };
 
 type Actions = {
@@ -19,6 +21,8 @@ type Actions = {
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
+  openForm: (store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C'> | null) => void;
+  closeForm: () => void;
 };
 
 export const useStoresStore = create<State & Actions>(set => ({
@@ -29,6 +33,8 @@ export const useStoresStore = create<State & Actions>(set => ({
   sortOrder: 'asc',
   page: 1,
   pageSize: 50,
+  isFormOpen: false,
+  store: null,
 
   setSearch: search => set(() => ({ search })),
   setStoreId: storeId => set(() => ({ storeId })),
@@ -36,4 +42,7 @@ export const useStoresStore = create<State & Actions>(set => ({
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),
+  // setEditableStore: editableStore => set(() => ({ editableStore })),
+  openForm: store => set(() => ({ isFormOpen: true, store })),
+  closeForm: () => set(() => ({ isFormOpen: false, store: null })),
 }));

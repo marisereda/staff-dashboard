@@ -1,4 +1,5 @@
-import { Table, TableBody } from '@mui/material';
+import { IconButton, Table, TableBody } from '@mui/material';
+
 import { TableHead } from '../../common/components/TableHead';
 import { STORES_HEAD_COLUMNS } from '../constants';
 import { useStoresStore } from '../state';
@@ -21,6 +22,9 @@ export const StoresTable = ({ stores }: StoresTableProps) => {
         sortBy={sortBy}
         sortOrder={sortOrder}
         onSortChange={setSorting}
+        renderActions={() => (
+          <IconButton aria-label="delete" color="inherit" disabled={true}></IconButton>
+        )}
       />
       <TableBody>
         {stores.map(store => (

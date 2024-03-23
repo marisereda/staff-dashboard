@@ -40,7 +40,7 @@ export function SyncHRForm() {
   const file = watch('files')?.[0];
 
   return (
-    <Card component="form" onSubmit={handleSubmit(handleUploadFile)}>
+    <Card component="form" onSubmit={handleSubmit(handleUploadFile)} sx={{ minHeight: '270px' }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Typography variant="h5" component="h2">
           База даних HR-відділу

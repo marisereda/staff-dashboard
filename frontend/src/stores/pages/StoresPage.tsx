@@ -1,5 +1,6 @@
 import { Divider, Stack, TablePagination } from '@mui/material';
 import { useDebounce } from 'use-debounce';
+import { StoreForm } from '../components/StoreForm';
 import { StoresFilterBar } from '../components/StoresFilterBar';
 import { StoresTable } from '../components/StoresTable';
 import { useStoresQuery } from '../queries/useStoresQuery';
@@ -47,6 +48,7 @@ export const StoresPage = () => {
           />
         </>
       )}
+      <StoreForm />
     </Stack>
   );
 };

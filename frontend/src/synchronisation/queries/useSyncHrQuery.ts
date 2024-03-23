@@ -1,11 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { api } from '../../common/api';
 
-// const uploadBuhFile = async () => {};
-
 const uploadHrFile = async (formData: FormData) => {
-  const response = await api.post<File>('update/hr', formData);
-  console.log('⚠️ response:', response);
+  await api.post<File>('update/hr', formData);
   return;
 };
 

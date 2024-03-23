@@ -28,7 +28,6 @@ export function SyncBuhForm() {
   });
 
   const employerController = useController({ control, name: 'employerId' });
-
   const { isPending, isError, isSuccess, mutate, reset } = useSyncBuhQuery();
 
   const handleUploadFile = ({ employerId, files }: Inputs) => {
@@ -60,7 +59,7 @@ export function SyncBuhForm() {
     employersPage?.data.map(employer => ({ label: employer.name, id: employer.id })) ?? [];
 
   return (
-    <Card component="form" onSubmit={handleSubmit(handleUploadFile)}>
+    <Card component="form" onSubmit={handleSubmit(handleUploadFile)} sx={{ minHeight: '270px' }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Typography variant="h5" component="h2">
           База даних бухгалтерії

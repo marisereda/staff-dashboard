@@ -13,3 +13,12 @@ export const StoresQuerySchema = z.object({
 export const GetStoresSchema = z.object({
   query: StoresQuerySchema,
 });
+
+export const UpdateStoreSchema = z.object({
+  params: z.object({ id: z.string().cuid() }),
+  body: z.object({
+    code1C: z.string(),
+    address: z.string(),
+    checkoutNumber: z.coerce.number().int().gte(1).lte(15),
+  }),
+});

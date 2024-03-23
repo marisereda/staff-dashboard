@@ -1,4 +1,6 @@
-import { TableCell, TableRow, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { useStoresStore } from '../state';
 import { Store } from '../types';
 
 type StoresTableRowProps = {
@@ -7,6 +9,9 @@ type StoresTableRowProps = {
 
 export const StoresTableRow = ({ store }: StoresTableRowProps) => {
   const { code1C, address, employers, checkoutNumber } = store;
+
+  const isFormOpen = useStoresStore(s => s.isFormOpen);
+  const openForm = useStoresStore(s => s.openForm);
 
   return (
     <TableRow
@@ -45,6 +50,12 @@ export const StoresTableRow = ({ store }: StoresTableRowProps) => {
             {name ?? '-'}
           </Typography>
         ))}
+      </TableCell>
+
+      <TableCell align="right">
+        <IconButton color="success" disabled={isFormOpen} onClick={() => openForm(store)}>
+          <EditIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

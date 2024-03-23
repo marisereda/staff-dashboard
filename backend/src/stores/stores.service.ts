@@ -1,7 +1,7 @@
 import { Prisma, Store } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { CreateStoreData, StoresQuery } from './types';
+import { CreateStoreData, StoresQuery, UpdateStoreData } from './types';
 
 class StoresService {
   getAll = async ({
@@ -65,6 +65,16 @@ class StoresService {
       })
     );
     await prisma.$transaction(promises);
+  };
+
+  updateById = async (store: UpdateStoreData): Promise<void> => {
+    await prisma.store.upsert({
+      where: { id: store.id },
+      update: { ...store, markDelete: false },
+      create: store,
+    });
+
+    // await prisma.$transaction(promise);
   };
 
   getByCode1C = (code1C: Store['code1C']): Promise<Store | null> => {

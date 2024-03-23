@@ -16,6 +16,7 @@ class UpdateHrService {
       ...employee,
       store: { code1C: store.code1C },
     }));
+
     await employeesService.markDeleteByCode1C(codes1C);
     await employeesService.updateMany(employees);
   };

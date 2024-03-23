@@ -13,6 +13,7 @@ export const updateBuh = async (req: AppRequest<UpdateBuh>, res: Response): Prom
 
 export const updateHr = async (req: AppRequest<UpdateHr>, res: Response): Promise<void> => {
   const file = req.state!.file.buffer;
+
   updateHrService.updateFromReport(file!);
 
   res.status(200).json('result');

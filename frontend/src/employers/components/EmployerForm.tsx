@@ -80,8 +80,8 @@ export function EmployerForm() {
         <DialogContent>
           <Stack gap={3}>
             <DialogContentText></DialogContentText>
-            <FormTextField label="ІПН" name="inn" control={control} />
-            <FormTextField label="ПІБ" name="name" control={control} />
+            <FormTextField label="ІПН" name="inn" control={control} sx={{ minWidth: '500px' }} />
+            <FormTextField label="ПІБ" name="name" control={control} sx={{ minWidth: '500px' }} />
           </Stack>
         </DialogContent>
         <DialogActions>
