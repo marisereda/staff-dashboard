@@ -5,18 +5,23 @@ import { CreateEmployerBody, EmployersQuery, UpdateEmployerBody } from './types'
 
 class EmployersService {
   getAll = async ({
-    q,
-    storeId,
-    employerId,
-    sortBy,
-    sortOrder,
-    page,
+    q = '',
+    storeId = '',
+    employerId = '',
+    sortBy = 'name',
+    sortOrder = 'asc',
+    page = 1,
     pageSize,
   }: EmployersQuery): Promise<PageData<Employer[]>> => {
     const where: Prisma.EmployerWhereInput = {};
     const orderBy = { [sortBy]: sortOrder };
-    const skip = pageSize * (page - 1);
-    const take = pageSize;
+
+    const pageParams = pageSize
+      ? {
+          skip: pageSize * (page - 1),
+          take: pageSize,
+        }
+      : undefined;
 
     if (q) {
       const conditions = ['inn', 'name'].map(item => ({
@@ -29,8 +34,7 @@ class EmployersService {
     const data = await prisma.employer.findMany({
       where,
       orderBy,
-      skip,
-      take,
+      ...pageParams,
       include: { stores: true },
     });
     const total = await prisma.employer.count({ where });

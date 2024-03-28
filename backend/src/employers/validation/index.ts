@@ -4,10 +4,10 @@ export const EmployersQuerySchema = z.object({
   q: z.string().optional(),
   storeId: z.string().cuid().optional(),
   employerId: z.string().cuid().optional(),
-  sortBy: z.enum(['inn', 'name']).default('name'),
-  sortOrder: z.enum(['asc', 'desc']).default('asc'),
-  page: z.coerce.number().int().gte(1).default(1),
-  pageSize: z.coerce.number().int().gte(1).lte(100).default(50),
+  sortBy: z.enum(['inn', 'name']).default('name').optional(),
+  sortOrder: z.enum(['asc', 'desc']).default('asc').optional(),
+  page: z.coerce.number().int().gte(1).default(1).optional(),
+  pageSize: z.coerce.number().int().gte(1).lte(100).optional(),
 });
 
 const EmployerParamsSchema = z.object({

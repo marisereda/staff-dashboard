@@ -5,6 +5,7 @@ import { config } from './config';
 import { employeesRouter } from './employees';
 import { employersRouter } from './employers';
 import { notesRouter } from './notes';
+import { reportRouter } from './report';
 import { storesRouter } from './stores';
 import { updateRouter } from './update';
 
@@ -18,6 +19,7 @@ app.use('/stores', storesRouter);
 app.use('/employers', employersRouter);
 app.use('/notes', notesRouter);
 app.use('/update', updateRouter);
+app.use('/report', reportRouter);
 
 app.use(notFound);
 app.use(errorHandler);
