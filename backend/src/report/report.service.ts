@@ -30,6 +30,9 @@ class Report {
     const employers = await prisma.employer.findMany();
 
     const result = totals.map(row => {
+      // row['sumCount'] = (row['fopCount'] as number) + (row['employedCount'] as number);
+      console.log('⚠️', row);
+
       return employers.reduce(
         (acc: Record<string, unknown>, employer) => {
           const employedCount = details.find(
@@ -52,6 +55,7 @@ class Report {
       '№',
       'Адреса магазину',
       'Всього',
+      'Прац.всього',
       'ФОП',
       'Прац.',
       'Єдин.',
