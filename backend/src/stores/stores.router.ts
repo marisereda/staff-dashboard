@@ -9,8 +9,6 @@ storesRouter.get('/', validator(GetStoresSchema), handler(getAll));
 storesRouter.patch(
   '/:id',
   (req, res, next) => {
-    // console.log('⚠️', req);
-
     next();
   },
   validator(UpdateStoreSchema),

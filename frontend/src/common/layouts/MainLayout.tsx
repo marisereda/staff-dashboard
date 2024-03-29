@@ -1,5 +1,6 @@
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 import GroupsIcon from '@mui/icons-material/Groups';
 import StoreIcon from '@mui/icons-material/Store';
 import WorkIcon from '@mui/icons-material/Work';
@@ -38,6 +39,11 @@ const MENU_ITEMS = [
     label: 'Синхронізація',
     icon: CloudSyncIcon,
     url: '/update',
+  },
+  {
+    label: 'Звіт',
+    icon: EventNoteIcon,
+    url: '/report',
   },
 ];
 

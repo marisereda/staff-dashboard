@@ -6,8 +6,8 @@ export const totalsSQL = Prisma.sql`
     ROW_NUMBER() OVER(ORDER BY Store.address ASC) as rowNumber,
     Store.address as storeAddress,
     COUNT(*) as totalCount,
-    COUNT(employerId) as employedCount,
-    SUM(isFop) as fopCount
+    SUM(isFop) as fopCount,
+    COUNT(employerId) as employedCount
   FROM Employee
     FULL JOIN Store ON Employee.storeId = Store.id
     FULL JOIN Employer ON Employee.employerId = Employer.id

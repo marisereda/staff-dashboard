@@ -52,8 +52,8 @@ class Report {
       '№',
       'Адреса магазину',
       'Всього',
-      'Всього прац.',
       'ФОП',
+      'Прац.',
       'Єдин.',
       ...employers
         .filter(employer => !employer.isSingleTax)
