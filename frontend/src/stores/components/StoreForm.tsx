@@ -20,6 +20,7 @@ import { Inputs, inputSchema } from '../validation/storeFormSchema';
 export function StoreForm() {
   const isFormOpen = useStoresStore(s => s.isFormOpen);
   const store = useStoresStore(s => s.store);
+
   const closeForm = useStoresStore(s => s.closeForm);
 
   const { mutate: update, isPending } = useUpdateStore();
@@ -27,14 +28,14 @@ export function StoreForm() {
   const { control, handleSubmit, reset, setValue } = useForm<Inputs>({
     defaultValues: {
       address: '',
-      checkoutNumber: 1,
+      checkoutNumber: 0,
     },
     resolver: zodResolver(inputSchema),
   });
 
   useEffect(() => {
-    setValue('address', store ? store.address : '');
-    setValue('checkoutNumber', store ? store.checkoutNumber : 1);
+    setValue('address', store?.address ?? '');
+    setValue('checkoutNumber', store?.checkoutNumber ?? 0);
   }, [store, setValue]);
 
   const onSubmit = (data: Inputs) => {
@@ -79,7 +80,7 @@ export function StoreForm() {
               label="Адреса"
               name="address"
               control={control}
-              disabled
+              disabled={true}
               sx={{ minWidth: '500px' }}
             />
             <FormTextField

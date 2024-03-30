@@ -43,6 +43,6 @@ export const useStoresStore = create<State & Actions>(set => ({
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),
   // setEditableStore: editableStore => set(() => ({ editableStore })),
-  openForm: store => set(() => ({ isFormOpen: true, store })),
+  openForm: store => set(() => ({ store, isFormOpen: true })),
   closeForm: () => set(() => ({ isFormOpen: false, store: null })),
 }));

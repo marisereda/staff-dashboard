@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Employee" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "code1C" TEXT NOT NULL,
+    "code1C" TEXT,
     "inn" TEXT,
     "name" TEXT NOT NULL,
     "isFop" BOOLEAN DEFAULT false,
@@ -25,6 +25,8 @@ CREATE TABLE "Employer" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "inn" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "isSingleTax" BOOLEAN DEFAULT false,
+    "storeAddressesBuh" TEXT,
     "markDelete" BOOLEAN DEFAULT false,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
@@ -64,9 +66,6 @@ CREATE TABLE "_EmployerToStore" (
     CONSTRAINT "_EmployerToStore_A_fkey" FOREIGN KEY ("A") REFERENCES "Employer" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "_EmployerToStore_B_fkey" FOREIGN KEY ("B") REFERENCES "Store" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Employee_code1C_key" ON "Employee"("code1C");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Employer_inn_key" ON "Employer"("inn");

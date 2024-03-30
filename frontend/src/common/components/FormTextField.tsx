@@ -10,7 +10,6 @@ export function FormTextField<TFieldValues extends FieldValues, TName extends Pa
   shouldUnregister,
   defaultValue,
   control,
-  disabled,
   ...textFieldProps
 }: Props<TFieldValues, TName>) {
   const { field, fieldState } = useController({
@@ -19,7 +18,6 @@ export function FormTextField<TFieldValues extends FieldValues, TName extends Pa
     shouldUnregister,
     defaultValue,
     control,
-    disabled,
   });
 
   return (

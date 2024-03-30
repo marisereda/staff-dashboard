@@ -10,7 +10,8 @@
     "db:migrate": "npm run db:migrate --workspace backend",
     "prisma:studio": "npm run prisma:studio --workspace backend",
     "lint": "npx eslint .",
-    "prettify": "npx prettier . --write"
+    "prettify": "npx prettier . --write",
+    "install-all": "npm install && npm install --workspaces --if-present"
   },
   "keywords": [],
   "author": "",

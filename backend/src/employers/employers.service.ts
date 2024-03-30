@@ -52,11 +52,16 @@ class EmployersService {
     return employer;
   };
 
-  create = async ({ inn, name, stores }: CreateEmployerBody): Promise<Employer | null> => {
+  create = async ({
+    inn,
+    name,
+    stores,
+    isSingleTax,
+  }: CreateEmployerBody): Promise<Employer | null> => {
     const storesConnect = stores ? { stores: { connect: stores.map(id => ({ id })) } } : undefined;
 
     const employer = await prisma.employer.create({
-      data: { inn, name, ...storesConnect },
+      data: { inn, name, ...storesConnect, isSingleTax },
     });
     return employer;
   };
