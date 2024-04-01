@@ -1,57 +1,105 @@
-import { Employer, Prisma } from '@prisma/client';
-import e from 'cors';
+import { Employer } from '@prisma/client';
 import { omit } from 'ramda';
 import XLSX from 'xlsx';
 import { prisma } from '~/common/services';
 import { convertBigIntToInt } from '~/common/utils';
 import { getInitials } from '~/common/utils/string-utils';
-import { employersService } from '~/employers/employers.service';
-import { storesService } from '~/stores/stores.service';
-import { detailsSQL, totalsSQL } from './sql-queries';
+import { POSITION_CATEGORIES } from './constants';
+import {
+  EmployeesByEmployers,
+  employeesByEmployersQuery,
+} from './sql-queries/employeesByEmployersQuery';
+import {
+  EmployeesByPosition,
+  employeesByPositionQuery,
+} from './sql-queries/employeesByPositionQuery';
+import { ResultsByStore, resultsByStoresSQLQuery } from './sql-queries/resultsByStoresQuery';
 
 class Report {
   async getReport(): Promise<void> {
-    // const rows = [
-    //   { name: 'George Washington', birthday: '1732-02-22' },
-    //   { name: 'John Adams', birthday: '1735-10-19' },
-    // ];
-
     const { header, rows } = await this.prepareRows();
     const worksheet = XLSX.utils.json_to_sheet(rows);
-    XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
     const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Dates');
     XLSX.writeFile(workbook, '../!!!.local/Presidents.xlsx', { compression: true });
   }
 
   async prepareRows(): Promise<{ header: string[]; rows: Record<string, unknown>[] }> {
-    const totals: Record<string, string | number>[] = await prisma.$queryRaw(totalsSQL);
-    const details: Record<string, unknown>[] = await prisma.$queryRaw(detailsSQL);
+    const resultsByStores: ResultsByStore[] = await prisma.$queryRaw(resultsByStoresSQLQuery);
+    const employeesByEmployers: EmployeesByEmployers[] =
+      await prisma.$queryRaw(employeesByEmployersQuery);
+
+    const employeesByPosition: EmployeesByPosition[][] = await Promise.all(
+      POSITION_CATEGORIES.map(async category =>
+        prisma.$queryRaw(employeesByPositionQuery(category.positions))
+      )
+    );
+
     const employers = await prisma.employer.findMany();
 
-    const result = totals.map(row => {
-      // row['sumCount'] = (row['fopCount'] as number) + (row['employedCount'] as number);
-      console.log('⚠️', row);
-
-      return employers.reduce(
-        (acc: Record<string, unknown>, employer) => {
-          const employedCount = details.find(
-            item => row['storeId'] === item['storeId'] && employer.id === item['employerId']
-          )?.['employedCount'] as number;
-
-          if (employer.isSingleTax) {
-            acc['singleTax'] = (acc['singleTax'] as number) + Number(employedCount ?? 0);
-          } else {
-            acc[employer.id] = employedCount ?? 0;
-          }
-
-          return acc;
-        },
-        { ...row, singleTax: 0 }
+    const result = resultsByStores.map(row => {
+      const { storeCheckoutNumber, ...restRow } = row;
+      const rowWithEmployers = this.addEmployerColumnsToRow(
+        restRow,
+        employers,
+        employeesByEmployers
       );
+      const rowWithPositions = this.addPositionColumnsToRow(
+        { ...rowWithEmployers, storeCheckoutNumber },
+        employeesByPosition
+      );
+      return rowWithPositions;
     });
 
-    const header = [
+    const header = this.prepareHeader(employers);
+    const rows = result.map(item => omit(['storeId'], convertBigIntToInt(item)));
+
+    return { header, rows };
+  }
+
+  addEmployerColumnsToRow(
+    row: Record<string, unknown>,
+    employers: Employer[],
+    details: Record<string, unknown>[]
+  ): Record<string, unknown> {
+    return employers.reduce(
+      (acc: Record<string, unknown>, employer) => {
+        const employedCount = details.find(
+          item => row['storeId'] === item['storeId'] && employer.id === item['employerId']
+        )?.['employedCount'] as number;
+
+        if (employer.isSingleTax) {
+          acc['singleTax'] = (acc['singleTax'] as number) + Number(employedCount ?? 0);
+        } else {
+          acc[employer.id] = employedCount ?? 0;
+        }
+
+        return acc;
+      },
+      { ...row, singleTax: 0 }
+    );
+  }
+
+  addPositionColumnsToRow(
+    row: Record<string, unknown>,
+    detailsByPosition: EmployeesByPosition[][]
+  ): Record<string, unknown> {
+    return detailsByPosition.reduce(
+      (acc: Record<string, unknown>, storePositions, index) => {
+        const employedCount = storePositions.find(item => item['storeId'] === row['storeId'])?.[
+          'employedCount'
+        ];
+        acc['employedCount' + index] = employedCount;
+        return acc;
+      },
+      { ...row }
+    );
+  }
+
+  prepareHeader(employers: Employer[]): string[] {
+    return [
       '№',
       'Адреса магазину',
       'Всього',
@@ -62,60 +110,10 @@ class Report {
       ...employers
         .filter(employer => !employer.isSingleTax)
         .map(employer => getInitials(employer.name)),
+      'Кіл-ть кас',
+      ...POSITION_CATEGORIES.map(category => category.name),
     ];
-
-    const rows = result.map(item => omit(['storeId'], convertBigIntToInt(item)));
-
-    return { header, rows };
-  }
-
-  async prepareHeader() {
-    return {};
   }
 }
 
 export const reportService = new Report();
-
-//   const storesPage = await storesService.getAll({
-//     q: '',
-//     employerId: '',
-//     storeId: '',
-//     sortBy: 'address',
-//     sortOrder: 'asc',
-//     page: 1,
-//   });
-
-//   const employersPage = await employersService.getAll({
-//     q: '',
-//     storeId: '',
-//     employerId: '',
-//     sortBy: 'name',
-//     sortOrder: 'asc',
-//     page: 1,
-//     pageSize: 50,
-//   });
-
-//   const employers = employersPage.data;
-//   const stores = storesPage.data;
-
-//   const preparedData = stores.map(store => {
-//     const partOfRow: Record<string, number> = {};
-
-//     for (const employer of employers) {
-//       const amountEmployees = this.countEmployees(store.code1C, employer);
-//       partOfRow[employer.name] = amountEmployees;
-//     }
-
-//     return {
-//       'Код 1С': store.code1C,
-//       'Адреса магазину': store.address,
-//       ...partOfRow,
-//     };
-//   });
-
-//   console.log('⚠️ preparedData:', preparedData);
-// }
-
-// countEmployees(code1c: string, employer: Employer): number {
-//   return 10;
-// }
