@@ -16,14 +16,14 @@ import {
 import { ResultsByStore, resultsByStoresSQLQuery } from './sql-queries/resultsByStoresQuery';
 
 class Report {
-  async getReport(): Promise<void> {
+  async getReport(): Promise<Buffer> {
     const { header, rows } = await this.prepareRows();
     const worksheet = XLSX.utils.json_to_sheet(rows);
     const workbook = XLSX.utils.book_new();
 
     XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Dates');
-    XLSX.writeFile(workbook, '../!!!.local/Presidents.xlsx', { compression: true });
+    return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
   }
 
   async prepareRows(): Promise<{ header: string[]; rows: Record<string, unknown>[] }> {
