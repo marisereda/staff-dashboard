@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { handler, validator } from '~/common/middlewares';
 import * as updateController from './update.controller';
-import { UpdateBuhSchema, UpdateHrSchema } from './validation';
+import { UpdateBuhSchema, UpdateFopSchema, UpdateHrSchema } from './validation';
 
 export const upload = multer();
 
@@ -20,4 +20,11 @@ updateRouter.post(
   upload.single('file'),
   validator(UpdateHrSchema),
   handler(updateController.updateHr)
+);
+
+updateRouter.post(
+  '/fop',
+  upload.single('file'),
+  validator(UpdateFopSchema),
+  handler(updateController.updateFop)
 );

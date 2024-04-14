@@ -22,3 +22,7 @@ export const UpdateBuhSchema = z.object({
 export const UpdateHrSchema = z.object({
   file: FileSchema,
 });
+
+export const UpdateFopSchema = z.object({
+  file: FileSchema,
+});

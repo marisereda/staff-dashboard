@@ -14,6 +14,16 @@ export const readWorkSheetFromFile = (fileName: string): WorkSheet => {
   return ws;
 };
 
+export const readAllWorkSheets = (file: Buffer): WorkSheet => {
+  const wb = xlsx.read(file, { dense: true });
+  if (!wb.SheetNames.length) throw new Error('Sheets not found in file');
+
+  const ws = wb.Sheets;
+  if (!ws) throw new Error('Sheets not found in file');
+
+  return ws;
+};
+
 export const readWorkSheet = (file: Buffer): WorkSheet => {
   const wb = xlsx.read(file, { dense: true });
   if (!wb.SheetNames.length) throw new Error('Sheets not found in file');
