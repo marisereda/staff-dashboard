@@ -23,12 +23,13 @@ export const updateHr = async (req: AppRequest<UpdateHr>, res: Response): Promis
 export const updateFop = async (req: AppRequest<UpdateHr>, res: Response): Promise<void> => {
   const file = req.state!.file.buffer;
 
-  const updateResult = await updateFopService.updateFromReport(file!);
-  if (updateResult.length === 0) {
-    res
-      .status(400)
-      .send({ result: 'Check uploading file, there is no information about FOP in it' });
+  const buf = await updateFopService.updateFromReport(file!);
+  if (!buf) {
+    res.status(200).send({ relult: 'success' });
+  } else {
+    res.statusCode = 200;
+    res.setHeader('Content-Disposition', 'attachment; filename="DislocationReport.xlsx"');
+    res.setHeader('Content-Type', 'application/vnd.ms-excel');
+    res.end(buf);
   }
-
-  res.status(200).send({ relult: 'success' });
 };

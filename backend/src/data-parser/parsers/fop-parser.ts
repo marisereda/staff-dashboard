@@ -29,16 +29,20 @@ class FopParser {
     return { inn, name };
   };
 
-  parseRow = (ws: WorkSheet, r: number): FopReport[] => {
+  parseRow = (ws: WorkSheet, r: number): FopReport[] | null => {
     let colNum = 1;
     const rowData = [];
     let emptyCellNumber = 0;
+    let isRowEmpty = true;
+
     while (colNum) {
       const cellContent = cell(ws, r, colNum);
+
       if (!cellContent) {
         emptyCellNumber++;
       } else {
         emptyCellNumber = 0;
+        isRowEmpty = false;
       }
       if (emptyCellNumber > EMPTY_NUMBER) {
         break;
@@ -51,7 +55,7 @@ class FopParser {
       colNum++;
     }
 
-    return rowData;
+    return isRowEmpty ? null : rowData;
   };
 
   parseWorkSheet = (ws: WorkSheet): FopReport[] => {
@@ -63,13 +67,13 @@ class FopParser {
         break;
       }
       const rowData = this.parseRow(ws, row);
-      if (rowData.length === 0) {
+
+      if (!rowData) {
         emptyRowNumber++;
       } else {
         emptyRowNumber = 0;
+        sheetData = [...sheetData, ...rowData];
       }
-
-      sheetData = [...sheetData, ...rowData];
       row++;
     }
     return sheetData;

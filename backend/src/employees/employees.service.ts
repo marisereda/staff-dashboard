@@ -129,6 +129,26 @@ class EmployeesService {
       }
     }
   };
+
+  updateManyByInn = async (inns: string[], employeeData: Partial<Employee>): Promise<void> => {
+    await prisma.employee.updateMany({
+      where: { inn: { in: inns } },
+      data: employeeData,
+    });
+  };
+
+  updateAll = async (employeeData: Partial<Employee>): Promise<void> => {
+    await prisma.employee.updateMany({
+      data: employeeData,
+    });
+  };
+
+  getManyByInn = async (inns: string[]): Promise<Employee[]> => {
+    const employees = await prisma.employee.findMany({
+      where: { inn: { in: inns } },
+    });
+    return employees;
+  };
 }
 
 export const employeesService = new EmployeesService();
