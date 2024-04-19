@@ -1,6 +1,7 @@
 import { Divider, Stack, TablePagination } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import { EmployeesTable } from '../components';
+import { EmployeeForm } from '../components/EmployeeForm';
 import { EmployeesFilterBar } from '../components/EmployeesFilterBar';
 import { useEmployeesQuery } from '../queries';
 import { useEmployeesStore } from '../state';
@@ -50,6 +51,7 @@ export const EmployeesPage = () => {
           />
         </>
       )}
+      <EmployeeForm />
     </Stack>
   );
 };

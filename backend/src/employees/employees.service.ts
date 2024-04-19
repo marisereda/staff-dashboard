@@ -143,6 +143,16 @@ class EmployeesService {
     });
   };
 
+  updateOne = async (
+    id: string,
+    employeeData: Prisma.EmployeeUncheckedUpdateInput
+  ): Promise<void> => {
+    await prisma.employee.update({
+      where: { id },
+      data: employeeData,
+    });
+  };
+
   getManyByInn = async (inns: string[]): Promise<Employee[]> => {
     const employees = await prisma.employee.findMany({
       where: { inn: { in: inns } },

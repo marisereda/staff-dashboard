@@ -1,5 +1,7 @@
+import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { TableCell, TableRow, Typography } from '@mui/material';
+import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { useEmployeesStore } from '../state';
 import { Employee } from '../types';
 
 type EmployeesTableRowProps = {
@@ -19,6 +21,12 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
     position,
     positionBuh,
   } = employee;
+
+  const openForm = useEmployeesStore(s => s.openForm);
+
+  const handleEditEmployee = () => {
+    openForm(employee);
+  };
 
   return (
     <TableRow
@@ -74,6 +82,11 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
           {phone}
         </Typography>
+      </TableCell>
+      <TableCell>
+        <IconButton color="success" onClick={handleEditEmployee}>
+          <EditIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

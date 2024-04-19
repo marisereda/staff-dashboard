@@ -22,7 +22,6 @@ export const errorHandler = (
     res.status(404).json({ message: fromPrismaError(error) });
   } else {
     console.log('❌ Unknown error:', error);
-
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

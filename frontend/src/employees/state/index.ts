@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { SortOrder } from '../../common/types';
-import { EmployeesSortBy } from '../types';
+import { Employee, EmployeesSortBy } from '../types';
 
 type State = {
   search: string;
@@ -11,6 +11,8 @@ type State = {
   sortOrder: SortOrder;
   page: number;
   pageSize: number;
+  isFormOpen: boolean;
+  editableEmployee: Pick<Employee, 'inn' | 'name' | 'id' | 'isFop'> | null;
 };
 
 type Actions = {
@@ -21,6 +23,8 @@ type Actions = {
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
+  openForm: (editableEmployee: Pick<Employee, 'inn' | 'name' | 'id' | 'isFop'> | null) => void;
+  closeForm: () => void;
 };
 
 export const useEmployeesStore = create<State & Actions>(set => ({
@@ -32,6 +36,8 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   sortOrder: 'asc',
   page: 1,
   pageSize: 50,
+  isFormOpen: false,
+  editableEmployee: null,
 
   setSearch: search => set(() => ({ search })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
@@ -40,4 +46,6 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),
+  openForm: editableEmployee => set(() => ({ isFormOpen: true, editableEmployee })),
+  closeForm: () => set(() => ({ isFormOpen: false, editableEmployee: null })),
 }));

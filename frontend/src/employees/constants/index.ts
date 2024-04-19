@@ -37,4 +37,9 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
     secondaryLabel: null,
     sortBy: 'phone',
   },
+  {
+    primaryLabel: '',
+    secondaryLabel: null,
+    sortBy: null,
+  },
 ] as const;

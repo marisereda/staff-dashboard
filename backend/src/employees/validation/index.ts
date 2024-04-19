@@ -20,10 +20,26 @@ const EmployeeParamsSchema = z.object({
   id: z.string().cuid(),
 });
 
+const EmployeeBodySchema = z.object({
+  code1C: z.string().optional(),
+  inn: z.string().optional(),
+  name: z.string().optional(),
+  isFop: z.boolean().optional(),
+  phone: z.string().optional(),
+  position: z.string().optional(),
+  storeId: z.string().optional(),
+  employerId: z.string().optional(),
+});
+
 export const GetEmployeesSchema = z.object({
   query: EmployeesQuerySchema,
 });
 
 export const GetEmployeeByIdSchema = z.object({
   params: EmployeeParamsSchema,
+});
+
+export const UpdateEmployeeSchema = z.object({
+  params: EmployeeParamsSchema,
+  body: EmployeeBodySchema,
 });
