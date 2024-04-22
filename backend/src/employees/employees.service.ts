@@ -26,20 +26,13 @@ class EmployeesService {
       where.isFop = isFop;
     }
     if (employerId) {
-      where.employerId = employerId;
+      where.workPlacesBuh = { some: { employerId } };
     }
     if (storeId) {
-      where.storeId = storeId;
+      where.workPlaces = { some: { storeId } };
     }
 
-    let orderBy;
-    if (sortBy === 'employerName') {
-      orderBy = { employer: { name: sortOrder } };
-    } else if (sortBy === 'storeAddress') {
-      orderBy = { store: { address: sortOrder } };
-    } else {
-      orderBy = { [sortBy]: sortOrder };
-    }
+    const orderBy = { [sortBy]: sortOrder };
 
     const skip = pageSize * (page - 1);
     const take = pageSize;
@@ -49,7 +42,10 @@ class EmployeesService {
       orderBy,
       skip,
       take,
-      include: { employer: true, store: true },
+      include: {
+        workPlaces: { include: { store: true } },
+        workPlacesBuh: { include: { employer: true } },
+      },
     });
     const total = await prisma.employee.count({ where });
 
@@ -78,14 +74,17 @@ class EmployeesService {
     });
   };
 
-  create = async ({ store, ...data }: CreateEmployeeData): Promise<void> => {
+  create = async ({ store, position, ...data }: CreateEmployeeData): Promise<void> => {
     const foundStore = store ? await storesService.getByCode1C(store.code1C) : null;
 
-    await prisma.employee.create({
+    const newEmployee = await prisma.employee.create({
       data: {
         ...data,
-        storeId: foundStore?.id ?? null,
       },
+    });
+
+    await prisma.workplace.create({
+      data: { storeId: foundStore!.id, employeeId: newEmployee.id, positionHr: position },
     });
   };
 

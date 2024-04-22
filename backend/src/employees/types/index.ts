@@ -12,6 +12,7 @@ export type CreateEmployeeData = Prisma.EmployeeUncheckedCreateInput & {
   store?: {
     code1C: Store['code1C'];
   };
+  position: string;
 };
 export type UpdateEmployee = NonNullableKeys<z.infer<typeof UpdateEmployeeSchema>>;
 
