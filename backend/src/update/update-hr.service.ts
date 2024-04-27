@@ -1,42 +1,49 @@
+import { UpdateStatus } from '~/common/enums';
+import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
-import { HrReport, HrReportStore } from '~/data-parser/types';
-import { employeesService } from '~/employees/employees.service';
-import { storesService } from '~/stores/stores.service';
+import { HrReportEmployee, HrReportStore } from '~/data-parser/types';
 
 class UpdateHrService {
   updateFromReport = async (file: Buffer): Promise<void> => {
     const report = dataParserService.parseHrReport(file);
-    await this.updateStores(report);
-    await this.updateEmployees(report);
-  };
 
-  private updateEmployees = async (report: HrReport): Promise<void> => {
-    const codes1C = report.map(({ employee }) => employee.code1C);
-    const employees = report.map(({ employee, store }) => ({
-      ...employee,
-      store: { code1C: store.code1C },
-    }));
+    await prisma.$transaction(async tx => {
+      await tx.employeeStore.deleteMany();
 
-    await employeesService.markDeleteByCode1C(codes1C);
-    await employeesService.updateMany(employees);
-  };
+      const updatedStores = await Promise.all(
+        this.getStoresFromReport(report).map(store =>
+          tx.store.upsert({
+            where: { code1C: store.code1C },
+            update: { ...store, updateStatus: UpdateStatus.SUCCESS },
+            create: { ...store, updateStatus: UpdateStatus.NOT_FOUND },
+          })
+        )
+      );
 
-  private updateStores = async (report: HrReport): Promise<void> => {
-    const stores = this.getSoresFromReport(report);
-    const codes1C = stores.map(store => store.code1C);
-    await storesService.markDeleteByCode1C(codes1C);
-    await storesService.updateByCode1C(stores);
-  };
-
-  private getSoresFromReport = (report: HrReport): HrReportStore[] => {
-    const stores: HrReportStore[] = [];
-    report.forEach(({ store }) => {
-      const isStoreSaved = stores.find(({ code1C }) => store.code1C === code1C);
-      if (!isStoreSaved) {
-        stores.push(store);
-      }
+      await Promise.all(
+        report.map(({ store, position, code1C, inn, ...employeeData }) => {
+          const updatedStore = updatedStores.find(({ code1C }) => code1C === store.code1C);
+          const data = {
+            code1C: code1C || null,
+            inn: inn || null,
+            ...employeeData,
+            employeeStores: { create: { storeId: updatedStore!.id, positionHr: position } },
+          };
+          return tx.employee.upsert({
+            where: { code1C },
+            update: { ...data, updateStatus: UpdateStatus.SUCCESS },
+            create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
+          });
+        })
+      );
     });
-    return stores;
+  };
+
+  private getStoresFromReport = (report: HrReportEmployee[]): HrReportStore[] => {
+    return report.reduce((acc, { store }) => {
+      const isStoreSaved = acc.find(({ code1C }) => code1C === store.code1C);
+      return isStoreSaved ? acc : [...acc, store];
+    }, [] as HrReportStore[]);
   };
 }
 

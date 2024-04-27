@@ -1,6 +1,6 @@
 import { WorkSheet } from 'xlsx';
 import { isRowEmpty, isSheetValid, parseRow, readWorkSheet, rowLevel } from '../../common/utils';
-import { HrReport, HrReportEmployee, HrReportStore } from '../types';
+import { HrReportEmployee, HrReportStore } from '../types';
 
 const VALIDATION = {
   header: [
@@ -43,7 +43,7 @@ const PARSE = {
 };
 
 class HrParser {
-  parseReport = (file: Buffer): HrReport => {
+  parseReport = (file: Buffer): HrReportEmployee[] => {
     const ws = readWorkSheet(file);
 
     if (!isSheetValid(ws, VALIDATION.header)) throw new Error('Invalid sheet format');
@@ -51,10 +51,10 @@ class HrParser {
     return this.parseTable(ws);
   };
 
-  parseTable = (ws: WorkSheet): HrReport => {
+  parseTable = (ws: WorkSheet): HrReportEmployee[] => {
     let row = PARSE.startRow;
     let store: HrReportStore | null = null;
-    const result: HrReport = [];
+    const result: HrReportEmployee[] = [];
 
     while (!isRowEmpty(ws, row, 1, PARSE.colNumber)) {
       if (this.isStore(ws, row)) {
@@ -62,9 +62,11 @@ class HrParser {
       }
 
       if (this.isEmployee(ws, row)) {
-        if (!store) throw new Error('Invalid table format (employer or store not found)');
-        const employee = parseRow<HrReportEmployee>(ws, row, PARSE.employee);
-        result.push({ store, employee });
+        if (!store) {
+          throw new Error('Invalid table format (employer or store not found)');
+        }
+        const employee = parseRow(ws, row, PARSE.employee);
+        result.push({ ...employee, store });
       }
 
       row += 1;

@@ -1,12 +1,7 @@
 import { Prisma, Store } from '@prisma/client';
 import { z } from 'zod';
 import { NonNullableKeys } from '~/common/types';
-import {
-  EmployeesQuerySchema,
-  GetEmployeeByIdSchema,
-  GetEmployeesSchema,
-  UpdateEmployeeSchema,
-} from '../validation';
+import { GetEmployeeByIdSchema, GetEmployeesSchema, UpdateEmployeeSchema } from '../validation';
 
 export type CreateEmployeeData = Prisma.EmployeeUncheckedCreateInput & {
   store?: {
@@ -14,10 +9,9 @@ export type CreateEmployeeData = Prisma.EmployeeUncheckedCreateInput & {
   };
   position: string;
 };
-export type UpdateEmployee = NonNullableKeys<z.infer<typeof UpdateEmployeeSchema>>;
 
-export type EmployeesQuery = z.infer<typeof EmployeesQuerySchema>;
-export type EmployeeParams = z.infer<typeof GetEmployeesSchema>;
+export type GetEmployeesRequest = z.infer<typeof GetEmployeesSchema>;
+export type GetEmployeeByIdRequest = z.infer<typeof GetEmployeeByIdSchema>;
+export type UpdateEmployeeRequest = NonNullableKeys<z.infer<typeof UpdateEmployeeSchema>>;
 
-export type GetEmployees = z.infer<typeof GetEmployeesSchema>;
-export type GetEmployeeById = z.infer<typeof GetEmployeeByIdSchema>;
+export type GetEmployeesQuery = GetEmployeesRequest['query'];

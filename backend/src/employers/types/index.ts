@@ -1,20 +1,16 @@
 import { z } from 'zod';
 import {
-  CreateEmployerBodySchema,
   CreateEmployerSchema,
   EmployerByIdSchema,
-  EmployersQuerySchema,
   GetEmployersSchema,
-  UpdateEmployerBodySchema,
   UpdateEmployerSchema,
 } from '../validation';
 
+export type GetEmployersRequest = z.infer<typeof GetEmployersSchema>;
+export type EmployerByIdRequest = z.infer<typeof EmployerByIdSchema>;
+export type CreateEmployerRequest = z.infer<typeof CreateEmployerSchema>;
+export type UpdateEmployerRequest = z.infer<typeof UpdateEmployerSchema>;
 
-export type EmployersQuery = z.infer<typeof EmployersQuerySchema>;
-export type CreateEmployerBody = z.infer<typeof CreateEmployerBodySchema>;
-export type UpdateEmployerBody = z.infer<typeof UpdateEmployerBodySchema>;
-
-export type GetEmployers = z.infer<typeof GetEmployersSchema>;
-export type EmployerById = z.infer<typeof EmployerByIdSchema>;
-export type CreateEmployer = z.infer<typeof CreateEmployerSchema>;
-export type UpdateEmployer = z.infer<typeof UpdateEmployerSchema>;
+export type GetEmployersQuery = GetEmployersRequest['query'];
+export type CreateEmployerData = CreateEmployerRequest['body'];
+export type UpdateEmployerData = UpdateEmployerRequest['body'];

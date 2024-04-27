@@ -1,14 +1,14 @@
 import { WorkSheet } from 'xlsx';
 import { cell, readAllWorkSheets } from '~/common/utils';
-import { FopReport } from '../types/fop-report.types';
+import { FopReportEmployee } from '../types/fop-report.types';
 
 const EMPTY_NUMBER = 10;
 
 class FopParser {
-  parseReport = (file: Buffer): FopReport[] => {
+  parseReport = (file: Buffer): FopReportEmployee[] => {
     const ws: { [sheet: string]: WorkSheet } = readAllWorkSheets(file);
 
-    const parseWorkBookResult = Object.keys(ws).reduce((acc: FopReport[], sheet) => {
+    const parseWorkBookResult = Object.keys(ws).reduce((acc: FopReportEmployee[], sheet) => {
       const parseSheetResult = this.parseWorkSheet(ws[sheet]!);
       return [...acc, ...parseSheetResult];
     }, []);
@@ -16,7 +16,7 @@ class FopParser {
     return parseWorkBookResult;
   };
 
-  parseCell = (cellContent: string): FopReport | null => {
+  parseCell = (cellContent: string): FopReportEmployee | null => {
     const regex = /\b\d{10}\b/;
     const match = cellContent.match(regex);
     if (!match) {
@@ -29,7 +29,7 @@ class FopParser {
     return { inn, name };
   };
 
-  parseRow = (ws: WorkSheet, r: number): FopReport[] | null => {
+  parseRow = (ws: WorkSheet, r: number): FopReportEmployee[] | null => {
     let colNum = 1;
     const rowData = [];
     let emptyCellNumber = 0;
@@ -58,10 +58,10 @@ class FopParser {
     return isRowEmpty ? null : rowData;
   };
 
-  parseWorkSheet = (ws: WorkSheet): FopReport[] => {
+  parseWorkSheet = (ws: WorkSheet): FopReportEmployee[] => {
     let row = 1;
     let emptyRowNumber = 0;
-    let sheetData: FopReport[] = [];
+    let sheetData: FopReportEmployee[] = [];
     while (row) {
       if (emptyRowNumber > EMPTY_NUMBER) {
         break;

@@ -9,6 +9,4 @@ employeesRouter.get('/', validator(GetEmployeesSchema), handler(getAll));
 
 employeesRouter.get('/:id', validator(GetEmployeeByIdSchema), handler(getById));
 
-employeesRouter.get('/:id/changes', () => {});
-
 employeesRouter.patch('/:id', validator(UpdateEmployeeSchema), handler(update));

@@ -55,7 +55,7 @@ export const isRowEmpty = (ws: WorkSheet, r: number, startC: number, colNum = 10
     .every((_, index) => !cell(ws, r, startC + index));
 };
 
-export const parseRow = <T extends Record<string, unknown>>(
+export const parseRow = <T extends Record<keyof T, string>>(
   ws: WorkSheet,
   r: number,
   parseOptions: Record<keyof T, number>

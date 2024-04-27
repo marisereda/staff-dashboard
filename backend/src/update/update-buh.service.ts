@@ -1,6 +1,6 @@
+import { UpdateStatus } from '~/common/enums';
+import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
-import { employeesService } from '~/employees/employees.service';
-import { employersService } from '~/employers/employers.service';
 
 class UpdateBuhService {
   updateFromReport = async (file: Buffer, employerId: string): Promise<void> => {
@@ -9,31 +9,33 @@ class UpdateBuhService {
       throw new Error('Invalid report structure');
     }
 
-    const storeAddresses = report.map(({ employee }) => employee.storeAddressBuh);
-
-    const stores: string[] = [];
-    if (storeAddresses[0]) {
-      stores.push(storeAddresses[0]);
-
-      storeAddresses.forEach(address => {
-        if (!stores.includes(address)) {
-          stores.push(address);
-        }
+    await prisma.$transaction(async tx => {
+      await tx.employeeEmployer.deleteMany({
+        where: { employerId },
       });
-    }
-    const storeAddressesBuh = stores.join('\n');
 
-    await employersService.update(employerId, {
-      name: report[0]!.employer.name,
-      storeAddressesBuh,
+      await tx.employer.update({
+        where: { id: employerId },
+        data: report[0]!.employer,
+      });
+
+      await Promise.all(
+        report.map(({ employer: _, store, position, inn, ...employeeData }) => {
+          const data = {
+            inn: inn || null,
+            ...employeeData,
+            employeeEmployers: {
+              create: { employerId, positionBuh: position, storeAddressBuh: store.address },
+            },
+          };
+          return tx.employee.upsert({
+            where: { inn },
+            update: { ...data, updateStatus: UpdateStatus.SUCCESS },
+            create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
+          });
+        })
+      );
     });
-
-    const employees = report.map(({ employee }) => ({
-      ...employee,
-      employerId,
-    }));
-
-    await employeesService.updateMany(employees);
   };
 }
 

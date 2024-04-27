@@ -1,6 +1,4 @@
-import { Employee } from '@prisma/client';
-
-export type FopReport = {
+export type FopReportEmployee = {
   inn: string;
   name: string;
 };

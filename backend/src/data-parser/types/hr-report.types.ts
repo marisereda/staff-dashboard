@@ -1,16 +1,13 @@
-import { Store } from '@prisma/client';
-
-export type HrReportStore = Pick<Store, 'address' | 'code1C'>;
-
-export type HrReportEmployee = {
-  inn: string;
-  name: string;
-  position: string;
+export type HrReportStore = {
   code1C: string;
-  phone: string;
+  address: string;
 };
 
-export type HrReport = {
+export type HrReportEmployee = {
+  code1C: string;
+  inn: string;
+  name: string;
+  phone: string;
+  position: string;
   store: HrReportStore;
-  employee: HrReportEmployee;
-}[];
+};

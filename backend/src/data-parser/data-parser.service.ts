@@ -1,19 +1,19 @@
 import { buhParser } from './parsers/buh-parser';
 import { fopParser } from './parsers/fop-parser';
 import { hrParser } from './parsers/hr-parser';
-import { BuhReport, HrReport } from './types';
-import { FopReport } from './types/fop-report.types';
+import { BuhReportEmployee, HrReportEmployee } from './types';
+import { FopReportEmployee } from './types/fop-report.types';
 
 class DataParserService {
-  parseHrReport = (file: Buffer): HrReport => {
+  parseHrReport = (file: Buffer): HrReportEmployee[] => {
     return hrParser.parseReport(file);
   };
 
-  parseBuhReport = (file: Buffer): BuhReport => {
+  parseBuhReport = (file: Buffer): BuhReportEmployee[] => {
     return buhParser.parseReport(file);
   };
 
-  parseFopReport = (file: Buffer): FopReport[] => {
+  parseFopReport = (file: Buffer): FopReportEmployee[] => {
     return fopParser.parseReport(file);
   };
 }

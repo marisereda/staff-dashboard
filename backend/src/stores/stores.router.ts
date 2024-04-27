@@ -6,11 +6,4 @@ import { GetStoresSchema, UpdateStoreSchema } from './validation';
 export const storesRouter = Router();
 
 storesRouter.get('/', validator(GetStoresSchema), handler(getAll));
-storesRouter.patch(
-  '/:id',
-  (req, res, next) => {
-    next();
-  },
-  validator(UpdateStoreSchema),
-  handler(updateById)
-);
+storesRouter.patch('/:id', validator(UpdateStoreSchema), handler(updateById));

@@ -1,10 +1,15 @@
-export type BuhReportEmployer = { name: string };
+export type BuhReportEmployer = {
+  name: string;
+};
 
-export type BuhReportStore = { storeAddressBuh: string };
+export type BuhReportStore = {
+  address: string;
+};
 
-export type BuhReportEmployee = { inn: string; name: string; positionBuh: string };
-
-export type BuhReport = {
+export type BuhReportEmployee = {
+  inn: string;
+  name: string;
+  position: string;
   employer: BuhReportEmployer;
-  employee: BuhReportEmployee & BuhReportStore;
-}[];
+  store: BuhReportStore;
+};

@@ -1,42 +1,37 @@
 import { z } from 'zod';
 
-export const EmployersQuerySchema = z.object({
-  q: z.string().optional(),
-  storeId: z.string().cuid().optional(),
-  employerId: z.string().cuid().optional(),
-  sortBy: z.enum(['inn', 'name']).default('name').optional(),
-  sortOrder: z.enum(['asc', 'desc']).default('asc').optional(),
-  page: z.coerce.number().int().gte(1).default(1).optional(),
-  pageSize: z.coerce.number().int().gte(1).lte(100).optional(),
-});
-
-const EmployerParamsSchema = z.object({
-  id: z.string().cuid(),
-});
-
-export const CreateEmployerBodySchema = z.object({
-  inn: z.string().min(8).max(10).regex(/^\d+$/),
-  name: z.string(),
-  isSingleTax: z.boolean().default(false),
-  stores: z.string().cuid().array().optional(),
-  storeAddressesBuh: z.string().optional(),
-});
-
-export const UpdateEmployerBodySchema = CreateEmployerBodySchema;
-
 export const GetEmployersSchema = z.object({
-  query: EmployersQuerySchema,
+  query: z.object({
+    q: z.string().optional(),
+    sortBy: z.enum(['inn', 'name']).default('name').optional(),
+    sortOrder: z.enum(['asc', 'desc']).default('asc').optional(),
+    page: z.coerce.number().int().gte(1).default(1).optional(),
+    pageSize: z.coerce.number().int().gte(1).lte(100).optional(),
+  }),
 });
 
 export const EmployerByIdSchema = z.object({
-  params: EmployerParamsSchema,
+  params: z.object({
+    id: z.string().cuid(),
+  }),
 });
 
 export const CreateEmployerSchema = z.object({
-  body: CreateEmployerBodySchema,
+  body: z.object({
+    inn: z.string().min(8).max(10).regex(/^\d+$/),
+    name: z.string(),
+    isSingleTax: z.boolean().default(false),
+    storeAddressesBuh: z.string().optional(),
+  }),
 });
 
 export const UpdateEmployerSchema = z.object({
-  params: EmployerParamsSchema,
-  body: UpdateEmployerBodySchema,
+  params: z.object({
+    id: z.string().cuid(),
+  }),
+  body: z.object({
+    inn: z.string().min(8).max(10).regex(/^\d+$/),
+    name: z.string(),
+    isSingleTax: z.boolean().default(false),
+  }),
 });

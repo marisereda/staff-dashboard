@@ -1,10 +1,8 @@
-import { Store } from '@prisma/client';
 import { z } from 'zod';
-import { GetStoresSchema, StoresQuerySchema, UpdateStoreSchema } from '../validation';
+import { GetStoresSchema, UpdateStoreSchema } from '../validation';
 
-export type CreateStoreData = Pick<Store, 'code1C' | 'address'>;
-export type UpdateStoreData = Pick<Store, 'code1C' | 'id' | 'address' | 'checkoutNumber'>;
+export type GetStoresRequest = z.infer<typeof GetStoresSchema>;
+export type UpdateStoreRequest = z.infer<typeof UpdateStoreSchema>;
 
-export type StoresQuery = z.infer<typeof StoresQuerySchema>;
-export type GetStores = z.infer<typeof GetStoresSchema>;
-export type UpdateStore = z.infer<typeof UpdateStoreSchema>;
+export type GetStoresQuery = GetStoresRequest['query'];
+export type UpdateStoreData = UpdateStoreRequest['body'];
