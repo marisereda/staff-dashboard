@@ -12,11 +12,12 @@ class StoresService {
     pageSize,
   }: GetStoresQuery): Promise<PageData<Store[]>> => {
     const where: Prisma.StoreWhereInput = {};
+    const orderBy = { [sortBy]: sortOrder };
+
     if (q) {
       where.address = { contains: q };
     }
 
-    const orderBy = { [sortBy]: sortOrder };
     const pagination = pageSize
       ? {
           skip: pageSize * (page - 1),

@@ -3,12 +3,12 @@ import express, { json } from 'express';
 import morgan from 'morgan';
 import { errorHandler, notFound } from './common/middlewares';
 import { config } from './config';
-import { employeesRouter } from './employees';
-import { employersRouter } from './employers';
-import { notesRouter } from './notes';
-import { reportRouter } from './report';
-import { storesRouter } from './stores';
-import { updateRouter } from './update';
+import { employeesRouter } from './employees/employees.router';
+import { employersRouter } from './employers/employers.router';
+import { notesRouter } from './notes/notes.router';
+import { reportRouter } from './report/report.router';
+import { storesRouter } from './stores/stores.router';
+import { updateRouter } from './update/update.router';
 
 const app = express();
 

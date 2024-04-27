@@ -1,6 +1,6 @@
 import XLSX from 'xlsx';
+import { HttpError } from '~/common/errors';
 import { prisma } from '~/common/services';
-import { HttpError } from '~/common/utils';
 import { dataParserService } from '~/data-parser/data-parser.service';
 import { FopReportEmployee } from '~/data-parser/types/fop-report.types';
 

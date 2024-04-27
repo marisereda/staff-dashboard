@@ -1,5 +1,5 @@
 import { WorkSheet } from 'xlsx';
-import { cell, readAllWorkSheets } from '~/common/utils';
+import { cell, readAllWorkSheets } from '~/common/utils/xlsx';
 import { FopReportEmployee } from '../types/fop-report.types';
 
 const EMPTY_NUMBER = 10;

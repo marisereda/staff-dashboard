@@ -2,18 +2,17 @@ import { Employer } from '@prisma/client';
 import { omit } from 'ramda';
 import XLSX from 'xlsx';
 import { prisma } from '~/common/services';
-import { convertBigIntToInt } from '~/common/utils';
+import { convertBigIntToInt } from '~/common/utils/mappers';
 import { getInitials } from '~/common/utils/string-utils';
 import { POSITION_CATEGORIES } from './constants';
 import {
   EmployeesByEmployers,
-  employeesByEmployersQuery,
-} from './sql-queries/employeesByEmployersQuery';
-import {
   EmployeesByPosition,
+  ResultsByStore,
+  employeesByEmployersQuery,
   employeesByPositionQuery,
-} from './sql-queries/employeesByPositionQuery';
-import { ResultsByStore, resultsByStoresSQLQuery } from './sql-queries/resultsByStoresQuery';
+  resultsByStoresSQLQuery,
+} from './sql-queries';
 
 class Report {
   async getReport(): Promise<Buffer> {
@@ -23,6 +22,7 @@ class Report {
 
     XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Dates');
+
     return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
   }
 

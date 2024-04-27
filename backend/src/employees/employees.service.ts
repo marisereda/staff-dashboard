@@ -15,6 +15,10 @@ class EmployeesService {
     pageSize,
   }: GetEmployeesQuery): Promise<PageData<Employee[]>> => {
     const where: Prisma.EmployeeWhereInput = {};
+    const orderBy = { [sortBy]: sortOrder };
+    const skip = pageSize * (page - 1);
+    const take = pageSize;
+
     if (q) {
       const conditions = ['inn', 'name', 'phone'].map(item => ({
         [item]: { contains: q },
@@ -30,10 +34,6 @@ class EmployeesService {
     if (storeId) {
       where.employeeStores = { some: { storeId } };
     }
-
-    const orderBy = { [sortBy]: sortOrder };
-    const skip = pageSize * (page - 1);
-    const take = pageSize;
 
     const data = await prisma.employee.findMany({
       where,

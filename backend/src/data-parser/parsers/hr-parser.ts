@@ -1,5 +1,11 @@
 import { WorkSheet } from 'xlsx';
-import { isRowEmpty, isSheetValid, parseRow, readWorkSheet, rowLevel } from '../../common/utils';
+import {
+  isRowEmpty,
+  isSheetValid,
+  parseRow,
+  readWorkSheet,
+  rowLevel,
+} from '../../common/utils/xlsx';
 import { HrReportEmployee, HrReportStore } from '../types';
 
 const VALIDATION = {

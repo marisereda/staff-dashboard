@@ -1,5 +1,5 @@
 import { WorkSheet } from 'xlsx';
-import { isRowEmpty, isSheetValid, parseRow, readWorkSheet, rowLevel } from '../../common/utils';
+import { isRowEmpty, isSheetValid, parseRow, readWorkSheet, rowLevel } from '~/common/utils/xlsx';
 import { BuhReportEmployee, BuhReportEmployer, BuhReportStore } from '../types';
 
 const VALIDATION = {

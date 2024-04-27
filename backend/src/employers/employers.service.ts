@@ -12,6 +12,8 @@ class EmployersService {
     pageSize,
   }: GetEmployersQuery): Promise<PageData<Employer[]>> => {
     const where: Prisma.EmployerWhereInput = {};
+    const orderBy = { [sortBy]: sortOrder };
+
     if (q) {
       const conditions = ['inn', 'name'].map(item => ({
         [item]: { contains: q },
@@ -19,7 +21,6 @@ class EmployersService {
       where.OR = conditions;
     }
 
-    const orderBy = { [sortBy]: sortOrder };
     const pageParams = pageSize
       ? {
           skip: pageSize * (page - 1),

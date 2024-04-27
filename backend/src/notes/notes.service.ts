@@ -1,17 +1,20 @@
 import { Note, Prisma } from '@prisma/client';
+import R from 'ramda';
 import { prisma } from '~/common/services/prisma.service';
-import { PageData } from '~/common/types';
-import { CreateNoteBody, NotesQuery, UpdateNote } from './types';
+import { NonNullableKeys, PageData } from '~/common/types';
+import { CreateNoteData, GetNotesQuery, UpdateNoteData } from './types';
 
 class NotesService {
   getAll = async ({
     q,
     ownerId,
+    isDone,
+    isImportant,
     sortBy,
     sortOrder,
     page,
     pageSize,
-  }: NotesQuery): Promise<PageData<Note[]>> => {
+  }: GetNotesQuery): Promise<PageData<Note[]>> => {
     const where: Prisma.NoteWhereInput = {};
     const orderBy = { [sortBy]: sortOrder };
     const skip = pageSize * (page - 1);
@@ -23,61 +26,51 @@ class NotesService {
       }));
       where.OR = conditions;
     }
-    // if (isDone !== undefined) where.isDone = isDone;
-    // if (isImportant) where.isImportant = isImportant;
-    if (ownerId) where.ownerId = ownerId;
+    if (isDone !== undefined) {
+      where.isDone = isDone;
+    }
+    if (isImportant) {
+      where.isImportant = isImportant;
+    }
+    if (ownerId) {
+      where.ownerId = ownerId;
+    }
 
-    const data = await prisma.note.findMany({ where, orderBy, skip, take });
-    const total = await prisma.note.count({ where });
+    const [data, total] = await prisma.$transaction([
+      prisma.note.findMany({ where, orderBy, skip, take }),
+      prisma.note.count({ where }),
+    ]);
 
     return { data, page, pageSize, total };
   };
 
-  getById = async (id: string): Promise<Note> => {
-    const note = await prisma.note.findUniqueOrThrow({ where: { id } });
-    return note;
+  getById = (id: string): Promise<Note> => {
+    return prisma.note.findUniqueOrThrow({ where: { id } });
   };
 
   create = async ({
-    // ownerId,
-    // ownerType,
-    title,
+    ownerType: _,
+    ownerId,
     content,
-    isDone,
-    isImportant,
-  }: CreateNoteBody): Promise<Note | null> => {
+    ...data
+  }: CreateNoteData): Promise<Note | null> => {
     const note = await prisma.note.create({
       data: {
-        title,
+        ownerId: ownerId ?? null,
         content: content ?? null,
-        isDone,
-        isImportant,
+        ...data,
       },
     });
     return note;
   };
 
-  update = async ({ params, body }: UpdateNote): Promise<Note | null> => {
-    if (!body) {
-      return this.getById(params.id);
-    }
-    const note = await prisma.note.update({
-      where: { id: params.id },
-      data: {
-        title: body.title,
-        content: body.content ?? null,
-        isDone: body.isDone,
-        isImportant: body.isImportant,
-      },
-    });
-    return note;
+  update = (id: string, updateNoteData: UpdateNoteData): Promise<Note | null> => {
+    const data = R.reject(v => v === undefined, updateNoteData) as NonNullableKeys<UpdateNoteData>;
+    return prisma.note.update({ where: { id }, data });
   };
 
-  deleteOne = async (id: string): Promise<Note | null> => {
-    const note = await prisma.note.delete({
-      where: { id },
-    });
-    return note;
+  deleteOne = (id: string): Promise<Note | null> => {
+    return prisma.note.delete({ where: { id } });
   };
 }
 
