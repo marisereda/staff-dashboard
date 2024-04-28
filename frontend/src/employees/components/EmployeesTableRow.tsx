@@ -2,25 +2,32 @@ import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { useEmployeesStore } from '../state';
-import { Employee } from '../types';
+import { EmployeeEmployer, EmployeeResponse, EmployeeStore } from '../types';
 
 type EmployeesTableRowProps = {
-  employee: Employee;
+  employee: EmployeeResponse;
 };
 
 export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
-  const {
-    name,
-    isFop,
-    inn,
-    employer,
-    code1C,
-    store,
-    storeAddressBuh,
-    phone,
-    position,
-    positionBuh,
-  } = employee;
+  const { name, isFop, inn, code1C, phone, employeeStores, employeeEmployers } = employee;
+
+  const positionsHr = employeeStores?.length
+    ? employeeStores.map((item: EmployeeStore) => item.positionHr)
+    : ['-'];
+  const positionsBuh = employeeEmployers?.length
+    ? employeeEmployers.map((item: EmployeeEmployer) => item.positionBuh)
+    : ['-'];
+  const addressesHr = employeeStores?.length
+    ? employeeStores.map((item: EmployeeStore) => item.store.address)
+    : ['-'];
+  const employers = employeeEmployers?.length
+    ? employeeEmployers.map((item: EmployeeEmployer) => item.employer.name)
+    : ['-'];
+  const addressesBuh = employeeEmployers?.length
+    ? employeeEmployers.map(item => item.storeAddressBuh)
+    : ['-'];
+
+
 
   const openForm = useEmployeesStore(s => s.openForm);
 
@@ -55,26 +62,38 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
           {code1C ?? '-'}
         </Typography>
       </TableCell>
+
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {position ?? '-'}
+          {positionsHr.map((positionHr: string) => (
+            <p>{positionHr}</p>
+          ))}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {positionBuh ?? '-'}
+          {positionsBuh.map((positionBuh: string) => (
+            <p>{positionBuh}</p>
+          ))}
         </Typography>
       </TableCell>
+
       <TableCell align="left">
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {employer?.name}
+          {employers.map((employer: string) => (
+            <p>{employer}</p>
+          ))}
         </Typography>
       </TableCell>
 
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {store?.address ?? '-'}
+          {addressesHr.map((address: string) => (
+            <p>{address}</p>
+          ))}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {storeAddressBuh ?? '-'}
+          {addressesBuh.map((addressBuh: string) => (
+            <p>{addressBuh}</p>
+          ))}
         </Typography>
       </TableCell>
 

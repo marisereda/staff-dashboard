@@ -2,11 +2,11 @@ import { Table, TableBody } from '@mui/material';
 import { TableHead } from '../../common/components/TableHead';
 import { EMPLOYEES_HEAD_COLUMNS } from '../constants';
 import { useEmployeesStore } from '../state';
-import { Employee } from '../types';
+import { EmployeeResponse } from '../types';
 import { EmployeesTableRow } from './EmployeesTableRow';
 
 type EmployeesTableProps = {
-  empoloyees: Employee[];
+  empoloyees: EmployeeResponse[];
 };
 
 export const EmployeesTable = ({ empoloyees }: EmployeesTableProps) => {

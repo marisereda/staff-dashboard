@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../common/api';
 import { PageData } from '../../common/types';
-import { Employee } from '../types';
+import { EmployeeResponse } from '../types';
 
 export type SearchParams = {
   q: string;
@@ -20,20 +20,23 @@ const getEmployees = async ({
   employerId,
   ...restSearchParams
 }: SearchParams) => {
-  const urlSerchParams: Record<string, unknown> = { ...restSearchParams };
+  const urlSearchParams: Record<string, unknown> = { ...restSearchParams };
 
   if (employerId) {
-    urlSerchParams.employerId = employerId;
+    urlSearchParams.employerId = employerId;
   }
 
   if (storeId) {
-    urlSerchParams.storeId = storeId;
+    urlSearchParams.storeId = storeId;
   }
   if (fopFilter !== 'all') {
-    urlSerchParams.isFop = fopFilter;
+    urlSearchParams.isFop = fopFilter;
   }
 
-  const response = await api.get<PageData<Employee[]>>('employees', { params: urlSerchParams });
+  const response = await api.get<PageData<EmployeeResponse[]>>('employees', {
+    params: urlSearchParams,
+  });
+
   return response.data;
 };
 

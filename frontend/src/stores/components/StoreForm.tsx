@@ -29,6 +29,7 @@ export function StoreForm() {
     defaultValues: {
       address: '',
       checkoutNumber: 0,
+      placesAmount: 0,
     },
     resolver: zodResolver(inputSchema),
   });
@@ -36,6 +37,7 @@ export function StoreForm() {
   useEffect(() => {
     setValue('address', store?.address ?? '');
     setValue('checkoutNumber', store?.checkoutNumber ?? 0);
+    setValue('placesAmount', store?.placesAmount ?? 0);
   }, [store, setValue]);
 
   const onSubmit = (data: Inputs) => {
@@ -86,6 +88,12 @@ export function StoreForm() {
             <FormTextField
               label="Кількість кас"
               name="checkoutNumber"
+              control={control}
+              sx={{ minWidth: '500px' }}
+            />
+            <FormTextField
+              label="Кількість місць для працевлаштування"
+              name="placesAmount"
               control={control}
               sx={{ minWidth: '500px' }}
             />

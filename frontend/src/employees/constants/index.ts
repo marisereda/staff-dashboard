@@ -20,12 +20,12 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
   {
     primaryLabel: 'Посада HR',
     secondaryLabel: 'Посада бух.',
-    sortBy: 'position',
+    sortBy: null,
   },
   {
     primaryLabel: 'Роботодавець',
     secondaryLabel: null,
-    sortBy: 'employerName',
+    sortBy: null,
   },
   {
     primaryLabel: 'Магазин',

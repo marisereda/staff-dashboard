@@ -5,7 +5,8 @@ export type Store = {
   code1C: string;
   address: string;
   checkoutNumber: number;
-  markDelete: boolean;
+  placesAmount: number;
+  updateStatus: string;
 
   createdAt: Date;
   updatedAt: Date;

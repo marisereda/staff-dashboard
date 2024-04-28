@@ -11,7 +11,7 @@ type State = {
   page: number;
   pageSize: number;
   isFormOpen: boolean;
-  store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C'> | null;
+  store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount'> | null;
 };
 
 type Actions = {
@@ -21,7 +21,9 @@ type Actions = {
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
-  openForm: (store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C'> | null) => void;
+  openForm: (
+    store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount'> | null
+  ) => void;
   closeForm: () => void;
 };
 
