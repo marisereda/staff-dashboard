@@ -37,7 +37,7 @@ export const EmployeesPage = () => {
       <EmployeesFilterBar />
       {employeesPage && (
         <>
-          <EmployeesTable empoloyees={employeesPage.data} />
+          <EmployeesTable employees={employeesPage.data} />
           <Divider component="div" />
           <TablePagination
             component="div"

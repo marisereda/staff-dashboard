@@ -14,7 +14,6 @@ export const StoresPage = () => {
   const sortOrder = useStoresStore(s => s.sortOrder);
   const page = useStoresStore(s => s.page);
   const pageSize = useStoresStore(s => s.pageSize);
-
   const setPage = useStoresStore(s => s.setPage);
   const setPageSize = useStoresStore(s => s.setPageSize);
 

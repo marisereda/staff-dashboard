@@ -11,7 +11,10 @@ type State = {
   page: number;
   pageSize: number;
   isFormOpen: boolean;
-  store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount'> | null;
+  store: Pick<
+    Store,
+    'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount' | 'employers'
+  > | null;
 };
 
 type Actions = {
@@ -22,7 +25,10 @@ type Actions = {
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
   openForm: (
-    store: Pick<Store, 'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount'> | null
+    store: Pick<
+      Store,
+      'address' | 'checkoutNumber' | 'id' | 'code1C' | 'placesAmount' | 'employers'
+    > | null
   ) => void;
   closeForm: () => void;
 };

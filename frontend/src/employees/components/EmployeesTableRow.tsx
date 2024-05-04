@@ -27,8 +27,6 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
     ? employeeEmployers.map(item => item.storeAddressBuh)
     : ['-'];
 
-
-
   const openForm = useEmployeesStore(s => s.openForm);
 
   const handleEditEmployee = () => {
@@ -65,34 +63,34 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {positionsHr.map((positionHr: string) => (
-            <p>{positionHr}</p>
+          {positionsHr.map((positionHr, i) => (
+            <p key={i}>{positionHr}</p>
           ))}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {positionsBuh.map((positionBuh: string) => (
-            <p>{positionBuh}</p>
+          {positionsBuh.map((positionBuh, i) => (
+            <p key={i}>{positionBuh}</p>
           ))}
         </Typography>
       </TableCell>
 
       <TableCell align="left">
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {employers.map((employer: string) => (
-            <p>{employer}</p>
+          {employers.map((employer, i) => (
+            <p key={i}>{employer}</p>
           ))}
         </Typography>
       </TableCell>
 
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {addressesHr.map((address: string) => (
-            <p>{address}</p>
+          {addressesHr.map((address, i) => (
+            <p key={i}>{address}</p>
           ))}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {addressesBuh.map((addressBuh: string) => (
-            <p>{addressBuh}</p>
+          {addressesBuh.map((addressBuh, i) => (
+            <p key={i}>{addressBuh}</p>
           ))}
         </Typography>
       </TableCell>

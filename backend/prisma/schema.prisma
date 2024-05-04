@@ -35,6 +35,7 @@ model Employer {
   updatedAt DateTime @updatedAt
 
   employerEmployees EmployeeEmployer[]
+  stores            Store[]
   notes             Note[]
 }
 
@@ -50,6 +51,7 @@ model Store {
   updatedAt DateTime @updatedAt
 
   storeEmployees EmployeeStore[]
+  employers      Employer[]
   notes          Note[]
 }
 

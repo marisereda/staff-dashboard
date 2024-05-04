@@ -29,14 +29,28 @@ class StoresService {
       where,
       orderBy,
       ...pagination,
+      include: { employers: true },
     });
     const total = await prisma.store.count({ where });
 
     return { data, page, pageSize, total };
   };
 
-  updateOne = (id: string, data: UpdateStoreData): Promise<Store> => {
-    return prisma.store.update({ where: { id }, data });
+  updateOne = async (id: string, { employers, ...data }: UpdateStoreData): Promise<Store> => {
+    const employersIds = employers.map(id => ({ id }));
+
+    const [_, updatedStore] = await prisma.$transaction([
+      prisma.store.update({
+        where: { id },
+        data: { employers: { set: [] } },
+      }),
+      prisma.store.update({
+        where: { id },
+        data: { ...data, employers: { connect: employersIds } },
+      }),
+    ]);
+
+    return updatedStore;
   };
 }
 

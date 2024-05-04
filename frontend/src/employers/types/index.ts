@@ -1,13 +1,11 @@
 import { Store } from '../../stores/types';
 
-export type Employer = {
+export type EmployerResponse = {
   id: string;
   inn: string;
   name: string;
   isSingleTax: boolean;
-  markDelete: boolean;
-  storeAddressesBuh: string;
-
+  updateStatus: string;
   stores?: Store[];
 
   createdAt: Date;

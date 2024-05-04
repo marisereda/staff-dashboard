@@ -13,9 +13,9 @@ export const GetStoresSchema = z.object({
 export const UpdateStoreSchema = z.object({
   params: z.object({ id: z.string().cuid() }),
   body: z.object({
-    code1C: z.string(),
     address: z.string(),
     checkoutNumber: z.coerce.number().int().gte(1),
     placesAmount: z.coerce.number().int().gte(0),
+    employers: z.array(z.string().cuid()),
   }),
 });

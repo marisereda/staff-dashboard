@@ -2,17 +2,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormTextField } from '../../common/components/FormTextField';
-
+import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useUpdateStore } from '../queries/useUpdateStore';
 import { useStoresStore } from '../state';
 import { Inputs, inputSchema } from '../validation/storeFormSchema';
@@ -21,9 +29,25 @@ export function StoreForm() {
   const isFormOpen = useStoresStore(s => s.isFormOpen);
   const store = useStoresStore(s => s.store);
 
-  const closeForm = useStoresStore(s => s.closeForm);
+  const { data: employersPage } = useEmployersQuery({
+    q: '',
+    sortBy: 'name',
+    pageSize: 100,
+    sortOrder: 'asc',
+    page: 1,
+  });
+  const employers = employersPage?.data ?? [];
 
+  const closeForm = useStoresStore(s => s.closeForm);
   const { mutate: update, isPending } = useUpdateStore();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (store?.employers?.length) {
+      const initialSelectedIds = store?.employers.map(employer => employer.id);
+      setSelectedIds(initialSelectedIds);
+    }
+  }, [store?.employers]);
 
   const { control, handleSubmit, reset, setValue } = useForm<Inputs>({
     defaultValues: {
@@ -40,17 +64,23 @@ export function StoreForm() {
     setValue('placesAmount', store?.placesAmount ?? 0);
   }, [store, setValue]);
 
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const value = event.target.value;
+    const ids = typeof value === 'string' ? value.split(', ') : value;
+    setSelectedIds(ids);
+  };
+
   const onSubmit = (data: Inputs) => {
     if (store) {
       update(
-        { ...store, ...data },
+        { id: store.id, ...data, employers: selectedIds },
         {
           onSuccess: () => {
             handleClose();
             reset();
           },
           onError: error => {
-            console.log('⚠️ error:', error.message);
+            console.log('error:', error.message);
           },
         }
       );
@@ -97,13 +127,36 @@ export function StoreForm() {
               control={control}
               sx={{ minWidth: '500px' }}
             />
+            <FormControl>
+              <InputLabel id="demo-multiple-checkbox-label">Роботодавець</InputLabel>
+              <Select
+                multiple
+                value={selectedIds}
+                onChange={handleChange}
+                input={<OutlinedInput label="Роботодавець" />}
+                renderValue={selected =>
+                  employers
+                    .filter(({ id }) => selected.includes(id))
+                    .map(({ name }) => name)
+                    .join(', ')
+                }
+              >
+                {employers.map(employer => (
+                  <MenuItem key={employer.id} value={employer.id}>
+                    <Checkbox checked={selectedIds.includes(employer.id)} />
+                    <ListItemText primary={employer.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button
             disabled={isPending}
             onClick={() => {
-              handleClose(), reset();
+              handleClose();
+              reset();
             }}
           >
             Скасувати

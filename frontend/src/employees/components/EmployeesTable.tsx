@@ -6,10 +6,10 @@ import { EmployeeResponse } from '../types';
 import { EmployeesTableRow } from './EmployeesTableRow';
 
 type EmployeesTableProps = {
-  empoloyees: EmployeeResponse[];
+  employees: EmployeeResponse[];
 };
 
-export const EmployeesTable = ({ empoloyees }: EmployeesTableProps) => {
+export const EmployeesTable = ({ employees }: EmployeesTableProps) => {
   const sortBy = useEmployeesStore(s => s.sortBy);
   const sortOrder = useEmployeesStore(s => s.sortOrder);
   const setSorting = useEmployeesStore(s => s.setSorting);
@@ -23,8 +23,8 @@ export const EmployeesTable = ({ empoloyees }: EmployeesTableProps) => {
         onSortChange={setSorting}
       />
       <TableBody>
-        {empoloyees.map(empoloyee => (
-          <EmployeesTableRow key={empoloyee.id} employee={empoloyee} />
+        {employees.map(employee => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
         ))}
       </TableBody>
     </Table>

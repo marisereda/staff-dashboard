@@ -4,17 +4,17 @@ import { api } from '../../common/api';
 import { Store } from '../types';
 
 const updateStore = async (
-  store: Pick<Store, 'code1C' | 'id' | 'address' | 'checkoutNumber' | 'placesAmount'> | null
+  store: Pick<Store, 'id' | 'checkoutNumber' | 'placesAmount' | 'employers' | 'address'> | null
 ) => {
   if (!store) {
     return;
   }
-  const { code1C, address, checkoutNumber, placesAmount } = store;
+  const { address, checkoutNumber, placesAmount, employers } = store;
   const { data } = await api.patch<Store>(`stores/${store.id}`, {
-    code1C,
     address,
     checkoutNumber,
     placesAmount,
+    employers,
   });
   return data;
 };
