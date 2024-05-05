@@ -21,16 +21,23 @@ const VALIDATION = {
   },
 };
 
-const PARSE = {
+const PARSE: {
+  startRow: number;
+  colNumber: number;
+  employee: Record<keyof Omit<BuhReportEmployee, 'store' | 'employer'>, number>;
+  store: Record<keyof BuhReportStore, number>;
+  employer: Record<keyof BuhReportEmployer, number>;
+} = {
   startRow: 10,
   colNumber: 5,
-  store: {
-    address: 2,
-  },
   employee: {
     inn: 5,
     name: 3,
     position: 4,
+  },
+  store: {
+    addressBuh: 2,
+    code1C: 6,
   },
   employer: {
     name: 2,
@@ -54,11 +61,11 @@ class BuhParser {
 
     while (!isRowEmpty(ws, row, 1, PARSE.colNumber)) {
       if (this.isEmployer(ws, row)) {
-        employer = parseRow(ws, row, PARSE.employer);
+        employer = parseRow<BuhReportEmployer>(ws, row, PARSE.employer);
       }
 
       if (this.isStore(ws, row)) {
-        store = parseRow(ws, row, PARSE.store);
+        store = parseRow<BuhReportStore>(ws, row, PARSE.store);
       }
 
       if (this.isEmployee(ws, row)) {

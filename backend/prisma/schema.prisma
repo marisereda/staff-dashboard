@@ -8,78 +8,79 @@ datasource db {
 }
 
 model Employee {
-  id           String   @id @default(cuid())
-  code1C       String?  @unique
-  inn          String?  @unique
+  id           String  @id @default(cuid())
+  code1C       String? @unique
+  inn          String? @unique
+  isFop        Boolean @default(false)
   name         String
   phone        String?
-  isFop        Boolean? @default(false)
   updateStatus String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employeeEmployers EmployeeEmployer[]
-  employeeStores    EmployeeStore[]
-  notes             Note[]
-}
-
-model Employer {
-  id           String   @id @default(cuid())
-  inn          String   @unique
-  name         String
-  isSingleTax  Boolean? @default(false)
-  updateStatus String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  employerEmployees EmployeeEmployer[]
-  stores            Store[]
-  notes             Note[]
+  workplacesHr  WorkplaceHr[]
+  workplacesBuh WorkplaceBuh[]
+  notes         Note[]
 }
 
 model Store {
   id             String  @id @default(cuid())
-  code1C         String  @unique
-  address        String
-  checkoutNumber Int?
-  placesAmount   Int?
+  code1C         String? @unique
+  addressHr      String?
+  addressBuh     String?
+  checkoutNumber Int     @default(0)
+  placesAmount   Int     @default(0)
   updateStatus   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  storeEmployees EmployeeStore[]
-  employers      Employer[]
-  notes          Note[]
+  workplacesHr  WorkplaceHr[]
+  workplacesBuh WorkplaceBuh[]
+  notes         Note[]
 }
 
-model EmployeeEmployer {
-  id              String @id @default(cuid())
-  employeeId      String
-  employerId      String
-  positionBuh     String
-  storeAddressBuh String
+model Employer {
+  id           String  @id @default(cuid())
+  inn          String  @unique
+  isSingleTax  Boolean @default(false)
+  name         String
+  updateStatus String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  employer Employer @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  workplacesBuh WorkplaceBuh[]
+  notes         Note[]
 }
 
-model EmployeeStore {
+model WorkplaceHr {
   id         String @id @default(cuid())
   employeeId String
   storeId    String
-  positionHr String
+  position   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   store    Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+model WorkplaceBuh {
+  id         String @id @default(cuid())
+  employeeId String
+  storeId    String
+  employerId String
+  position   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  store    Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  employer Employer @relation(fields: [employerId], references: [id], onDelete: Cascade)
 }
 
 model Note {

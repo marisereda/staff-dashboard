@@ -8,6 +8,4 @@ export const getReport = async (_: Request, res: Response): Promise<void> => {
   res.setHeader('Content-Disposition', 'attachment; filename="DislocationReport.xlsx"');
   res.setHeader('Content-Type', 'application/vnd.ms-excel');
   res.end(reportFile);
-
-  // res.status(200).end();
 };

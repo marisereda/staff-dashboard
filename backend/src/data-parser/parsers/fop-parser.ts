@@ -1,6 +1,6 @@
 import { WorkSheet } from 'xlsx';
 import { cell, readAllWorkSheets } from '~/common/utils/xlsx';
-import { FopReportEmployee } from '../types/fop-report.types';
+import { FopReportEmployee } from '../types';
 
 const EMPTY_NUMBER = 10;
 

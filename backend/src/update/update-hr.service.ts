@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
@@ -8,7 +9,7 @@ class UpdateHrService {
     const report = dataParserService.parseHrReport(file);
 
     await prisma.$transaction(async tx => {
-      await tx.employeeStore.deleteMany();
+      await tx.workplaceHr.deleteMany();
 
       const updatedStores = await Promise.all(
         this.getStoresFromReport(report).map(store =>
@@ -21,16 +22,14 @@ class UpdateHrService {
       );
 
       await Promise.all(
-        report.map(({ store, position, code1C, inn, ...employeeData }) => {
+        report.map(({ store, position, ...employeeData }) => {
           const updatedStore = updatedStores.find(({ code1C }) => code1C === store.code1C);
-          const data = {
-            code1C: code1C || null,
-            inn: inn || null,
+          const data: Prisma.EmployeeCreateInput = {
             ...employeeData,
-            employeeStores: { create: { storeId: updatedStore!.id, positionHr: position } },
+            workplacesHr: { create: { storeId: updatedStore!.id, position } },
           };
           return tx.employee.upsert({
-            where: { code1C },
+            where: { code1C: employeeData.code1C },
             update: { ...data, updateStatus: UpdateStatus.SUCCESS },
             create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
           });
@@ -40,10 +39,10 @@ class UpdateHrService {
   };
 
   private getStoresFromReport = (report: HrReportEmployee[]): HrReportStore[] => {
-    return report.reduce((acc, { store }) => {
+    return report.reduce((acc: HrReportStore[], { store }) => {
       const isStoreSaved = acc.find(({ code1C }) => code1C === store.code1C);
       return isStoreSaved ? acc : [...acc, store];
-    }, [] as HrReportStore[]);
+    }, []);
   };
 }
 

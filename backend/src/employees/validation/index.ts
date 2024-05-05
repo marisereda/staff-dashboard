@@ -7,16 +7,16 @@ export const GetEmployeesSchema = z.object({
       .enum(['true', 'false'])
       .transform(str => str === 'true')
       .optional(),
-    employerId: z.string().cuid().optional(),
     storeId: z.string().cuid().optional(),
-    sortBy: z.enum(['name', 'isFop', 'inn', 'phone']).default('name'),
+    employerId: z.string().cuid().optional(),
+    sortBy: z.enum(['code1C', 'inn', 'isFop', 'name', 'phone']).default('name'),
     sortOrder: z.enum(['asc', 'desc']).default('asc'),
     page: z.coerce.number().int().gte(1).default(1),
     pageSize: z.coerce.number().int().gte(1).lte(100).default(50),
   }),
 });
 
-export const GetEmployeeByIdSchema = z.object({
+export const EmployeeByIdSchema = z.object({
   params: z.object({
     id: z.string().cuid(),
   }),
@@ -28,12 +28,9 @@ export const UpdateEmployeeSchema = z.object({
   }),
   body: z.object({
     code1C: z.string().optional(),
-    inn: z.string().optional(),
-    name: z.string().optional(),
+    inn: z.string().min(8).max(10).regex(/^\d+$/).optional(),
     isFop: z.boolean().optional(),
+    name: z.string().optional(),
     phone: z.string().optional(),
-    position: z.string().optional(),
-    storeId: z.string().optional(),
-    employerId: z.string().optional(),
   }),
 });

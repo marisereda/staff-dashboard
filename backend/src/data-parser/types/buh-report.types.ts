@@ -3,7 +3,8 @@ export type BuhReportEmployer = {
 };
 
 export type BuhReportStore = {
-  address: string;
+  code1C: string;
+  addressBuh: string;
 };
 
 export type BuhReportEmployee = {

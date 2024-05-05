@@ -1,7 +1,7 @@
 import { Prisma, Store } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { GetStoresQuery, UpdateStoreData } from './types';
+import { GetStoresQuery } from './types';
 
 class StoresService {
   getAll = async ({
@@ -15,7 +15,10 @@ class StoresService {
     const orderBy = { [sortBy]: sortOrder };
 
     if (q) {
-      where.address = { contains: q };
+      const conditions = ['code1C', 'address', 'addressBug'].map(item => ({
+        [item]: { contains: q },
+      }));
+      where.OR = conditions;
     }
 
     const pagination = pageSize
@@ -29,28 +32,18 @@ class StoresService {
       where,
       orderBy,
       ...pagination,
-      include: { employers: true },
     });
     const total = await prisma.store.count({ where });
 
     return { data, page, pageSize, total };
   };
 
-  updateOne = async (id: string, { employers, ...data }: UpdateStoreData): Promise<Store> => {
-    const employersIds = employers.map(id => ({ id }));
+  getOne = (id: string): Promise<Store> => {
+    return prisma.store.findUniqueOrThrow({ where: { id } });
+  };
 
-    const [_, updatedStore] = await prisma.$transaction([
-      prisma.store.update({
-        where: { id },
-        data: { employers: { set: [] } },
-      }),
-      prisma.store.update({
-        where: { id },
-        data: { ...data, employers: { connect: employersIds } },
-      }),
-    ]);
-
-    return updatedStore;
+  updateOne = async (id: string, data: Prisma.StoreUpdateInput): Promise<Store> => {
+    return prisma.store.update({ where: { id }, data });
   };
 }
 

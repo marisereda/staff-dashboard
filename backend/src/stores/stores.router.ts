@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { handler, validator } from '~/common/middlewares';
-import { getAll, updateById } from './stores.controller';
-import { GetStoresSchema, UpdateStoreSchema } from './validation';
+import { getAll, getOne, updateOne } from './stores.controller';
+import { GetStoresSchema, StoreByIdSchema, UpdateStoreSchema } from './validation';
 
 export const storesRouter = Router();
 
 storesRouter.get('/', validator(GetStoresSchema), handler(getAll));
-storesRouter.patch('/:id', validator(UpdateStoreSchema), handler(updateById));
+
+storesRouter.get('/:id', validator(StoreByIdSchema), handler(getOne));
+
+storesRouter.patch('/:id', validator(UpdateStoreSchema), handler(updateOne));

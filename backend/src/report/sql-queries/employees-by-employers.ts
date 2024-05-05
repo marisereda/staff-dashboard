@@ -9,11 +9,11 @@ export type EmployeesByEmployers = {
 export const employeesByEmployersQuery = Prisma.sql`
   SELECT
     storeId,
-    employerId ,
+    employerId,
     COUNT(employerId) as employedCount
   FROM Employee
     FULL JOIN Store ON Employee.storeId = Store.id
     FULL JOIN Employer ON Employee.employerId = Employer.id
-  GROUP BY  storeId, employerId
+  GROUP BY storeId, employerId
   ;
 `;

@@ -1,6 +1,6 @@
 export type HrReportStore = {
   code1C: string;
-  address: string;
+  addressHr: string;
 };
 
 export type HrReportEmployee = {

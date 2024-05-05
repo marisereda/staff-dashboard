@@ -19,9 +19,8 @@ export const EmployerByIdSchema = z.object({
 export const CreateEmployerSchema = z.object({
   body: z.object({
     inn: z.string().min(8).max(10).regex(/^\d+$/),
-    name: z.string(),
     isSingleTax: z.boolean().default(false),
-    storeAddressesBuh: z.string().optional(),
+    name: z.string(),
   }),
 });
 
@@ -30,8 +29,8 @@ export const UpdateEmployerSchema = z.object({
     id: z.string().cuid(),
   }),
   body: z.object({
-    inn: z.string().min(8).max(10).regex(/^\d+$/),
-    name: z.string(),
-    isSingleTax: z.boolean().default(false),
+    inn: z.string().min(8).max(10).regex(/^\d+$/).optional(),
+    isSingleTax: z.boolean().optional(),
+    name: z.string().optional(),
   }),
 });

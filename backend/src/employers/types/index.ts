@@ -7,10 +7,9 @@ import {
 } from '../validation';
 
 export type GetEmployersRequest = z.infer<typeof GetEmployersSchema>;
-export type EmployerByIdRequest = z.infer<typeof EmployerByIdSchema>;
+export type GetEmployerRequest = z.infer<typeof EmployerByIdSchema>;
 export type CreateEmployerRequest = z.infer<typeof CreateEmployerSchema>;
 export type UpdateEmployerRequest = z.infer<typeof UpdateEmployerSchema>;
+export type DeleteEmployerRequest = z.infer<typeof EmployerByIdSchema>;
 
 export type GetEmployersQuery = GetEmployersRequest['query'];
-export type CreateEmployerData = CreateEmployerRequest['body'];
-export type UpdateEmployerData = UpdateEmployerRequest['body'];

@@ -1,7 +1,7 @@
 import { Employer, Prisma } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { CreateEmployerData, GetEmployersQuery, UpdateEmployerData } from './types';
+import { GetEmployersQuery } from './types';
 
 class EmployersService {
   getAll = async ({
@@ -38,19 +38,19 @@ class EmployersService {
     return { data, page, pageSize, total };
   };
 
-  getById = (id: string): Promise<Employer | null> => {
+  getOne = (id: string): Promise<Employer> => {
     return prisma.employer.findUniqueOrThrow({ where: { id } });
   };
 
-  create = (data: CreateEmployerData): Promise<Employer | null> => {
+  create = (data: Prisma.EmployerCreateInput): Promise<Employer> => {
     return prisma.employer.create({ data });
   };
 
-  update = (id: string, data: Partial<UpdateEmployerData>): Promise<Employer | null> => {
+  updateOne = (id: string, data: Prisma.EmployerUpdateInput): Promise<Employer> => {
     return prisma.employer.update({ where: { id }, data });
   };
 
-  deleteOne = (id: string): Promise<Employer | null> => {
+  deleteOne = (id: string): Promise<Employer> => {
     return prisma.employer.delete({ where: { id } });
   };
 }

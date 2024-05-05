@@ -7,8 +7,8 @@ class EmployeesService {
   getAll = async ({
     q,
     isFop,
-    employerId,
     storeId,
+    employerId,
     sortBy,
     sortOrder,
     page,
@@ -20,7 +20,7 @@ class EmployeesService {
     const take = pageSize;
 
     if (q) {
-      const conditions = ['inn', 'name', 'phone'].map(item => ({
+      const conditions = ['code1C', 'inn', 'name', 'phone'].map(item => ({
         [item]: { contains: q },
       }));
       where.OR = conditions;
@@ -28,33 +28,38 @@ class EmployeesService {
     if (isFop !== undefined) {
       where.isFop = isFop;
     }
-    if (employerId) {
-      where.employeeEmployers = { some: { employerId } };
-    }
     if (storeId) {
-      where.employeeStores = { some: { storeId } };
+      where.OR = [
+        { workplacesHr: { some: { storeId } } },
+        { workplacesBuh: { some: { storeId } } },
+      ];
+    }
+    if (employerId) {
+      where.workplacesBuh = { some: { employerId } };
     }
 
-    const data = await prisma.employee.findMany({
-      where,
-      orderBy,
-      skip,
-      take,
-      include: {
-        employeeStores: { include: { store: true } },
-        employeeEmployers: { include: { employer: true } },
-      },
-    });
-    const total = await prisma.employee.count({ where });
+    const [data, total] = await Promise.all([
+      prisma.employee.findMany({
+        where,
+        orderBy,
+        skip,
+        take,
+        include: {
+          workplacesHr: { include: { store: true } },
+          workplacesBuh: { include: { store: true, employer: true } },
+        },
+      }),
+      prisma.employee.count({ where }),
+    ]);
 
     return { data, page, pageSize, total };
   };
 
-  getById = (id: string): Promise<Employee | null> => {
+  getOne = (id: string): Promise<Employee> => {
     return prisma.employee.findUniqueOrThrow({ where: { id } });
   };
 
-  updateOne = (id: string, data: Prisma.EmployeeUncheckedUpdateInput): Promise<Employee> => {
+  updateOne = (id: string, data: Prisma.EmployeeUpdateInput): Promise<Employee> => {
     return prisma.employee.update({ where: { id }, data });
   };
 }

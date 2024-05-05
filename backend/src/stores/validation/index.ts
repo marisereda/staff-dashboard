@@ -3,19 +3,28 @@ import { z } from 'zod';
 export const GetStoresSchema = z.object({
   query: z.object({
     q: z.string().optional(),
-    sortBy: z.enum(['address', 'checkoutNumber']).default('address'),
+    sortBy: z
+      .enum(['code1C', 'address', 'addressBuh', 'checkoutNumber', 'placesAmount'])
+      .default('address'),
     sortOrder: z.enum(['asc', 'desc']).default('asc'),
     page: z.coerce.number().int().gte(1).default(1),
     pageSize: z.coerce.number().int().gte(1).lte(100).optional(),
   }),
 });
 
+export const StoreByIdSchema = z.object({
+  params: z.object({
+    id: z.string().cuid(),
+  }),
+});
+
 export const UpdateStoreSchema = z.object({
   params: z.object({ id: z.string().cuid() }),
   body: z.object({
-    address: z.string(),
-    checkoutNumber: z.coerce.number().int().gte(1),
-    placesAmount: z.coerce.number().int().gte(0),
-    employers: z.array(z.string().cuid()),
+    code1C: z.string().optional(),
+    address: z.string().optional(),
+    addressBuh: z.string().optional(),
+    checkoutNumber: z.coerce.number().int().gte(0).optional(),
+    placesAmount: z.coerce.number().int().gte(0).optional(),
   }),
 });

@@ -31,20 +31,24 @@ const VALIDATION = {
   },
 };
 
-const PARSE = {
+const PARSE: {
+  startRow: number;
+  colNumber: number;
+  employee: Record<keyof Omit<HrReportEmployee, 'store'>, number>;
+  store: Record<keyof HrReportStore, number>;
+} = {
   startRow: 8,
   colNumber: 6,
-  store: {
-    address: 1,
-    code1C: 2,
-  },
-
   employee: {
     code1C: 2,
     inn: 4,
     name: 3,
     position: 5,
     phone: 6,
+  },
+  store: {
+    addressHr: 1,
+    code1C: 2,
   },
 };
 

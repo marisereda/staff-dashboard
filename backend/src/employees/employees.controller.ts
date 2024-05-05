@@ -1,25 +1,22 @@
 import { Response } from 'express';
 import { AppRequest } from '~/common/types';
 import { employeesService } from './employees.service';
-import { GetEmployeeByIdRequest, GetEmployeesRequest, UpdateEmployeeRequest } from './types';
+import { GetEmployeeRequest, GetEmployeesRequest, UpdateEmployeeRequest } from './types';
 
 export const getAll = async (
   req: AppRequest<GetEmployeesRequest>,
   res: Response
 ): Promise<void> => {
-  const result = await employeesService.getAll(req.state!.query);
-  res.status(200).json(result);
+  const employeesPage = await employeesService.getAll(req.state!.query);
+  res.status(200).json(employeesPage);
 };
 
-export const getById = async (
-  req: AppRequest<GetEmployeeByIdRequest>,
-  res: Response
-): Promise<void> => {
-  const employee = await employeesService.getById(req.state!.params.id);
+export const getOne = async (req: AppRequest<GetEmployeeRequest>, res: Response): Promise<void> => {
+  const employee = await employeesService.getOne(req.state!.params.id);
   res.status(200).json(employee);
 };
 
-export const update = async (
+export const updateOne = async (
   req: AppRequest<UpdateEmployeeRequest>,
   res: Response
 ): Promise<void> => {
