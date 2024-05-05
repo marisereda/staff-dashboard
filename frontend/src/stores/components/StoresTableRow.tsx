@@ -8,8 +8,7 @@ type StoresTableRowProps = {
 };
 
 export const StoresTableRow = ({ store }: StoresTableRowProps) => {
-  const { code1C, address, employers, checkoutNumber, placesAmount } = store;
-
+  const { code1C, addressHr, addressBuh, checkoutNumber, placesAmount } = store;
   const isFormOpen = useStoresStore(s => s.isFormOpen);
   const openForm = useStoresStore(s => s.openForm);
 
@@ -30,7 +29,10 @@ export const StoresTableRow = ({ store }: StoresTableRowProps) => {
 
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {address}
+          {addressHr}
+        </Typography>
+        <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
+          {addressBuh}
         </Typography>
       </TableCell>
 
@@ -44,18 +46,6 @@ export const StoresTableRow = ({ store }: StoresTableRowProps) => {
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           {placesAmount ?? '-'}
         </Typography>
-      </TableCell>
-
-      <TableCell align="left">
-        {employers?.map(({ name }, index) => (
-          <Typography
-            key={index}
-            variant="subtitle2"
-            sx={theme => ({ color: theme.palette.grey[600] })}
-          >
-            {name ?? '-'}
-          </Typography>
-        ))}
       </TableCell>
 
       <TableCell align="right">

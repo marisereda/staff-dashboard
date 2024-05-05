@@ -1,48 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../common/api';
 import { PageData } from '../../common/types';
-import { EmployeeResponse } from '../types';
-
-export type SearchParams = {
-  q: string;
-  fopFilter: string;
-  storeId: string;
-  employerId: string;
-  sortBy: string;
-  sortOrder: string;
-  page: number;
-  pageSize: number;
-};
+import { Employee, EmployeesSearchParams } from '../types';
 
 const getEmployees = async ({
   fopFilter,
   storeId,
   employerId,
   ...restSearchParams
-}: SearchParams) => {
+}: EmployeesSearchParams) => {
   const urlSearchParams: Record<string, unknown> = { ...restSearchParams };
 
-  if (employerId) {
-    urlSearchParams.employerId = employerId;
-  }
-
-  if (storeId) {
-    urlSearchParams.storeId = storeId;
-  }
   if (fopFilter !== 'all') {
     urlSearchParams.isFop = fopFilter;
   }
+  if (employerId) {
+    urlSearchParams.employerId = employerId;
+  }
+  if (storeId) {
+    urlSearchParams.storeId = storeId;
+  }
 
-  const response = await api.get<PageData<EmployeeResponse[]>>('employees', {
+  const response = await api.get<PageData<Employee[]>>('employees', {
     params: urlSearchParams,
   });
 
   return response.data;
 };
 
-export const useEmployeesQuery = (params: SearchParams) => {
+export const useEmployeesQuery = (searchParams: EmployeesSearchParams) => {
   return useQuery({
-    queryKey: ['employees', params],
-    queryFn: () => getEmployees(params),
+    queryKey: ['employees', searchParams],
+    queryFn: () => getEmployees(searchParams),
   });
 };

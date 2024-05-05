@@ -11,9 +11,10 @@ import {
 import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useStoresQuery } from '../../stores/queries/useStoresQuery';
 import { useEmployeesStore } from '../state';
+import { EmployeesSearchParams } from '../types';
 
 export function EmployeesFilterBar() {
-  const search = useEmployeesStore(s => s.search);
+  const search = useEmployeesStore(s => s.q);
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
@@ -24,13 +25,14 @@ export function EmployeesFilterBar() {
 
   const { data: storesPage } = useStoresQuery({
     q: '',
-    sortBy: 'address',
+    sortBy: 'addressHr',
     sortOrder: 'asc',
     page: 1,
   });
 
   const storesOptions =
-    storesPage?.data.map(store => ({ label: store.address, id: store.id })) ?? [];
+    storesPage?.data.map(store => ({ label: store.addressHr || store.addressBuh, id: store.id })) ??
+    [];
 
   let currentStoreOption;
   if (storesOptions.length > 0 && storeId) {
@@ -77,7 +79,7 @@ export function EmployeesFilterBar() {
           id="demo-simple-select"
           value={fopFilter}
           label="Самозайнята особа"
-          onChange={e => setFopFilter(e.target.value)}
+          onChange={e => setFopFilter(e.target.value as EmployeesSearchParams['fopFilter'])}
         >
           <MenuItem value={'all'}>Всі</MenuItem>
           <MenuItem value={'true'}>Тільки ФОП</MenuItem>

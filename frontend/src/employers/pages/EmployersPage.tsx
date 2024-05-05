@@ -7,14 +7,14 @@ import { EmployersTable } from '../components/EmployersTable';
 import { useEmployersQuery } from '../queries/useEmployersQuery';
 import { useEmployersStore } from '../state';
 
+// TODO: add filter by stores
 export const EmployersPage = () => {
-  const search = useEmployersStore(s => s.search);
-  const storeId = useEmployersStore(s => s.storeId);
+  const search = useEmployersStore(s => s.q);
+  // const storeId = useEmployersStore(s => s.storeId);
   const sortBy = useEmployersStore(s => s.sortBy);
   const sortOrder = useEmployersStore(s => s.sortOrder);
   const page = useEmployersStore(s => s.page);
   const pageSize = useEmployersStore(s => s.pageSize);
-
   const setPage = useEmployersStore(s => s.setPage);
   const setPageSize = useEmployersStore(s => s.setPageSize);
 
@@ -22,7 +22,6 @@ export const EmployersPage = () => {
 
   const { data: employersPage } = useEmployersQuery({
     q: debouncedSearch,
-    storeId,
     sortBy,
     sortOrder,
     page,

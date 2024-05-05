@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../common/api';
-import { Employer } from '../types';
+import { CreateEmployerData } from '../types';
 
-const updateEmployer = async (employer: Pick<Employer, 'inn' | 'name' | 'id'>) => {
-  const { data } = await api.patch(`employers/${employer.id}`, employer);
+const updateEmployer = async ({ id, ...employerData }: CreateEmployerData & { id: string }) => {
+  const { data } = await api.patch(`employers/${id}`, employerData);
   return data;
 };
 

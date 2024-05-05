@@ -17,35 +17,36 @@ import { FormCheckBox } from '../../common/components/FormCheckBox';
 import { FormTextField } from '../../common/components/FormTextField';
 import { useUpdateEmployee } from '../queries/useUpdateEmployee';
 import { useEmployeesStore } from '../state';
-import { Inputs, inputSchema } from '../validation/employeeFormSchema';
+import { UpdateEmployeeData } from '../types';
+import { updateEmployeeSchema } from '../validation';
 
 export function EmployeeForm() {
   const isFormOpen = useEmployeesStore(s => s.isFormOpen);
-  const editableEmployee = useEmployeesStore(s => s.editableEmployee);
+  const employee = useEmployeesStore(s => s.editingEmployee);
   const closeForm = useEmployeesStore(s => s.closeForm);
 
   const { mutate: update, isPending: isPendingUpdation } = useUpdateEmployee();
 
-  const { control, handleSubmit, reset, setValue } = useForm<Inputs>({
+  const { control, handleSubmit, reset, setValue } = useForm<UpdateEmployeeData>({
     defaultValues: {
       inn: '',
       name: '',
       isFop: false,
     },
-    resolver: zodResolver(inputSchema),
+    resolver: zodResolver(updateEmployeeSchema),
   });
 
   useEffect(() => {
-    setValue('inn', editableEmployee?.inn ?? '');
-    setValue('name', editableEmployee?.name ?? '');
-    setValue('isFop', editableEmployee?.isFop ?? false);
-  }, [editableEmployee, setValue]);
+    setValue('inn', employee?.inn ?? '');
+    setValue('name', employee?.name ?? '');
+    setValue('isFop', employee?.isFop ?? false);
+  }, [employee, setValue]);
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: UpdateEmployeeData) => {
     console.log('data', data);
-    if (editableEmployee) {
+    if (employee) {
       update(
-        { ...data, id: editableEmployee?.id },
+        { ...data, id: employee?.id },
         {
           onSuccess: () => {
             handleClose();

@@ -1,37 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../common/api';
 import { PageData } from '../../common/types';
-import { EmployerResponse } from '../types';
+import { Employer, EmployersSearchParams } from '../types';
 
-type SearchParams = {
-  q: string;
-  employerId?: string;
-  storeId?: string;
-  sortBy: string;
-  sortOrder: string;
-  page: number;
-  pageSize?: number;
-};
-
-const getEmployers = async ({ employerId, storeId, ...restSearchParams }: SearchParams) => {
-  const urlSerchParams: Record<string, unknown> = { ...restSearchParams };
-
-  if (employerId) {
-    urlSerchParams.employerId = employerId;
-  }
-  if (storeId) {
-    urlSerchParams.storeId = storeId;
-  }
-  const { data } = await api.get<PageData<EmployerResponse[]>>('employers', {
-    params: urlSerchParams,
+const getEmployers = async (searchParams: EmployersSearchParams) => {
+  const { data } = await api.get<PageData<Employer[]>>('employers', {
+    params: searchParams,
   });
-
   return data;
 };
 
-export const useEmployersQuery = (params: SearchParams) => {
+export const useEmployersQuery = (searchParams: EmployersSearchParams) => {
   return useQuery({
-    queryKey: ['employers', params],
-    queryFn: () => getEmployers(params),
+    queryKey: ['employers', searchParams],
+    queryFn: () => getEmployers(searchParams),
   });
 };

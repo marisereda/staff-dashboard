@@ -1,8 +1,6 @@
 import z from 'zod';
 
-export type Inputs = z.infer<typeof inputSchema>;
-
-export const inputSchema = z.object({
+export const createEmployerSchema = z.object({
   inn: z
     .string()
     .regex(/^\d+$/, 'ІПН має містити лише цифри')

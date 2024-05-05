@@ -1,66 +1,60 @@
-export type EmployeeResponse = {
+import { z } from 'zod';
+import { SortOrder } from '../../common/types';
+import { Employer } from '../../employers/types';
+import { Store } from '../../stores/types';
+import { updateEmployeeSchema } from '../validation';
+
+export type Employee = {
   id: string;
-  code1C: string;
-  inn: string;
-  name: string;
+  code1C?: string;
+  inn?: string;
   isFop: boolean;
-  phone: string;
-  updateStatus: string;
+  name: string;
+  phone?: string;
+  updateStatus?: string;
 
   createdAt: Date;
   updatedAt: Date;
-  employeeEmployers: EmployeeEmployer[];
-  employeeStores: EmployeeStore[];
+
+  workplacesHr: WorkplaceHr[];
+  workplacesBuh: WorkplaceBuh[];
 };
 
-export type EmployeeEmployer = {
-  id: string;
-  employeeId: string;
-  employerId: string;
-  positionBuh: string;
-  storeAddressBuh: string;
-  employer: Employer;
-
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type EmployeeStore = {
+export type WorkplaceHr = {
   id: string;
   employeeId: string;
   storeId: string;
-  positionHr: string;
+  position: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+
   store: Store;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
-export type Employer = {
+export type WorkplaceBuh = {
   id: string;
-  inn: string;
-  name: string;
-  isSingleTax: boolean;
-  updateStatus: string;
+  employeeId: string;
+  storeId: string;
+  employerId: string;
+  position: string;
+
   createdAt: Date;
   updatedAt: Date;
+
+  store: Store;
+  employer: Employer;
 };
 
-export type Store = {
-  id: string;
-  code1C: string;
-  address: string;
-  checkoutNumber: number | null;
-  placesAmount: number | null;
-  updateStatus: string;
-  createdAt: Date;
-  updatedAt: Date;
+export type EmployeesSearchParams = {
+  q: string;
+  fopFilter: 'all' | 'true' | 'false';
+  storeId: string;
+  employerId: string;
+  sortBy: 'code1C' | 'inn' | 'isFop' | 'name' | 'phone';
+  sortOrder: SortOrder;
+  page: number;
+  pageSize: number;
 };
 
-export type EmployeesSortBy =
-  | 'name'
-  | 'isFop'
-  | 'position'
-  | 'inn'
-  | 'phone'
-  | 'employerName'
-  | 'storeAddress';
+export type UpdateEmployeeData = z.infer<typeof updateEmployeeSchema>;

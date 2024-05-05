@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../common/api';
-import { Employee } from '../types';
+import { UpdateEmployeeData } from '../types';
 
-const updateEmployee = async (employee: Partial<Employee>) => {
-  const { data } = await api.patch(`employees/${employee.id}`, employee);
+const updateEmployee = async ({ id, ...employeeData }: UpdateEmployeeData & { id: string }) => {
+  const { data } = await api.patch(`employees/${id}`, employeeData);
   return data;
 };
 

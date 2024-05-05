@@ -10,15 +10,12 @@ type EmployersTableRowProps = {
 };
 
 export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
-  const { id, inn, name, isSingleTax, storeAddressesBuh } = employer;
-  const { mutate, isPending } = useDeleteEmployer();
-
+  const { id, inn, name, isSingleTax } = employer;
+  const isFromOpen = useEmployersStore(s => s.isFormOpen);
   const openForm = useEmployersStore(s => s.openForm);
-  const stores = storeAddressesBuh ? storeAddressesBuh.split('\n') : undefined;
+  const { mutate: deleteEmployer, isPending } = useDeleteEmployer();
 
-  const handleEditEmployer = () => {
-    openForm(employer);
-  };
+  const isButtonsDisabled = isFromOpen || isPending;
 
   return (
     <TableRow
@@ -44,30 +41,11 @@ export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
         </Typography>
       </TableCell>
 
-      <TableCell align="left">
-        {stores?.map((address, index) => (
-          <Typography
-            key={index}
-            variant="subtitle2"
-            sx={theme => ({ color: theme.palette.grey[600] })}
-          >
-            {address ?? '-'}
-          </Typography>
-        ))}
-      </TableCell>
-
       <TableCell align="right">
-        <IconButton color="success" disabled={isPending} onClick={handleEditEmployer}>
+        <IconButton color="success" disabled={isButtonsDisabled} onClick={() => openForm(employer)}>
           <EditIcon />
         </IconButton>
-
-        <IconButton
-          color="error"
-          disabled={isPending}
-          onClick={() => {
-            mutate(id);
-          }}
-        >
+        <IconButton color="error" disabled={isButtonsDisabled} onClick={() => deleteEmployer(id)}>
           <DeleteIcon />
         </IconButton>
       </TableCell>

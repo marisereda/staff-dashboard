@@ -1,7 +1,7 @@
 import { HeadColumnOptions } from '../../common/components/TableHead';
-import { StoresSortBy } from '../types';
+import { StoresSearchParams } from '../types';
 
-export const STORES_HEAD_COLUMNS: HeadColumnOptions<StoresSortBy>[] = [
+export const STORES_HEAD_COLUMNS: HeadColumnOptions<StoresSearchParams['sortBy']>[] = [
   {
     primaryLabel: 'Код 1С',
     secondaryLabel: null,
@@ -9,8 +9,8 @@ export const STORES_HEAD_COLUMNS: HeadColumnOptions<StoresSortBy>[] = [
   },
   {
     primaryLabel: 'Адреса',
-    secondaryLabel: null,
-    sortBy: 'address',
+    secondaryLabel: 'Адреса (бух.)',
+    sortBy: 'addressHr',
   },
   {
     primaryLabel: 'Кіл-ть кас',
@@ -19,12 +19,6 @@ export const STORES_HEAD_COLUMNS: HeadColumnOptions<StoresSortBy>[] = [
   },
   {
     primaryLabel: 'Кіл-ть місць для працевлаштування',
-    secondaryLabel: null,
-    sortBy: null,
-  },
-
-  {
-    primaryLabel: 'Роботодавець',
     secondaryLabel: null,
     sortBy: null,
   },

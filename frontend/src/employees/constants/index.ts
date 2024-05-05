@@ -1,7 +1,7 @@
 import { HeadColumnOptions } from '../../common/components/TableHead';
-import { EmployeesSortBy } from '../types';
+import { EmployeesSearchParams } from '../types';
 
-export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
+export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSearchParams['sortBy']>[] = [
   {
     primaryLabel: 'ФОП',
     secondaryLabel: null,
@@ -9,33 +9,18 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSortBy>[] = [
   },
   {
     primaryLabel: 'ДРФО',
-    secondaryLabel: null,
+    secondaryLabel: 'Код 1С',
     sortBy: 'inn',
   },
   {
     primaryLabel: 'ПІБ',
-    secondaryLabel: 'Код 1С',
+    secondaryLabel: 'Телефон',
     sortBy: 'name',
   },
   {
-    primaryLabel: 'Посада HR',
-    secondaryLabel: 'Посада бух.',
-    sortBy: null,
-  },
-  {
-    primaryLabel: 'Роботодавець',
+    primaryLabel: 'Посади',
     secondaryLabel: null,
     sortBy: null,
-  },
-  {
-    primaryLabel: 'Магазин',
-    secondaryLabel: 'Магазин бух.',
-    sortBy: 'storeAddress',
-  },
-  {
-    primaryLabel: 'Телефон',
-    secondaryLabel: null,
-    sortBy: 'phone',
   },
   {
     primaryLabel: '',

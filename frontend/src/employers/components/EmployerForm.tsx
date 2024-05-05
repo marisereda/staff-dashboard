@@ -18,35 +18,36 @@ import { FormTextField } from '../../common/components/FormTextField';
 import { useCreateEmployer } from '../queries/useCreateEmployer';
 import { useUpdateEmployer } from '../queries/useUpdateEmployer';
 import { useEmployersStore } from '../state';
-import { Inputs, inputSchema } from '../validation/employerFormSchema';
+import { CreateEmployerData } from '../types';
+import { createEmployerSchema } from '../validation';
 
 export function EmployerForm() {
   const isFormOpen = useEmployersStore(s => s.isFormOpen);
-  const editableEmployer = useEmployersStore(s => s.editableEmployer);
+  const employer = useEmployersStore(s => s.editingEmployer);
   const closeForm = useEmployersStore(s => s.closeForm);
 
   const { mutate: create, isPending: isPendingCreation } = useCreateEmployer();
   const { mutate: update, isPending: isPendingUpdation } = useUpdateEmployer();
 
-  const { control, handleSubmit, reset, setValue } = useForm<Inputs>({
+  const { control, handleSubmit, reset, setValue } = useForm<CreateEmployerData>({
     defaultValues: {
       inn: '',
       name: '',
       isSingleTax: false,
     },
-    resolver: zodResolver(inputSchema),
+    resolver: zodResolver(createEmployerSchema),
   });
 
   useEffect(() => {
-    setValue('inn', editableEmployer?.inn ?? '');
-    setValue('name', editableEmployer?.name ?? '');
-    setValue('isSingleTax', editableEmployer?.isSingleTax ?? false);
-  }, [editableEmployer, setValue]);
+    setValue('inn', employer?.inn ?? '');
+    setValue('name', employer?.name ?? '');
+    setValue('isSingleTax', employer?.isSingleTax ?? false);
+  }, [employer, setValue]);
 
-  const onSubmit = (data: Inputs) => {
-    if (editableEmployer) {
+  const onSubmit = (data: CreateEmployerData) => {
+    if (employer) {
       update(
-        { ...data, id: editableEmployer?.id },
+        { ...data, id: employer.id },
         {
           onSuccess: () => {
             handleClose();
@@ -79,7 +80,7 @@ export function EmployerForm() {
         }}
       >
         <DialogTitle>
-          {editableEmployer ? 'Редагування роботодавця' : 'Створення нового роботодавця'}
+          {employer ? 'Редагування роботодавця' : 'Створення нового роботодавця'}
         </DialogTitle>
         <DialogContent>
           <Stack gap={3}>

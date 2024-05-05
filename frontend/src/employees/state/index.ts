@@ -1,34 +1,25 @@
 import { create } from 'zustand';
-import { SortOrder } from '../../common/types';
-import { Employee, EmployeesSortBy } from '../types';
+import { Employee, EmployeesSearchParams } from '../types';
 
-type State = {
-  search: string;
-  fopFilter: string;
-  storeId: string;
-  employerId: string;
-  sortBy: EmployeesSortBy;
-  sortOrder: SortOrder;
-  page: number;
-  pageSize: number;
+type State = EmployeesSearchParams & {
   isFormOpen: boolean;
-  editableEmployee: Pick<Employee, 'inn' | 'name' | 'id' | 'isFop'> | null;
+  editingEmployee: Employee | null;
 };
 
 type Actions = {
-  setSearch: (search: string) => void;
-  setFopFilter: (fopFilter: string) => void;
+  setSearch: (q: string) => void;
+  setFopFilter: (fopFilter: State['fopFilter']) => void;
   setStoreId: (employerId: string) => void;
   setEmployerId: (storeId: string) => void;
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
-  openForm: (editableEmployee: Pick<Employee, 'inn' | 'name' | 'id' | 'isFop'> | null) => void;
+  openForm: (editingEmployee: Employee | null) => void;
   closeForm: () => void;
 };
 
 export const useEmployeesStore = create<State & Actions>(set => ({
-  search: '',
+  q: '',
   fopFilter: 'all',
   storeId: '',
   employerId: '',
@@ -37,15 +28,15 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   page: 1,
   pageSize: 50,
   isFormOpen: false,
-  editableEmployee: null,
+  editingEmployee: null,
 
-  setSearch: search => set(() => ({ search })),
+  setSearch: q => set(() => ({ q })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
   setStoreId: storeId => set(() => ({ storeId })),
   setEmployerId: employerId => set(() => ({ employerId })),
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),
-  openForm: editableEmployee => set(() => ({ isFormOpen: true, editableEmployee })),
-  closeForm: () => set(() => ({ isFormOpen: false, editableEmployee: null })),
+  openForm: editingEmployee => set(() => ({ isFormOpen: true, editingEmployee })),
+  closeForm: () => set(() => ({ isFormOpen: false, editingEmployee: null })),
 }));

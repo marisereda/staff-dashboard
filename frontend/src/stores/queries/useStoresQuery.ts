@@ -1,33 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../common/api';
 import { PageData } from '../../common/types';
-import { Store } from '../types';
+import { Store, StoresSearchParams } from '../types';
 
-type SearchParams = {
-  q: string;
-  storeId?: string;
-  employerId?: string;
-  sortBy: string;
-  sortOrder: string;
-  page: number;
-  pageSize?: number;
-};
-
-const getStores = async ({ storeId, employerId, ...restSearchParams }: SearchParams) => {
-  const urlSearchParams: Record<string, unknown> = { ...restSearchParams };
-  if (storeId) {
-    urlSearchParams.storeId = storeId;
-  }
-  if (employerId) {
-    urlSearchParams.employerId = employerId;
-  }
-  const { data } = await api.get<PageData<Store[]>>('stores', { params: urlSearchParams });
+const getStores = async (searchParams: StoresSearchParams) => {
+  const { data } = await api.get<PageData<Store[]>>('stores', { params: searchParams });
   return data;
 };
 
-export const useStoresQuery = (params: SearchParams) => {
+export const useStoresQuery = (searchParams: StoresSearchParams) => {
   return useQuery({
-    queryKey: ['stores', params],
-    queryFn: () => getStores(params),
+    queryKey: ['stores', searchParams],
+    queryFn: () => getStores(searchParams),
   });
 };

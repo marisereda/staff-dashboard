@@ -2,36 +2,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { useEmployeesStore } from '../state';
-import { EmployeeEmployer, EmployeeResponse, EmployeeStore } from '../types';
+import { Employee } from '../types';
 
 type EmployeesTableRowProps = {
-  employee: EmployeeResponse;
+  employee: Employee;
 };
 
 export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
-  const { name, isFop, inn, code1C, phone, employeeStores, employeeEmployers } = employee;
-
-  const positionsHr = employeeStores?.length
-    ? employeeStores.map((item: EmployeeStore) => item.positionHr)
-    : ['-'];
-  const positionsBuh = employeeEmployers?.length
-    ? employeeEmployers.map((item: EmployeeEmployer) => item.positionBuh)
-    : ['-'];
-  const addressesHr = employeeStores?.length
-    ? employeeStores.map((item: EmployeeStore) => item.store.address)
-    : ['-'];
-  const employers = employeeEmployers?.length
-    ? employeeEmployers.map((item: EmployeeEmployer) => item.employer.name)
-    : ['-'];
-  const addressesBuh = employeeEmployers?.length
-    ? employeeEmployers.map(item => item.storeAddressBuh)
-    : ['-'];
-
+  const { name, isFop, inn, code1C, phone, workplacesHr, workplacesBuh } = employee;
+  const isFormOpen = useEmployeesStore(s => s.isFormOpen);
   const openForm = useEmployeesStore(s => s.openForm);
-
-  const handleEditEmployee = () => {
-    openForm(employee);
-  };
 
   return (
     <TableRow
@@ -42,19 +22,15 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
         '&:last-child td, &:last-child th': { border: 0 },
       })}
     >
-      <TableCell component="th" scope="row">
-        <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
+      <TableCell>
+        <Typography sx={theme => ({ color: theme.palette.grey[600] })}>
           {isFop && <ManageAccountsIcon />}
         </Typography>
       </TableCell>
-      <TableCell component="th" scope="row">
+
+      <TableCell>
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           {inn}
-        </Typography>
-      </TableCell>
-      <TableCell align="left">
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {name}
         </Typography>
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
           {code1C ?? '-'}
@@ -63,45 +39,28 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
       <TableCell align="left">
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {positionsHr.map((positionHr, i) => (
-            <p key={i}>{positionHr}</p>
-          ))}
+          {name}
         </Typography>
-        <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {positionsBuh.map((positionBuh, i) => (
-            <p key={i}>{positionBuh}</p>
-          ))}
-        </Typography>
-      </TableCell>
-
-      <TableCell align="left">
-        <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {employers.map((employer, i) => (
-            <p key={i}>{employer}</p>
-          ))}
-        </Typography>
-      </TableCell>
-
-      <TableCell align="left">
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-          {addressesHr.map((address, i) => (
-            <p key={i}>{address}</p>
-          ))}
-        </Typography>
-        <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-          {addressesBuh.map((addressBuh, i) => (
-            <p key={i}>{addressBuh}</p>
-          ))}
-        </Typography>
-      </TableCell>
-
-      <TableCell align="left">
         <Typography variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
           {phone}
         </Typography>
       </TableCell>
+
       <TableCell>
-        <IconButton color="success" onClick={handleEditEmployee}>
+        {workplacesHr.map(({ id, position, store }) => (
+          <Typography key={id} variant="subtitle2" sx={{ fontWeight: 600 }}>
+            {`${position} в ${store.addressHr}`}
+          </Typography>
+        ))}
+        {workplacesBuh.map(({ id, position, store, employer }) => (
+          <Typography key={id} variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
+            {`${position} в ${store.addressBuh} (${employer.name})`}
+          </Typography>
+        ))}
+      </TableCell>
+
+      <TableCell>
+        <IconButton color="success" disabled={isFormOpen} onClick={() => openForm(employee)}>
           <EditIcon />
         </IconButton>
       </TableCell>

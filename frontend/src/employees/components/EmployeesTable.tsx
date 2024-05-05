@@ -2,11 +2,11 @@ import { Table, TableBody } from '@mui/material';
 import { TableHead } from '../../common/components/TableHead';
 import { EMPLOYEES_HEAD_COLUMNS } from '../constants';
 import { useEmployeesStore } from '../state';
-import { EmployeeResponse } from '../types';
+import { Employee } from '../types';
 import { EmployeesTableRow } from './EmployeesTableRow';
 
 type EmployeesTableProps = {
-  employees: EmployeeResponse[];
+  employees: Employee[];
 };
 
 export const EmployeesTable = ({ employees }: EmployeesTableProps) => {
@@ -15,7 +15,7 @@ export const EmployeesTable = ({ employees }: EmployeesTableProps) => {
   const setSorting = useEmployeesStore(s => s.setSorting);
 
   return (
-    <Table aria-label="simple table">
+    <Table>
       <TableHead
         columns={EMPLOYEES_HEAD_COLUMNS}
         sortBy={sortBy}

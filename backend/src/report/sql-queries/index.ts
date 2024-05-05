@@ -1,3 +1,3 @@
-export * from './employees-by-employers';
-export * from './employees-by-position';
-export * from './results-by-stores';
+export * from './employed-in-store';
+export * from './positions-in-store';
+export * from './stores-with-totals';

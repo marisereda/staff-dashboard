@@ -4,8 +4,8 @@ export const GetStoresSchema = z.object({
   query: z.object({
     q: z.string().optional(),
     sortBy: z
-      .enum(['code1C', 'address', 'addressBuh', 'checkoutNumber', 'placesAmount'])
-      .default('address'),
+      .enum(['code1C', 'addressHr', 'addressBuh', 'checkoutNumber', 'placesAmount'])
+      .default('addressHr'),
     sortOrder: z.enum(['asc', 'desc']).default('asc'),
     page: z.coerce.number().int().gte(1).default(1),
     pageSize: z.coerce.number().int().gte(1).lte(100).optional(),
