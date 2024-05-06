@@ -1,4 +1,4 @@
-import { Employee, Prisma } from '@prisma/client';
+import { Employee, Prisma, PrismaClient } from '@prisma/client';
 import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
@@ -9,7 +9,13 @@ class UpdateHrService {
     const report = dataParserService.parseHrReport(file);
 
     await prisma.$transaction(async tx => {
+      const employeesCodes1CFromReport = report.map(({ code1C }) => code1C);
+
       await tx.workplaceHr.deleteMany();
+      await tx.employee.updateMany({
+        where: { code1C: { notIn: employeesCodes1CFromReport } },
+        data: { updateStatus: UpdateStatus.DELETE },
+      });
 
       const updatedStores = await Promise.all(
         this.getStoresFromReport(report).map(store =>
@@ -27,7 +33,7 @@ class UpdateHrService {
           ...employeeData,
           workplacesHr: { create: { storeId: updatedStore!.id, position } },
         };
-        console.log('🚧 data:', data);
+
         let employee: Employee;
         // 1)
         if (employeeData.code1C && !employeeData.inn) {
@@ -100,6 +106,18 @@ class UpdateHrService {
       }
     });
   };
+
+  // private updateDeleteStatusEmployees = async (
+  //   tx: PrismaClient,
+  //   report: HrReportEmployee[]
+  // ): Promise<void> => {
+  //   const employeesCodes1CFromReport = report.map(({ code1C }) => code1C);
+  //   const numberOfUpdatedEmployees = await prisma.employee.updateMany({
+  //     where: { code1C: { notIn: employeesCodes1CFromReport } },
+  //     data: { updateStatus: UpdateStatus.DELETE },
+  //   });
+  //   console.log('🚧 numberOfUpdatedEmployees:', numberOfUpdatedEmployees);
+  // };
 
   private getStoresFromReport = (report: HrReportEmployee[]): HrReportStore[] => {
     return report.reduce((acc: HrReportStore[], { store }) => {
