@@ -11,7 +11,8 @@ export type Employee = {
   isFop: boolean;
   name: string;
   phone?: string;
-  updateStatus?: string;
+  updateStatusHr?: string;
+  updateStatusBuh?: string;
 
   createdAt: Date;
   updatedAt: Date;

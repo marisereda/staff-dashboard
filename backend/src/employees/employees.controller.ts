@@ -23,3 +23,11 @@ export const updateOne = async (
   const employee = await employeesService.updateOne(req.state!.params.id, req.state!.body);
   res.status(200).json(employee);
 };
+
+export const deleteOne = async (
+  req: AppRequest<GetEmployeeRequest>,
+  res: Response
+): Promise<void> => {
+  const employee = await employeesService.deleteOne(req.state!.params.id);
+  res.status(200).json(employee);
+};

@@ -62,6 +62,10 @@ class EmployeesService {
   updateOne = (id: string, data: Prisma.EmployeeUpdateInput): Promise<Employee> => {
     return prisma.employee.update({ where: { id }, data });
   };
+
+  deleteOne = (id: string): Promise<Employee> => {
+    return prisma.employee.delete({ where: { id } });
+  };
 }
 
 export const employeesService = new EmployeesService();

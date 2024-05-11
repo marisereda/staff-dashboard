@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Employee {
-  id           String  @id @default(cuid())
-  code1C       String? @unique
-  inn          String? @unique
-  isFop        Boolean @default(false)
-  name         String
-  phone        String?
-  updateStatus String?
+  id              String  @id @default(cuid())
+  code1C          String? @unique
+  inn             String? @unique
+  isFop           Boolean @default(false)
+  name            String
+  phone           String?
+  updateStatusHr  String?
+  updateStatusBuh String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,5 +1,6 @@
-import { Employee, Prisma, PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { UpdateStatus } from '~/common/enums';
+import { HttpError } from '~/common/errors';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
 import { HrReportEmployee, HrReportStore } from '~/data-parser/types';
@@ -14,7 +15,7 @@ class UpdateHrService {
       await tx.workplaceHr.deleteMany();
       await tx.employee.updateMany({
         where: { code1C: { notIn: employeesCodes1CFromReport } },
-        data: { updateStatus: UpdateStatus.DELETE },
+        data: { updateStatusHr: UpdateStatus.DELETE },
       });
 
       const updatedStores = await Promise.all(
@@ -27,82 +28,38 @@ class UpdateHrService {
         )
       );
 
-      for (const { store, position, ...employeeData } of report) {
+      for (const { store, position, inn, ...employeeData } of report) {
         const updatedStore = updatedStores.find(({ code1C }) => code1C === store.code1C);
+
         const data: Prisma.EmployeeCreateInput = {
           ...employeeData,
+          inn: inn || null,
           workplacesHr: { create: { storeId: updatedStore!.id, position } },
         };
 
-        let employee: Employee;
-        // 1)
-        if (employeeData.code1C && !employeeData.inn) {
-          employee = await tx.employee.upsert({
-            where: { code1C: employeeData.code1C },
-            update: { ...data, updateStatus: UpdateStatus.SUCCESS },
-            create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
-          });
-          console.log('🚧 employee:', employee);
-        }
-        // 2)
-        else if (employeeData.code1C && employeeData.inn) {
-          const currentEmployee = await tx.employee.findUnique({
-            where: { code1C: employeeData.code1C, inn: employeeData.inn },
-          });
-          // 2.1)
-          if (currentEmployee) {
-            employee = await tx.employee.update({
-              where: {
-                id: currentEmployee.id,
-              },
-              data: { ...data, updateStatus: UpdateStatus.SUCCESS },
-            });
-          }
-          // 2.2
-          else {
-            const employeeCreatedByBuh = await tx.employee.findUnique({
-              where: { inn: employeeData.inn },
-            });
-            const employeeCreatedByHr = await tx.employee.findUnique({
+        const employeeByInn = inn ? await tx.employee.findUnique({ where: { inn } }) : null;
+
+        if (employeeByInn && !employeeByInn.code1C) {
+          await Promise.all([
+            tx.employee.delete({
               where: { code1C: employeeData.code1C },
-            });
-            //2.3
-            if (employeeCreatedByBuh && employeeCreatedByHr) {
-              await tx.employee.delete({ where: { id: employeeCreatedByHr.id } });
-              employee = await tx.employee.update({
-                where: { id: employeeCreatedByBuh.id },
-                data: { ...data, updateStatus: UpdateStatus.SUCCESS },
-              });
-            } else if (!employeeCreatedByBuh && employeeCreatedByHr) {
-              employee = await tx.employee.update({
-                where: { id: employeeCreatedByHr.id },
-                data: { ...data, updateStatus: UpdateStatus.SUCCESS },
-              });
-            } else if (employeeCreatedByBuh && !employeeCreatedByHr) {
-              employee = await tx.employee.update({
-                where: { id: employeeCreatedByBuh.id },
-                data: { ...data, updateStatus: UpdateStatus.SUCCESS },
-              });
-            }
-          }
+            }),
+            tx.employee.update({ where: { inn }, data: { code1C: employeeData.code1C } }),
+          ]);
+        } else if (employeeByInn && employeeByInn.code1C !== employeeData.code1C) {
+          throw new HttpError(
+            409,
+            `Failed to update HrReport: found duplicate employee ${JSON.stringify(
+              employeeByInn
+            )} when updating ${JSON.stringify(employeeData)}`
+          );
         }
 
-        // await Promise.all(
-        //   report.map(({ store, position, ...employeeData }) => {
-        //     const updatedStore = updatedStores.find(({ code1C }) => code1C === store.code1C);
-        //     const data: Prisma.EmployeeCreateInput = {
-        //       ...employeeData,
-        //       workplacesHr: { create: { storeId: updatedStore!.id, position } },
-        //     };
-        //     console.log('🚧 data:', data);
-
-        //     return tx.employee.upsert({
-        //       where: { code1C: employeeData.code1C },
-        //       update: { ...data, updateStatus: UpdateStatus.SUCCESS },
-        //       create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
-        //     });
-        //   })
-        // );
+        await tx.employee.upsert({
+          where: { code1C: employeeData.code1C },
+          update: { ...data, updateStatusHr: UpdateStatus.SUCCESS },
+          create: { ...data, updateStatusHr: UpdateStatus.NOT_FOUND },
+        });
       }
     });
   };

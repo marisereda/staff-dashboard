@@ -7,7 +7,7 @@ import { useEmployeesQuery } from '../queries';
 import { useEmployeesStore } from '../state';
 
 export const EmployeesPage = () => {
-  const search = useEmployeesStore(s => s.search);
+  const search = useEmployeesStore(s => s.q);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);

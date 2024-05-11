@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { isEmpty } from 'ramda';
 import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
@@ -31,8 +32,8 @@ class UpdateBuhService {
         )
       );
 
-      await Promise.all(
-        report.map(({ store, employer: _, position, ...employeeData }) => {
+      await Promise.all([
+        ...report.map(({ store, employer: _, position, ...employeeData }) => {
           const updatedStore = updatedStores.find(({ code1C }) => code1C === store.code1C);
           const data: Prisma.EmployeeCreateInput = {
             ...employeeData,
@@ -42,11 +43,15 @@ class UpdateBuhService {
           };
           return tx.employee.upsert({
             where: { inn: employeeData.inn },
-            update: { ...data, updateStatus: UpdateStatus.SUCCESS },
-            create: { ...data, updateStatus: UpdateStatus.NOT_FOUND },
+            update: { ...data, updateStatusBuh: UpdateStatus.SUCCESS },
+            create: { ...data, updateStatusBuh: UpdateStatus.NOT_FOUND },
           });
-        })
-      );
+        }),
+        tx.employee.updateMany({
+          where: { AND: { workplacesBuh: { none: {} }, workplacesHr: { none: {} } } },
+          data: { updateStatusBuh: UpdateStatus.DELETE },
+        }),
+      ]);
     });
   };
 

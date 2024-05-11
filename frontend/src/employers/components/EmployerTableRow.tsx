@@ -11,11 +11,11 @@ type EmployersTableRowProps = {
 
 export const EmployersTableRow = ({ employer }: EmployersTableRowProps) => {
   const { id, inn, name, isSingleTax } = employer;
-  const isFromOpen = useEmployersStore(s => s.isFormOpen);
+  const isFormOpen = useEmployersStore(s => s.isFormOpen);
   const openForm = useEmployersStore(s => s.openForm);
   const { mutate: deleteEmployer, isPending } = useDeleteEmployer();
 
-  const isButtonsDisabled = isFromOpen || isPending;
+  const isButtonsDisabled = isFormOpen || isPending;
 
   return (
     <TableRow

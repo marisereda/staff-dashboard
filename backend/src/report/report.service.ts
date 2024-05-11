@@ -47,7 +47,6 @@ class Report {
         )
       )
     );
-    console.log('🚧 positionsInStores:', positionsInStores);
 
     const rows = storesWithTotals.map((storeWithTotals, i) =>
       this.prepareRow({
