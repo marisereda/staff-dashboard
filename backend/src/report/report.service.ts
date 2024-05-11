@@ -11,21 +11,53 @@ import {
   getPositionsInStoreSQL,
   getStoresWithTotalsSQL,
 } from './sql-queries';
+import { FreelancersInStore, getFreelancersInStoreSQL } from './sql-queries/freelancers-in-store';
 
 class Report {
   async getReport(): Promise<Buffer> {
     const { header, rows } = await this.prepareRows();
-
+    const freelancers = await this.getFreelancers();
+    const freelancersHeader = [
+      'ІПН',
+      'ПІБ',
+      'Посада HR',
+      'Посада бух.',
+      'Роботодавець',
+      'Адреса магазину бух.',
+    ];
+    const freelancersRows = freelancers.map(freelancer => [
+      freelancer.employeeInn,
+      freelancer.employeeName,
+      freelancer.positionHr,
+      freelancer.positionBuh,
+      freelancer.employerName,
+      freelancer.addressBuh,
+    ]);
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.sheet_new();
+    const worksheetFreelancers = XLSX.utils.sheet_new();
 
     XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
     XLSX.utils.sheet_add_aoa(worksheet, rows, { origin: 'A2' });
+    XLSX.utils.sheet_add_aoa(worksheetFreelancers, [freelancersHeader], { origin: 'A1' });
+    XLSX.utils.sheet_add_aoa(worksheetFreelancers, freelancersRows, { origin: 'A2' });
 
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Дислокация');
+    XLSX.utils.book_append_sheet(workbook, worksheetFreelancers, 'Внештат');
 
     return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
     ``;
+  }
+
+  async getFreelancers(): Promise<FreelancersInStore[]> {
+    const stores = await prisma.store.findMany();
+
+    const freelancers = await Promise.all(
+      stores.map(store =>
+        prisma.$queryRaw<FreelancersInStore[]>(getFreelancersInStoreSQL(store.id))
+      )
+    );
+    return freelancers.flat();
   }
 
   async prepareRows(): Promise<{ header: string[]; rows: string[][] }> {
