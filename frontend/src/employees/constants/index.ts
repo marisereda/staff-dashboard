@@ -18,7 +18,7 @@ export const EMPLOYEES_HEAD_COLUMNS: HeadColumnOptions<EmployeesSearchParams['so
     sortBy: 'name',
   },
   {
-    primaryLabel: 'Посади',
+    primaryLabel: 'Посада, адреса, роботодавець',
     secondaryLabel: null,
     sortBy: null,
   },
