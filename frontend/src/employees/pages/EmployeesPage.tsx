@@ -1,9 +1,11 @@
-import { Divider, Stack, TablePagination } from '@mui/material';
+import { Divider, Stack, TablePagination, Typography } from '@mui/material';
+
 import { useDebounce } from 'use-debounce';
 import { EmployeesTable } from '../components';
 import { EmployeeForm } from '../components/EmployeeForm';
 import { EmployeesFilterBar } from '../components/EmployeesFilterBar';
-import { useEmployeesQuery } from '../queries';
+import { useEmployeesQuery, useGetStore } from '../queries';
+import { useGetHiredEmployees } from '../queries/useGetHiredEmployees';
 import { useEmployeesStore } from '../state';
 
 export const EmployeesPage = () => {
@@ -21,6 +23,19 @@ export const EmployeesPage = () => {
 
   const [debouncedSearch] = useDebounce<string>(search, 500);
 
+  console.log(storeId);
+  const { data: store } = useGetStore(storeId);
+  const { data: hiredEmployees } = useGetHiredEmployees(storeId);
+  console.log('Hired employees', hiredEmployees);
+
+  const employedStaffNumber = hiredEmployees?.employedStaff.reduce((acc, employee) => {
+    return acc + employee.employees;
+  }, 0);
+  const employedFreelancersNumber = hiredEmployees?.employedFreelancers.length;
+
+  console.log('🚧 employedStaffNumber:', employedStaffNumber);
+  console.log('🚧 employedFreelancersNumber:', employedFreelancersNumber);
+
   const { data: employeesPage } = useEmployeesQuery({
     q: debouncedSearch,
     fopFilter,
@@ -35,6 +50,16 @@ export const EmployeesPage = () => {
   return (
     <Stack spacing={3}>
       <EmployeesFilterBar />
+      <Typography flexDirection={'row'} gap={7} display={'flex'} variant="h6">
+        <span>Штат:</span>
+        <span>{employeesPage?.total}</span>
+        <span>Кількість місць:</span>
+        <span>{store?.placesAmount}</span>
+        <span>Прац.штат:</span>
+        <span>{employedStaffNumber}</span>
+        <span>Прац.позаштат:</span>
+        <span>{employedFreelancersNumber}</span>
+      </Typography>
       {employeesPage && (
         <>
           <EmployeesTable employees={employeesPage.data} />

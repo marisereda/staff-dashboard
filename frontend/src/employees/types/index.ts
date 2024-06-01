@@ -58,4 +58,16 @@ export type EmployeesSearchParams = {
   pageSize: number;
 };
 
+export type HiredEmployees = {
+  employedStaff: { employerId: string; employees: number }[];
+  employedFreelancers: {
+    employeeInn: string;
+    employeeName: string;
+    positionHr: string | null;
+    positionBuh: string;
+    employerName: string;
+    addressBuh: string;
+  }[];
+};
+
 export type UpdateEmployeeData = z.infer<typeof updateEmployeeSchema>;

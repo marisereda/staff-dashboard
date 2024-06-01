@@ -1,6 +1,7 @@
 import { Employer } from '@prisma/client';
 import XLSX from 'xlsx';
 import { prisma } from '~/common/services';
+import { convertBigIntToInt } from '~/common/utils/mappers';
 import { getInitials } from '~/common/utils/string-utils';
 import { POSITION_CATEGORIES } from './constants';
 import {
@@ -47,6 +48,16 @@ class Report {
 
     return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
     ``;
+  }
+
+  async getFreelancersInStore(storeId: string): Promise<FreelancersInStore[]> {
+    return prisma.$queryRaw<FreelancersInStore[]>(getFreelancersInStoreSQL(storeId));
+  }
+
+  async getEmployedInStore(storeId: string): Promise<EmployedInStore[]> {
+    const employees = await prisma.$queryRaw<EmployedInStore[]>(getEmployedInStoreSQL(storeId));
+
+    return employees.map(convertBigIntToInt);
   }
 
   async getFreelancers(): Promise<FreelancersInStore[]> {

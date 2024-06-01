@@ -18,7 +18,7 @@ export type EmployersSearchParams = {
   sortBy: 'inn' | 'name';
   sortOrder: SortOrder;
   page: number;
-  pageSize: number;
+  pageSize?: number;
 };
 
 export type CreateEmployerData = z.infer<typeof createEmployerSchema>;

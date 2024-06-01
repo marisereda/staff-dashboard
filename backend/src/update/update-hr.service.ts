@@ -64,18 +64,6 @@ class UpdateHrService {
     });
   };
 
-  // private updateDeleteStatusEmployees = async (
-  //   tx: PrismaClient,
-  //   report: HrReportEmployee[]
-  // ): Promise<void> => {
-  //   const employeesCodes1CFromReport = report.map(({ code1C }) => code1C);
-  //   const numberOfUpdatedEmployees = await prisma.employee.updateMany({
-  //     where: { code1C: { notIn: employeesCodes1CFromReport } },
-  //     data: { updateStatus: UpdateStatus.DELETE },
-  //   });
-  //   console.log('🚧 numberOfUpdatedEmployees:', numberOfUpdatedEmployees);
-  // };
-
   private getStoresFromReport = (report: HrReportEmployee[]): HrReportStore[] => {
     return report.reduce((acc: HrReportStore[], { store }) => {
       const isStoreSaved = acc.find(({ code1C }) => code1C === store.code1C);

@@ -20,7 +20,7 @@ export type StoresSearchParams = {
   sortBy: 'code1C' | 'addressHr' | 'addressBuh' | 'checkoutNumber' | 'placesAmount';
   sortOrder: SortOrder;
   page: number;
-  pageSize: number;
+  pageSize?: number;
 };
 
 export type UpdateStoreData = z.infer<typeof updateStoreSchema>;

@@ -15,7 +15,7 @@ const VALIDATION = {
       row: 6,
       colsValues: [
         '№ у групі',
-        'Таб. №',
+        'Працівник.Фіз.особа.Код',
         'Працівник',
         'ДРФО',
         'Посада',
@@ -69,8 +69,8 @@ class HrParser {
     while (!isRowEmpty(ws, row, 1, PARSE.colNumber)) {
       if (this.isStore(ws, row)) {
         store = parseRow<HrReportStore>(ws, row, PARSE.store);
-      }
 
+      }
       if (this.isEmployee(ws, row)) {
         if (!store) {
           throw new Error('Invalid table format (employer or store not found)');

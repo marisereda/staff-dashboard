@@ -1,8 +1,9 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { Grid, IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { UpdateStatus } from '../../common/enums';
+import { makeShortName } from '../../common/utils/makeShortName';
 import { useDeleteEmployee } from '../queries/useDeleteEmployee';
 import { useEmployeesStore } from '../state';
 import { Employee } from '../types';
@@ -65,14 +66,49 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
       <TableCell>
         {workplacesHr.map(({ id, position, store }) => (
-          <Typography key={id} variant="subtitle2" sx={{ fontWeight: 600 }}>
-            {`${position} в ${store.addressHr}`}
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography component="span" key={id} variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {position}
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography component="span" key={id} variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {store.addressHr}
+              </Typography>
+            </Grid>
+          </Grid>
         ))}
         {workplacesBuh.map(({ id, position, store, employer }) => (
-          <Typography key={id} variant="caption" sx={theme => ({ color: theme.palette.grey[600] })}>
-            {`${position} в ${store.addressBuh} (${employer.name})`}
-          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography
+                key={id}
+                variant="caption"
+                sx={theme => ({ color: theme.palette.grey[600] })}
+              >
+                {position}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography
+                key={id}
+                variant="caption"
+                sx={theme => ({ color: theme.palette.grey[600] })}
+              >
+                {store.addressBuh}
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography
+                key={id}
+                variant="caption"
+                sx={theme => ({ color: theme.palette.grey[600] })}
+              >
+                {makeShortName(employer.name)}
+              </Typography>
+            </Grid>
+          </Grid>
         ))}
       </TableCell>
 
