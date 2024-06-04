@@ -23,6 +23,7 @@
     "react-hook-form": "^7.51.4",
     "react-router-dom": "^6.22.1",
     "use-debounce": "^10.0.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
     "zod": "^3.22.4",
     "zustand": "^4.5.1"
   },

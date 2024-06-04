@@ -3,7 +3,7 @@ import { api } from '../../common/api';
 import { PageData } from '../../common/types';
 import { Employee, EmployeesSearchParams } from '../types';
 
-const getEmployees = async ({
+export const getEmployees = async ({
   fopFilter,
   storeId,
   employerId,

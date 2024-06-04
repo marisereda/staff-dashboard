@@ -66,7 +66,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
       <TableCell>
         {workplacesHr.map(({ id, position, store }) => (
-          <Grid container spacing={2}>
+          <Grid key={id} container spacing={2}>
             <Grid item xs={4}>
               <Typography component="span" key={id} variant="subtitle2" sx={{ fontWeight: 600 }}>
                 {position}
@@ -80,7 +80,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
           </Grid>
         ))}
         {workplacesBuh.map(({ id, position, store, employer }) => (
-          <Grid container spacing={2}>
+          <Grid key={id} container spacing={2}>
             <Grid item xs={4}>
               <Typography
                 key={id}

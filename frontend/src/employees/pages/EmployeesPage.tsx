@@ -1,11 +1,12 @@
-import { Divider, Stack, TablePagination, Typography } from '@mui/material';
+import { Button, Divider, Stack, TablePagination, Typography } from '@mui/material';
 
 import { useDebounce } from 'use-debounce';
 import { EmployeesTable } from '../components';
 import { EmployeeForm } from '../components/EmployeeForm';
 import { EmployeesFilterBar } from '../components/EmployeesFilterBar';
-import { useEmployeesQuery, useGetStore } from '../queries';
+import { getEmployees, useEmployeesQuery, useGetStore } from '../queries';
 import { useGetHiredEmployees } from '../queries/useGetHiredEmployees';
+import { uploadEmployeesToFile } from '../service/uploadEmployeesToFile';
 import { useEmployeesStore } from '../state';
 
 export const EmployeesPage = () => {
@@ -33,9 +34,6 @@ export const EmployeesPage = () => {
   }, 0);
   const employedFreelancersNumber = hiredEmployees?.employedFreelancers.length;
 
-  console.log('🚧 employedStaffNumber:', employedStaffNumber);
-  console.log('🚧 employedFreelancersNumber:', employedFreelancersNumber);
-
   const { data: employeesPage } = useEmployeesQuery({
     q: debouncedSearch,
     fopFilter,
@@ -46,6 +44,21 @@ export const EmployeesPage = () => {
     page,
     pageSize,
   });
+
+  const handleUploadFile = async () => {
+    const employeesPage = await getEmployees({
+      q: debouncedSearch,
+      fopFilter,
+      storeId,
+      employerId,
+      sortBy,
+      sortOrder,
+      page,
+      pageSize: 100,
+    });
+
+    uploadEmployeesToFile(employeesPage.data, storeId);
+  };
 
   return (
     <Stack spacing={3}>
@@ -59,6 +72,12 @@ export const EmployeesPage = () => {
         <span>{employedStaffNumber}</span>
         <span>Прац.позаштат:</span>
         <span>{employedFreelancersNumber}</span>
+
+        {employeesPage && storeId && (
+          <Button variant="contained" onClick={handleUploadFile}>
+            Завантажити у файл
+          </Button>
+        )}
       </Typography>
       {employeesPage && (
         <>
