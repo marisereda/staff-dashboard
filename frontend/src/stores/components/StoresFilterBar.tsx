@@ -1,5 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Stack, TextField } from '@mui/material';
+
 import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useStoresStore } from '../state';
 

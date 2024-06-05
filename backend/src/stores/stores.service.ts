@@ -15,7 +15,7 @@ class StoresService {
     const orderBy = { [sortBy]: sortOrder };
 
     if (q) {
-      const conditions = ['code1C', 'address', 'addressBug'].map(item => ({
+      const conditions = ['code1C', 'addressHr', 'addressBuh'].map(item => ({
         [item]: { contains: q },
       }));
       where.OR = conditions;

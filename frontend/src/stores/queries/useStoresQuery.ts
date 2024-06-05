@@ -5,6 +5,7 @@ import { Store, StoresSearchParams } from '../types';
 
 const getStores = async (searchParams: StoresSearchParams) => {
   const { data } = await api.get<PageData<Store[]>>('stores', { params: searchParams });
+
   return data;
 };
 
