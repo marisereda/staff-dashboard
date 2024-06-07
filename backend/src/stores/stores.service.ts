@@ -6,6 +6,7 @@ import { GetStoresQuery } from './types';
 class StoresService {
   getAll = async ({
     q,
+    employerId,
     sortBy,
     sortOrder,
     page,
@@ -19,6 +20,9 @@ class StoresService {
         [item]: { contains: q },
       }));
       where.OR = conditions;
+    }
+    if (employerId) {
+      where.workplacesBuh = { some: { employerId } };
     }
 
     const pagination = pageSize

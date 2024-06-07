@@ -4,13 +4,11 @@ import { Autocomplete, Stack, TextField } from '@mui/material';
 import { useEmployersQuery } from '../../employers/queries/useEmployersQuery';
 import { useStoresStore } from '../state';
 
-// TODO: add filter by employers
 export function StoresFilterBar() {
   const search = useStoresStore(s => s.q);
-  // const employerId = useStoresStore(s => s.employerId);
+  const employerId = useStoresStore(s => s.employerId);
   const setSearch = useStoresStore(s => s.setSearch);
-  // const setEmployerId = useStoresStore(s => s.setEmployerId);
-
+  const setEmployerId = useStoresStore(s => s.setEmployerId);
   const { data: employersPage } = useEmployersQuery({
     q: '',
     sortBy: 'name',
@@ -21,17 +19,16 @@ export function StoresFilterBar() {
   const employersOptions =
     employersPage?.data.map(employer => ({ label: employer.name, id: employer.id })) ?? [];
 
-  // const currentEmployerOption =
-  // employersOptions.find(option => option.id === employerId);
+  const currentEmployerOption = employersOptions.find(option => option.id === employerId);
 
   return (
     <Stack direction="row" spacing={3} sx={{ justifyContent: 'right' }}>
       <Autocomplete
         disablePortal
         options={employersOptions}
-        // value={currentEmployerOption || null}
+        value={currentEmployerOption || null}
         sx={{ width: '40%' }}
-        // onChange={(_, value) => setEmployerId(value ? value.id : '')}
+        onChange={(_, value) => setEmployerId(value ? value.id : '')}
         renderInput={params => <TextField {...params} label="Роботодавець" />}
       />
 

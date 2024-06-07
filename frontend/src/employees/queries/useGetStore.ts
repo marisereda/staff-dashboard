@@ -9,8 +9,6 @@ const getStore = async (id: string): Promise<Store> => {
 };
 
 export const useGetStore = (id: string) => {
-  console.log('useGetStore, id:', id);
-
   return useQuery({
     queryKey: [`stores.${id}`],
     queryFn: () => getStore(id),

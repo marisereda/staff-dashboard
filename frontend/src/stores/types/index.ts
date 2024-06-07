@@ -17,6 +17,7 @@ export type Store = {
 
 export type StoresSearchParams = {
   q: string;
+  employerId: string | null;
   sortBy: 'code1C' | 'addressHr' | 'addressBuh' | 'checkoutNumber' | 'placesAmount';
   sortOrder: SortOrder;
   page: number;

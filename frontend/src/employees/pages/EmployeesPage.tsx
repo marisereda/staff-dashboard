@@ -24,10 +24,9 @@ export const EmployeesPage = () => {
 
   const [debouncedSearch] = useDebounce<string>(search, 500);
 
-  console.log(storeId);
+
   const { data: store } = useGetStore(storeId);
   const { data: hiredEmployees } = useGetHiredEmployees(storeId);
-  console.log('Hired employees', hiredEmployees);
 
   const employedStaffNumber = hiredEmployees?.employedStaff.reduce((acc, employee) => {
     return acc + employee.employees;

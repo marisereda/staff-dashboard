@@ -12,6 +12,7 @@ export const StoresPage = () => {
   const sortOrder = useStoresStore(s => s.sortOrder);
   const page = useStoresStore(s => s.page);
   const pageSize = useStoresStore(s => s.pageSize);
+  const employerId = useStoresStore(s => s.employerId);
   const setPage = useStoresStore(s => s.setPage);
   const setPageSize = useStoresStore(s => s.setPageSize);
 
@@ -19,6 +20,7 @@ export const StoresPage = () => {
 
   const { data: storesPage } = useStoresQuery({
     q: debouncedSearch,
+    employerId,
     sortBy,
     sortOrder,
     page,
@@ -37,7 +39,7 @@ export const StoresPage = () => {
             count={storesPage.total}
             page={page - 1}
             labelRowsPerPage="Рядків:"
-            rowsPerPage={pageSize}
+            rowsPerPage={pageSize!}
             rowsPerPageOptions={[5, 10, 25, 50]}
             onPageChange={(_, page) => setPage(page + 1)}
             onRowsPerPageChange={e => setPageSize(Number(e.target.value))}

@@ -9,7 +9,7 @@ export const getAll = async (req: AppRequest<GetStoresRequest>, res: Response): 
 };
 
 export const getOne = async (req: AppRequest<GetStoreRequest>, res: Response): Promise<void> => {
-  console.log('getOne');
+
   const store = await storesService.getOne(req.state!.params.id);
   res.status(200).json(store);
 };

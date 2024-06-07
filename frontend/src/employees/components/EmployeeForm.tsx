@@ -43,7 +43,7 @@ export function EmployeeForm() {
   }, [employee, setValue]);
 
   const onSubmit = (data: UpdateEmployeeData) => {
-    console.log('data', data);
+
     if (employee) {
       update(
         { ...data, id: employee?.id },
