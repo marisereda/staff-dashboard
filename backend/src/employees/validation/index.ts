@@ -12,7 +12,7 @@ export const GetEmployeesSchema = z.object({
     sortBy: z.enum(['code1C', 'inn', 'isFop', 'name', 'phone']).default('name'),
     sortOrder: z.enum(['asc', 'desc']).default('asc'),
     page: z.coerce.number().int().gte(1).default(1),
-    pageSize: z.coerce.number().int().gte(1).lte(100).default(50),
+    pageSize: z.coerce.number().int().gte(1).lte(200).default(50),
   }),
 });
 

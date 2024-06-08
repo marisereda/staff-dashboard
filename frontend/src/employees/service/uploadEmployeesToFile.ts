@@ -22,6 +22,7 @@ export const uploadEmployeesToFile = (employees: Employee[], storeId: string) =>
       origin: 'A1',
     }
   );
+
   worksheet['!cols'] = getColumnsWidth(rows);
   XLSX.writeFile(workbook, getFileName(employees[0], storeId), { compression: true });
 };

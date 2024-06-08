@@ -9,6 +9,7 @@ export function StoresFilterBar() {
   const employerId = useStoresStore(s => s.employerId);
   const setSearch = useStoresStore(s => s.setSearch);
   const setEmployerId = useStoresStore(s => s.setEmployerId);
+  const setPage = useStoresStore(s => s.setPage);
   const { data: employersPage } = useEmployersQuery({
     q: '',
     sortBy: 'name',
@@ -28,7 +29,10 @@ export function StoresFilterBar() {
         options={employersOptions}
         value={currentEmployerOption || null}
         sx={{ width: '40%' }}
-        onChange={(_, value) => setEmployerId(value ? value.id : '')}
+        onChange={(_, value) => {
+          setEmployerId(value ? value.id : '');
+          setPage(1);
+        }}
         renderInput={params => <TextField {...params} label="Роботодавець" />}
       />
 

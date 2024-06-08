@@ -15,6 +15,7 @@ export type Employer = {
 
 export type EmployersSearchParams = {
   q: string;
+  storeId?: string;
   sortBy: 'inn' | 'name';
   sortOrder: SortOrder;
   page: number;

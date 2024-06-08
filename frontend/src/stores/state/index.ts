@@ -11,7 +11,7 @@ type Actions = {
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
-  setEmployerId: (employerId: string | null) => void;
+  setEmployerId: (employerId: string) => void;
   openForm: (editingStore: Store | null) => void;
   closeForm: () => void;
 };
@@ -22,7 +22,7 @@ export const useStoresStore = create<State & Actions>(set => ({
   sortOrder: 'asc',
   page: 1,
   pageSize: 50,
-  employerId: null,
+  employerId: '',
   isFormOpen: false,
   editingStore: null,
 

@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const GetEmployersSchema = z.object({
   query: z.object({
     q: z.string().optional(),
+    storeId: z.string().optional(),
     sortBy: z.enum(['inn', 'name']).default('name').optional(),
     sortOrder: z.enum(['asc', 'desc']).default('asc').optional(),
     page: z.coerce.number().int().gte(1).default(1).optional(),

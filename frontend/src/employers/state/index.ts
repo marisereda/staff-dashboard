@@ -8,6 +8,7 @@ type State = EmployersSearchParams & {
 
 type Actions = {
   setSearch: (q: string) => void;
+  setStoreId: (employerId: string) => void;
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
@@ -17,6 +18,7 @@ type Actions = {
 
 export const useEmployersStore = create<State & Actions>(set => ({
   q: '',
+  storeId: '',
   sortBy: 'name',
   sortOrder: 'asc',
   page: 1,
@@ -25,6 +27,7 @@ export const useEmployersStore = create<State & Actions>(set => ({
   editingEmployer: null,
 
   setSearch: q => set(() => ({ q })),
+  setStoreId: storeId => set(() => ({ storeId })),
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),

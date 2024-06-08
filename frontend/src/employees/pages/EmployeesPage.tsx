@@ -24,7 +24,6 @@ export const EmployeesPage = () => {
 
   const [debouncedSearch] = useDebounce<string>(search, 500);
 
-
   const { data: store } = useGetStore(storeId);
   const { data: hiredEmployees } = useGetHiredEmployees(storeId);
 
@@ -52,8 +51,8 @@ export const EmployeesPage = () => {
       employerId,
       sortBy,
       sortOrder,
-      page,
-      pageSize: 100,
+      page: 1,
+      pageSize: 200,
     });
 
     uploadEmployeesToFile(employeesPage.data, storeId);

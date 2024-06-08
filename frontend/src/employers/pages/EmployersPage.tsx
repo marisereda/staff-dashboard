@@ -10,7 +10,7 @@ import { useEmployersStore } from '../state';
 // TODO: add filter by stores
 export const EmployersPage = () => {
   const search = useEmployersStore(s => s.q);
-  // const storeId = useEmployersStore(s => s.storeId);
+  const storeId = useEmployersStore(s => s.storeId);
   const sortBy = useEmployersStore(s => s.sortBy);
   const sortOrder = useEmployersStore(s => s.sortOrder);
   const page = useEmployersStore(s => s.page);
@@ -22,10 +22,11 @@ export const EmployersPage = () => {
 
   const { data: employersPage } = useEmployersQuery({
     q: debouncedSearch,
+    storeId,
     sortBy,
     sortOrder,
     page,
-    pageSize,
+    pageSize: 50,
   });
 
   return (
@@ -40,7 +41,7 @@ export const EmployersPage = () => {
             count={employersPage.total}
             page={page - 1}
             labelRowsPerPage="Рядків:"
-            rowsPerPage={pageSize}
+            rowsPerPage={pageSize!}
             rowsPerPageOptions={[5, 10, 25, 50]}
             onPageChange={(_, page) => setPage(page + 1)}
             onRowsPerPageChange={e => setPageSize(Number(e.target.value))}

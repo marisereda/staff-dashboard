@@ -22,9 +22,11 @@ export function EmployeesFilterBar() {
   const setFopFilter = useEmployeesStore(s => s.setFopFilter);
   const setStoreId = useEmployeesStore(s => s.setStoreId);
   const setEmployerId = useEmployeesStore(s => s.setEmployerId);
+  const setPage = useEmployeesStore(s => s.setPage);
 
   const { data: storesPage } = useStoresQuery({
     q: '',
+    employerId,
     sortBy: 'addressHr',
     sortOrder: 'asc',
     page: 1,
@@ -41,6 +43,7 @@ export function EmployeesFilterBar() {
 
   const { data: employersPage } = useEmployersQuery({
     q: '',
+    storeId,
     sortBy: 'name',
     sortOrder: 'asc',
     page: 1,
@@ -61,7 +64,10 @@ export function EmployeesFilterBar() {
         options={employersOptions}
         value={currentEmployerOption || null}
         sx={{ width: '40%' }}
-        onChange={(_, value) => setEmployerId(value ? value.id : '')}
+        onChange={(_, value) => {
+          setEmployerId(value ? value.id : '');
+          setPage(1);
+        }}
         renderInput={params => <TextField {...params} label="Роботодавець" />}
       />
       <Autocomplete
@@ -69,7 +75,10 @@ export function EmployeesFilterBar() {
         options={storesOptions}
         value={currentStoreOption || null}
         sx={{ width: '40%' }}
-        onChange={(_, value) => setStoreId(value ? value.id : '')}
+        onChange={(_, value) => {
+          setStoreId(value ? value.id : '');
+          setPage(1);
+        }}
         renderInput={params => <TextField {...params} label="Адреса магазина" />}
       />
       <FormControl sx={{ width: '20%' }}>
@@ -79,7 +88,10 @@ export function EmployeesFilterBar() {
           id="demo-simple-select"
           value={fopFilter}
           label="Самозайнята особа"
-          onChange={e => setFopFilter(e.target.value as EmployeesSearchParams['fopFilter'])}
+          onChange={e => {
+            setFopFilter(e.target.value as EmployeesSearchParams['fopFilter']);
+            setPage(1);
+          }}
         >
           <MenuItem value={'all'}>Всі</MenuItem>
           <MenuItem value={'true'}>Тільки ФОП</MenuItem>
