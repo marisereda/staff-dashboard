@@ -1,12 +1,14 @@
 import { Employee, Prisma } from '@prisma/client';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
+import { STATUS_FILTER_MAP } from './constants';
 import { GetEmployeesQuery } from './types';
 
 class EmployeesService {
   getAll = async ({
     q,
     isFop,
+    statusFilter,
     storeId,
     employerId,
     sortBy,
@@ -14,7 +16,7 @@ class EmployeesService {
     page,
     pageSize,
   }: GetEmployeesQuery): Promise<PageData<Employee[]>> => {
-    const where: Prisma.EmployeeWhereInput = {};
+    const whereAnd: Prisma.EmployeeWhereInput[] = [];
     const orderBy = { [sortBy]: sortOrder };
     const skip = pageSize * (page - 1);
     const take = pageSize;
@@ -23,24 +25,28 @@ class EmployeesService {
       const conditions = ['code1C', 'inn', 'name', 'phone'].map(item => ({
         [item]: { contains: q },
       }));
-      where.OR = conditions;
+      whereAnd.push({ OR: conditions });
     }
     if (isFop !== undefined) {
-      where.isFop = isFop;
+      whereAnd.push({ isFop });
+    }
+    if (statusFilter) {
+      whereAnd.push(STATUS_FILTER_MAP[statusFilter]);
     }
     if (storeId) {
-      where.OR = [
+      const conditions = [
         { workplacesHr: { some: { storeId } } },
         { workplacesBuh: { some: { storeId } } },
       ];
+      whereAnd.push({ OR: conditions });
     }
     if (employerId) {
-      where.workplacesBuh = { some: { employerId } };
+      whereAnd.push({ workplacesBuh: { some: { employerId } } });
     }
 
     const [data, total] = await Promise.all([
       prisma.employee.findMany({
-        where,
+        where: { AND: whereAnd },
         orderBy,
         skip,
         take,
@@ -49,14 +55,20 @@ class EmployeesService {
           workplacesBuh: { include: { store: true, employer: true } },
         },
       }),
-      prisma.employee.count({ where }),
+      prisma.employee.count({ where: { AND: whereAnd } }),
     ]);
 
     return { data, page, pageSize, total };
   };
 
   getOne = (id: string): Promise<Employee> => {
-    return prisma.employee.findUniqueOrThrow({ where: { id } });
+    return prisma.employee.findUniqueOrThrow({
+      where: { id },
+      include: {
+        workplacesHr: { include: { store: true } },
+        workplacesBuh: { include: { store: true, employer: true } },
+      },
+    });
   };
 
   updateOne = (id: string, data: Prisma.EmployeeUpdateInput): Promise<Employee> => {
@@ -65,6 +77,12 @@ class EmployeesService {
 
   deleteOne = (id: string): Promise<Employee> => {
     return prisma.employee.delete({ where: { id } });
+  };
+
+  deleteBuhWorkplace = async (workplaceId: string): Promise<void> => {
+    await prisma.workplaceBuh.delete({
+      where: { id: workplaceId },
+    });
   };
 }
 

@@ -12,6 +12,7 @@ import { useEmployeesStore } from '../state';
 export const EmployeesPage = () => {
   const search = useEmployeesStore(s => s.q);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
+  const statusFilter = useEmployeesStore(s => s.statusFilter);
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);
   const sortBy = useEmployeesStore(s => s.sortBy);
@@ -35,6 +36,7 @@ export const EmployeesPage = () => {
   const { data: employeesPage } = useEmployeesQuery({
     q: debouncedSearch,
     fopFilter,
+    statusFilter,
     storeId,
     employerId,
     sortBy,
@@ -47,6 +49,7 @@ export const EmployeesPage = () => {
     const employeesPage = await getEmployees({
       q: debouncedSearch,
       fopFilter,
+      statusFilter,
       storeId,
       employerId,
       sortBy,

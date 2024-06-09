@@ -11,7 +11,7 @@ class UpdateHrService {
 
     await prisma.$transaction(async tx => {
       const employeesCodes1CFromReport = report.map(({ code1C }) => code1C);
-
+      await tx.employee.updateMany({ data: { updateStatusHr: UpdateStatus.PENDING } });
       await tx.workplaceHr.deleteMany();
       await tx.employee.updateMany({
         where: { code1C: { notIn: employeesCodes1CFromReport } },
@@ -39,9 +39,9 @@ class UpdateHrService {
 
         const employeeByInn = inn ? await tx.employee.findUnique({ where: { inn } }) : null;
 
-        if (employeeByInn && !employeeByInn.code1C) {
+        if (employeeByInn && !employeeByInn.code1C && employeeData.code1C) {
           await Promise.all([
-            tx.employee.delete({
+            tx.employee.deleteMany({
               where: { code1C: employeeData.code1C },
             }),
             tx.employee.update({ where: { inn }, data: { code1C: employeeData.code1C } }),

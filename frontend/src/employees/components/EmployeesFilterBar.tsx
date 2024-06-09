@@ -18,8 +18,10 @@ export function EmployeesFilterBar() {
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
+  const statusFilter = useEmployeesStore(s => s.statusFilter);
   const setSearch = useEmployeesStore(s => s.setSearch);
   const setFopFilter = useEmployeesStore(s => s.setFopFilter);
+  const setStatusFilter = useEmployeesStore(s => s.setStatusFilter);
   const setStoreId = useEmployeesStore(s => s.setStoreId);
   const setEmployerId = useEmployeesStore(s => s.setEmployerId);
   const setPage = useEmployeesStore(s => s.setPage);
@@ -96,6 +98,25 @@ export function EmployeesFilterBar() {
           <MenuItem value={'all'}>Всі</MenuItem>
           <MenuItem value={'true'}>Тільки ФОП</MenuItem>
           <MenuItem value={'false'}>Тільки не ФОП</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={{ width: '20%' }}>
+        <InputLabel id="demo-simple-select-label">Звільнення</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={statusFilter}
+          label="Самозайнята особа"
+          onChange={e => {
+            setStatusFilter(e.target.value as EmployeesSearchParams['statusFilter']);
+            setPage(1);
+          }}
+        >
+          <MenuItem value={'all'}>Всі</MenuItem>
+          <MenuItem value={'hrDeleted'}>HR звільнення</MenuItem>
+          <MenuItem value={'buhDeleted'}>Бух.звільнення</MenuItem>
+          <MenuItem value={'allDeleted'}>Всі звільнення</MenuItem>
+          <MenuItem value={'notDeleted'}>Без звільнень</MenuItem>
         </Select>
       </FormControl>
       <TextField

@@ -50,6 +50,7 @@ export type WorkplaceBuh = {
 export type EmployeesSearchParams = {
   q: string;
   fopFilter: 'all' | 'true' | 'false';
+  statusFilter: 'all' | 'hrDeleted' | 'buhDeleted' | 'allDeleted' | 'notDeleted';
   storeId: string;
   employerId: string;
   sortBy: 'code1C' | 'inn' | 'isFop' | 'name' | 'phone';

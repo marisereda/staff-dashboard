@@ -9,6 +9,7 @@ type State = EmployeesSearchParams & {
 type Actions = {
   setSearch: (q: string) => void;
   setFopFilter: (fopFilter: State['fopFilter']) => void;
+  setStatusFilter: (markAsDeletedFilter: State['statusFilter']) => void;
   setStoreId: (employerId: string) => void;
   setEmployerId: (storeId: string) => void;
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
@@ -21,6 +22,7 @@ type Actions = {
 export const useEmployeesStore = create<State & Actions>(set => ({
   q: '',
   fopFilter: 'all',
+  statusFilter: 'all',
   storeId: '',
   employerId: '',
   sortBy: 'name',
@@ -32,6 +34,7 @@ export const useEmployeesStore = create<State & Actions>(set => ({
 
   setSearch: q => set(() => ({ q })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
+  setStatusFilter: statusFilter => set(() => ({ statusFilter })),
   setStoreId: storeId => set(() => ({ storeId })),
   setEmployerId: employerId => set(() => ({ employerId })),
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),

@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import { isEmpty } from 'ramda';
 import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
@@ -46,10 +45,6 @@ class UpdateBuhService {
             update: { ...data, updateStatusBuh: UpdateStatus.SUCCESS },
             create: { ...data, updateStatusBuh: UpdateStatus.NOT_FOUND },
           });
-        }),
-        tx.employee.updateMany({
-          where: { AND: { workplacesBuh: { none: {} }, workplacesHr: { none: {} } } },
-          data: { updateStatusBuh: UpdateStatus.DELETE },
         }),
       ]);
     });
