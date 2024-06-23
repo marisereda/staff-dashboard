@@ -4,7 +4,6 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { Grid, IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { UpdateStatus } from '../../common/enums';
 import { makeShortName } from '../../common/utils/makeShortName';
-import { useDeleteEmployee } from '../queries/useDeleteEmployee';
 import { useEmployeesStore } from '../state';
 import { Employee } from '../types';
 
@@ -14,7 +13,6 @@ type EmployeesTableRowProps = {
 
 export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
   const {
-    id,
     name,
     isFop,
     inn,
@@ -27,9 +25,7 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
   } = employee;
   const isFormOpen = useEmployeesStore(s => s.isFormOpen);
   const openForm = useEmployeesStore(s => s.openForm);
-  const { mutate: deleteEmployee, isPending } = useDeleteEmployee();
-
-  const isButtonsDisabled = isFormOpen || isPending;
+  const setDeletingEmployee = useEmployeesStore(s => s.setDeletingEmployee);
 
   return (
     <TableRow
@@ -114,15 +110,15 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
       <TableCell>
         {updateStatusBuh === UpdateStatus.DELETE || updateStatusHr === UpdateStatus.DELETE ? (
-          <IconButton color="error" disabled={isButtonsDisabled} onClick={() => deleteEmployee(id)}>
+          <IconButton
+            color="error"
+            disabled={isFormOpen}
+            onClick={() => setDeletingEmployee(employee)}
+          >
             <DeleteIcon />
           </IconButton>
         ) : (
-          <IconButton
-            color="success"
-            disabled={isButtonsDisabled}
-            onClick={() => openForm(employee)}
-          >
+          <IconButton color="success" disabled={isFormOpen} onClick={() => openForm(employee)}>
             <EditIcon />
           </IconButton>
         )}

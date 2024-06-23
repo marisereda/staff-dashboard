@@ -1,10 +1,10 @@
 import { Button, Divider, Stack, TablePagination, Typography } from '@mui/material';
-
 import { useDebounce } from 'use-debounce';
 import { EmployeesTable } from '../components';
+import { EmployeeDialog } from '../components/EmployeeDialog';
 import { EmployeeForm } from '../components/EmployeeForm';
 import { EmployeesFilterBar } from '../components/EmployeesFilterBar';
-import { getEmployees, useEmployeesQuery, useGetStore } from '../queries';
+import { getEmployees, useDeleteEmployee, useEmployeesQuery, useGetStore } from '../queries';
 import { useGetHiredEmployees } from '../queries/useGetHiredEmployees';
 import { uploadEmployeesToFile } from '../service/uploadEmployeesToFile';
 import { useEmployeesStore } from '../state';
@@ -15,6 +15,8 @@ export const EmployeesPage = () => {
   const statusFilter = useEmployeesStore(s => s.statusFilter);
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);
+  const deletingEmployee = useEmployeesStore(s => s.deletingEmployee);
+  const setDeletingEmployee = useEmployeesStore(s => s.setDeletingEmployee);
   const sortBy = useEmployeesStore(s => s.sortBy);
   const sortOrder = useEmployeesStore(s => s.sortOrder);
   const page = useEmployeesStore(s => s.page);
@@ -27,6 +29,7 @@ export const EmployeesPage = () => {
 
   const { data: store } = useGetStore(storeId);
   const { data: hiredEmployees } = useGetHiredEmployees(storeId);
+  const { mutate: deleteEmployee, isPending } = useDeleteEmployee();
 
   const employedStaffNumber = hiredEmployees?.employedStaff.reduce((acc, employee) => {
     return acc + employee.employees;
@@ -61,8 +64,26 @@ export const EmployeesPage = () => {
     uploadEmployeesToFile(employeesPage.data, storeId);
   };
 
+  const handleSubmit = () => {
+    deleteEmployee(deletingEmployee!.id);
+    setDeletingEmployee(null);
+  };
+
+  const handleReject = () => {
+    setDeletingEmployee(null);
+  };
+
   return (
     <Stack spacing={3}>
+      <EmployeeDialog
+        // isOpened={true}
+        isOpened={Boolean(deletingEmployee)}
+        isPending={isPending}
+        onSubmit={handleSubmit}
+        onReject={handleReject}
+        dialogTitle="Підтвердить видалення"
+        dialogContent={`Ви дійсно бажаєте видалити працівника: ${deletingEmployee?.name}?`}
+      />
       <EmployeesFilterBar />
       <Typography flexDirection={'row'} gap={7} display={'flex'} variant="h6">
         <span>Штат:</span>

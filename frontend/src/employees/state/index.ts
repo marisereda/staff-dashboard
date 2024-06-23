@@ -4,6 +4,7 @@ import { Employee, EmployeesSearchParams } from '../types';
 type State = EmployeesSearchParams & {
   isFormOpen: boolean;
   editingEmployee: Employee | null;
+  deletingEmployee: Employee | null;
 };
 
 type Actions = {
@@ -12,6 +13,7 @@ type Actions = {
   setStatusFilter: (markAsDeletedFilter: State['statusFilter']) => void;
   setStoreId: (employerId: string) => void;
   setEmployerId: (storeId: string) => void;
+  setDeletingEmployee: (deletingEmployee: Employee | null) => void;
   setSorting: (sortBy: State['sortBy'], sortOrder: State['sortOrder']) => void;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
@@ -31,12 +33,14 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   pageSize: 50,
   isFormOpen: false,
   editingEmployee: null,
+  deletingEmployee: null,
 
   setSearch: q => set(() => ({ q })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
   setStatusFilter: statusFilter => set(() => ({ statusFilter })),
   setStoreId: storeId => set(() => ({ storeId })),
   setEmployerId: employerId => set(() => ({ employerId })),
+  setDeletingEmployee: deletingEmployee => set(() => ({ deletingEmployee })),
   setSorting: (sortBy, sortOrder) => set(() => ({ sortBy, sortOrder, page: 1 })),
   setPage: page => set(() => ({ page })),
   setPageSize: pageSize => set(() => ({ pageSize, page: 1 })),

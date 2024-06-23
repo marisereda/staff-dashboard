@@ -16,7 +16,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormCheckBox } from '../../common/components/FormCheckBox';
 import { FormTextField } from '../../common/components/FormTextField';
@@ -74,82 +74,86 @@ export function EmployeeForm() {
   const isPending = isPendingUpdation || isPendingDeleteWorkplace || getEmployeeIsLoading;
 
   return (
-    <React.Fragment>
-      <Dialog
-        maxWidth="xl"
-        open={isFormOpen}
-        PaperProps={{
-          component: 'form',
-          onSubmit: handleSubmit(onSubmit),
-        }}
-        onClose={handleClose}
-      >
-        <DialogTitle>Редагування працівника</DialogTitle>
-        <DialogContent sx={{ minWidth: '500px' }}>
-          <Stack gap={3}>
-            <DialogContentText></DialogContentText>
-            <FormTextField label="ІПН" name="inn" disabled control={control} />
-            <FormTextField label="ПІБ" name="name" disabled control={control} />
-            <FormGroup>
-              <FormControlLabel
-                label="є самозайнятою особою"
-                control={<FormCheckBox name="isFop" control={control} />}
-              />
-            </FormGroup>
-            {Boolean(employee?.workplacesBuh.length) && (
-              <>
-                <DialogContentText>Працевлаштування</DialogContentText>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Адреса</TableCell>
-                      <TableCell>Посада</TableCell>
-                      <TableCell>Роботодавець</TableCell>
-                      <TableCell></TableCell>
+    <Dialog
+      maxWidth="xl"
+      open={isFormOpen}
+      PaperProps={{
+        component: 'form',
+        onSubmit: handleSubmit(onSubmit),
+      }}
+      onClose={handleClose}
+    >
+      <DialogTitle>Редагування працівника</DialogTitle>
+      <DialogContent sx={{ minWidth: '500px' }}>
+        <Stack gap={3}>
+          <DialogContentText></DialogContentText>
+          <FormTextField label="ІПН" name="inn" disabled control={control} />
+          <FormTextField label="ПІБ" name="name" disabled control={control} />
+          <FormGroup>
+            <FormControlLabel
+              label="є самозайнятою особою"
+              control={<FormCheckBox name="isFop" control={control} />}
+            />
+          </FormGroup>
+          {Boolean(employee?.workplacesBuh.length) && (
+            <>
+              <DialogContentText>Працевлаштування</DialogContentText>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Адреса</TableCell>
+                    <TableCell>Посада</TableCell>
+                    <TableCell>Роботодавець</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {employee?.workplacesBuh.map(workplace => (
+                    <TableRow key={workplace.id}>
+                      <TableCell>{workplace.store.addressBuh}</TableCell>
+                      <TableCell>{workplace.position}</TableCell>
+                      <TableCell>{makeShortName(workplace.employer.name)}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          disabled={isPending}
+                          onClick={() =>
+                            deleteWorkplace({
+                              employeeId: employee.id,
+                              workplaceId: workplace.id,
+                            })
+                          }
+                        >
+                          Звільнити
+                        </Button>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {employee?.workplacesBuh.map(workplace => (
-                      <TableRow key={workplace.id}>
-                        <TableCell>{workplace.store.addressBuh}</TableCell>
-                        <TableCell>{workplace.position}</TableCell>
-                        <TableCell>{makeShortName(workplace.employer.name)}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            disabled={isPending}
-                            onClick={() =>
-                              deleteWorkplace({
-                                employeeId: employee.id,
-                                workplaceId: workplace.id,
-                              })
-                            }
-                          >
-                            Звільнити
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </>
-            )}
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            disabled={isPendingUpdation}
-            onClick={() => {
-              handleClose(), reset();
-            }}
-          >
-            Скасувати
-          </Button>
-          <LoadingButton loading={isPending} disabled={isPending} type="submit">
-            Зберегти
-          </LoadingButton>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          disabled={isPendingUpdation}
+          onClick={() => {
+            handleClose(), reset();
+          }}
+        >
+          Скасувати
+        </Button>
+        <LoadingButton
+          loading={isPending}
+          disabled={isPending}
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
+          Зберегти
+        </LoadingButton>
+      </DialogActions>
+    </Dialog>
   );
 }
