@@ -3,7 +3,8 @@ import { z, ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
 const ConfigSchema = z.object({
-  PORT: z.coerce.number().default(3000),
+  SERVER_PORT: z.coerce.number().default(3000),
+  DATABASE_URL: z.string(),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;

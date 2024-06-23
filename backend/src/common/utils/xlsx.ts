@@ -1,5 +1,5 @@
 import fs from 'fs';
-import R from 'ramda';
+import * as R from 'ramda';
 import xlsx, { WorkSheet } from 'xlsx';
 
 export const readWorkSheetFromFile = (fileName: string): WorkSheet => {

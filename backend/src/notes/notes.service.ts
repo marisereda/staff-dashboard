@@ -1,5 +1,5 @@
 import { Note, Prisma } from '@prisma/client';
-import R from 'ramda';
+import * as R from 'ramda';
 import { prisma } from '~/common/services/prisma.service';
 import { NonNullableKeys, PageData } from '~/common/types';
 import { CreateNoteData, GetNotesQuery, UpdateNoteData } from './types';

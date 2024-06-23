@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
+    "prebuild": "rimraf dist -g && mkdir dist",
+    "build": "npm run build --workspaces",
+    "postbuild": "cp -r backend/dist dist/server && cp -r frontend/dist dist/server/public && cp node_modules/.prisma/client/query_engine-windows.dll.node dist/",
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
     "db:seed": "npm run db:seed --workspace backend",

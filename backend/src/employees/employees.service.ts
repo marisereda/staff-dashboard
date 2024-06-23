@@ -1,4 +1,5 @@
 import { Employee, Prisma } from '@prisma/client';
+import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
 import { STATUS_FILTER_MAP } from './constants';
@@ -82,6 +83,24 @@ class EmployeesService {
   deleteBuhWorkplace = async (workplaceId: string): Promise<void> => {
     await prisma.workplaceBuh.delete({
       where: { id: workplaceId },
+    });
+    this.markFiredEmployeesAsDeleted();
+  };
+
+  markFiredEmployeesAsDeleted = async (): Promise<void> => {
+    const unemployedEmployees = await prisma.employee.findMany({
+      where: { workplacesBuh: { none: {} }, workplacesHr: { none: {} } },
+      include: {
+        workplacesBuh: true,
+        workplacesHr: true,
+      },
+    });
+
+    const idsUnemployed = unemployedEmployees.map(unemployedEmployee => unemployedEmployee.id);
+
+    await prisma.employee.updateMany({
+      where: { id: { in: idsUnemployed } },
+      data: { updateStatusHr: UpdateStatus.DELETE },
     });
   };
 }
