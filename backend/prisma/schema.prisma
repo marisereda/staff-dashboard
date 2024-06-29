@@ -22,7 +22,7 @@ model Employee {
 
   workplacesHr  WorkplaceHr[]
   workplacesBuh WorkplaceBuh[]
-  notes         Note[]
+  note          Note?
 }
 
 model Store {
@@ -39,7 +39,6 @@ model Store {
 
   workplacesHr  WorkplaceHr[]
   workplacesBuh WorkplaceBuh[]
-  notes         Note[]
 }
 
 model Employer {
@@ -53,7 +52,6 @@ model Employer {
   updatedAt DateTime @updatedAt
 
   workplacesBuh WorkplaceBuh[]
-  notes         Note[]
 }
 
 model WorkplaceHr {
@@ -86,8 +84,7 @@ model WorkplaceBuh {
 
 model Note {
   id          String  @id @default(cuid())
-  ownerId     String?
-  title       String
+  title       String?
   content     String?
   isDone      Boolean @default(false)
   isImportant Boolean @default(false)
@@ -95,7 +92,6 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employee Employee? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  employer Employer? @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  store    Store?    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String   @unique
+  owner   Employee @relation(fields: [ownerId], references: [id])
 }

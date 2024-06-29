@@ -1,7 +1,9 @@
 import { Button, Divider, Stack, TablePagination, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
+import { NoteForm } from '../../notes/components/NoteForm';
 import { EmployeesTable } from '../components';
-import { EmployeeDialog } from '../components/EmployeeDialog';
+// import { EmployeeDialog } from '../components/EmployeeDialog';
+import { DialogConfirm } from '../../common/components/DialogConfirm';
 import { EmployeeForm } from '../components/EmployeeForm';
 import { EmployeesFilterBar } from '../components/EmployeesFilterBar';
 import { getEmployees, useDeleteEmployee, useEmployeesQuery, useGetStore } from '../queries';
@@ -75,7 +77,7 @@ export const EmployeesPage = () => {
 
   return (
     <Stack spacing={3}>
-      <EmployeeDialog
+      {/* <EmployeeDialog
         // isOpened={true}
         isOpened={Boolean(deletingEmployee)}
         isPending={isPending}
@@ -83,7 +85,7 @@ export const EmployeesPage = () => {
         onReject={handleReject}
         dialogTitle="Підтвердить видалення"
         dialogContent={`Ви дійсно бажаєте видалити працівника: ${deletingEmployee?.name}?`}
-      />
+      /> */}
       <EmployeesFilterBar />
       <Typography flexDirection={'row'} gap={7} display={'flex'} variant="h6">
         <span>Штат:</span>
@@ -118,6 +120,15 @@ export const EmployeesPage = () => {
         </>
       )}
       <EmployeeForm />
+      <NoteForm />
+      <DialogConfirm
+        isOpened={Boolean(deletingEmployee)}
+        isPending={isPending}
+        onSubmit={handleSubmit}
+        onReject={handleReject}
+        dialogTitle="Підтвердить видалення"
+        dialogContent={`Ви дійсно бажаєте видалити працівника: ${deletingEmployee?.name}?`}
+      />
     </Stack>
   );
 };

@@ -54,6 +54,7 @@ class EmployeesService {
         include: {
           workplacesHr: { include: { store: true } },
           workplacesBuh: { include: { store: true, employer: true } },
+          note: true,
         },
       }),
       prisma.employee.count({ where: { AND: whereAnd } }),
@@ -68,6 +69,7 @@ class EmployeesService {
       include: {
         workplacesHr: { include: { store: true } },
         workplacesBuh: { include: { store: true, employer: true } },
+        note: true,
       },
     });
   };

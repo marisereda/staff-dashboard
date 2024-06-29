@@ -1,15 +1,29 @@
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { Grid, IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import { Grid, IconButton, Stack, TableCell, TableRow, Typography } from '@mui/material';
 import { UpdateStatus } from '../../common/enums';
 import { makeShortName } from '../../common/utils/makeShortName';
+import { useNoteStore } from '../../notes/state';
 import { useEmployeesStore } from '../state';
 import { Employee } from '../types';
 
 type EmployeesTableRowProps = {
   employee: Employee;
 };
+
+type NoteColor =
+  | 'default'
+  | 'inherit'
+  | 'error'
+  | 'primary'
+  | 'secondary'
+  | 'info'
+  | 'success'
+  | 'warning';
 
 export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
   const {
@@ -22,10 +36,23 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
     workplacesBuh,
     updateStatusHr,
     updateStatusBuh,
+    note,
   } = employee;
   const isFormOpen = useEmployeesStore(s => s.isFormOpen);
   const openForm = useEmployeesStore(s => s.openForm);
   const setDeletingEmployee = useEmployeesStore(s => s.setDeletingEmployee);
+  const setEmployeeIdToNote = useNoteStore(s => s.setEmployeeId);
+
+  let noteColor: NoteColor = 'default';
+  if (note) {
+    noteColor = 'warning';
+  }
+  if (note?.isImportant) {
+    noteColor = 'error';
+  }
+  if (note?.isDone) {
+    noteColor = 'success';
+  }
 
   return (
     <TableRow
@@ -109,19 +136,31 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
       </TableCell>
 
       <TableCell>
-        {updateStatusBuh === UpdateStatus.DELETE || updateStatusHr === UpdateStatus.DELETE ? (
+        <Stack direction="row">
+          {updateStatusBuh === UpdateStatus.DELETE || updateStatusHr === UpdateStatus.DELETE ? (
+            <IconButton
+              color="error"
+              disabled={isFormOpen}
+              onClick={() => setDeletingEmployee(employee)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          ) : (
+            <IconButton color="success" disabled={isFormOpen} onClick={() => openForm(employee)}>
+              <EditIcon />
+            </IconButton>
+          )}
+
           <IconButton
-            color="error"
+            color={noteColor}
             disabled={isFormOpen}
-            onClick={() => setDeletingEmployee(employee)}
+            onClick={() => {
+              setEmployeeIdToNote(employee.id);
+            }}
           >
-            <DeleteIcon />
+            {note ? note.isDone ? <ChecklistRtlIcon /> : <DescriptionIcon /> : <NoteAddIcon />}
           </IconButton>
-        ) : (
-          <IconButton color="success" disabled={isFormOpen} onClick={() => openForm(employee)}>
-            <EditIcon />
-          </IconButton>
-        )}
+        </Stack>
       </TableCell>
     </TableRow>
   );

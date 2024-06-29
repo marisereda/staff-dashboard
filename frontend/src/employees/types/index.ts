@@ -19,6 +19,7 @@ export type Employee = {
 
   workplacesHr: WorkplaceHr[];
   workplacesBuh: WorkplaceBuh[];
+  note?: Note;
 };
 
 export type WorkplaceHr = {
@@ -45,6 +46,15 @@ export type WorkplaceBuh = {
 
   store: Store;
   employer: Employer;
+};
+
+export type Note = {
+  id: string;
+  ownerId: string;
+  title: string;
+  content: string;
+  isDone: boolean;
+  isImportant: boolean;
 };
 
 export type EmployeesSearchParams = {

@@ -56,7 +56,7 @@ class NotesService {
   }: CreateNoteData): Promise<Note | null> => {
     const note = await prisma.note.create({
       data: {
-        ownerId: ownerId ?? null,
+        ownerId: ownerId,
         content: content ?? null,
         ...data,
       },

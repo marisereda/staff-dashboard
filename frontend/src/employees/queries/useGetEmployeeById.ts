@@ -7,7 +7,7 @@ export const getEmployeeById = async (id: string) => {
   return response.data;
 };
 
-export const useGetEmployeeById = (id?: string) => {
+export const useGetEmployeeById = (id?: string | null) => {
   return useQuery({
     queryKey: ['employees', id],
     queryFn: () => getEmployeeById(id!),

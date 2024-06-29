@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const GetNotesSchema = z.object({
   query: z.object({
     q: z.string().optional(),
-    ownerId: z.string().cuid().optional(),
+    ownerId: z.string().cuid(),
     isDone: z.boolean().optional(),
     isImportant: z.boolean().optional(),
     sortBy: z
@@ -23,9 +23,9 @@ export const NoteByIdSchema = z.object({
 
 export const CreateNoteSchema = z.object({
   body: z.object({
-    ownerId: z.string().cuid().optional(),
+    ownerId: z.string().cuid(),
     ownerType: z.enum(['employee', 'employer', 'store']).optional(),
-    title: z.string(),
+    title: z.string().optional(),
     content: z.string().optional(),
     isDone: z.boolean().default(false),
     isImportant: z.boolean().default(false),
