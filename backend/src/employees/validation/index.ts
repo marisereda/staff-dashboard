@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { STATUS_FILTER_KEYS } from '../constants';
+import { NOTE_FILTER_KEYS, STATUS_FILTER_KEYS } from '../constants';
 
 export const GetEmployeesSchema = z.object({
   query: z.object({
@@ -9,6 +9,7 @@ export const GetEmployeesSchema = z.object({
       .transform(str => str === 'true')
       .optional(),
     statusFilter: z.enum(STATUS_FILTER_KEYS).optional(),
+    noteFilter: z.enum(NOTE_FILTER_KEYS).optional(),
     storeId: z.string().cuid().optional(),
     employerId: z.string().cuid().optional(),
     sortBy: z.enum(['code1C', 'inn', 'isFop', 'name', 'phone']).default('name'),

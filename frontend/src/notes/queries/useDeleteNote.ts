@@ -3,8 +3,6 @@ import { api } from '../../common/api';
 
 const deleteNote = async (id: string) => {
   const { data } = await api.delete(`notes/${id}`);
-  console.log('🚧 dataDelete:', data);
-
   return data;
 };
 

@@ -2,7 +2,7 @@ import { Employee, Prisma } from '@prisma/client';
 import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { PageData } from '~/common/types';
-import { STATUS_FILTER_MAP } from './constants';
+import { NOTE_FILTER_MAP, STATUS_FILTER_MAP } from './constants';
 import { GetEmployeesQuery } from './types';
 
 class EmployeesService {
@@ -10,6 +10,7 @@ class EmployeesService {
     q,
     isFop,
     statusFilter,
+    noteFilter,
     storeId,
     employerId,
     sortBy,
@@ -21,7 +22,6 @@ class EmployeesService {
     const orderBy = { [sortBy]: sortOrder };
     const skip = pageSize * (page - 1);
     const take = pageSize;
-
     if (q) {
       const conditions = ['code1C', 'inn', 'name', 'phone'].map(item => ({
         [item]: { contains: q },
@@ -33,6 +33,10 @@ class EmployeesService {
     }
     if (statusFilter) {
       whereAnd.push(STATUS_FILTER_MAP[statusFilter]);
+    }
+
+    if (noteFilter) {
+      whereAnd.push(NOTE_FILTER_MAP[noteFilter]);
     }
     if (storeId) {
       const conditions = [

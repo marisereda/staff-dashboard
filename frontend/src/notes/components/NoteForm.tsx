@@ -12,7 +12,7 @@ import {
   FormGroup,
   IconButton,
   Stack,
-  TextField,
+  Typography,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { FormCheckBox } from '../../common/components/FormCheckBox';
@@ -102,9 +102,11 @@ export const NoteForm = () => {
         <DialogTitle>Нотатка</DialogTitle>
         <DialogContent sx={{ minWidth: '500px' }}>
           <Stack gap={3}>
-            <DialogContentText></DialogContentText>
-            <TextField label="ІПН" name="inn" disabled defaultValue={employee?.inn} />
-            <TextField label="ПІБ" name="name" disabled defaultValue={employee?.name} />
+            <DialogContentText sx={{ color: 'InactiveCaptionText', fontWeight: 600 }}>
+              <Typography>{employee?.name}</Typography>
+              <Typography> {`ІПН: ${employee?.inn ?? ''}`}</Typography>
+            </DialogContentText>
+
             <FormTextField
               label="Зміст нотатки"
               name="content"

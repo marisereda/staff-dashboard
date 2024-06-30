@@ -11,6 +11,7 @@ type Actions = {
   setSearch: (q: string) => void;
   setFopFilter: (fopFilter: State['fopFilter']) => void;
   setStatusFilter: (markAsDeletedFilter: State['statusFilter']) => void;
+  setNoteFilter: (noteFilter: State['noteFilter']) => void;
   setStoreId: (employerId: string) => void;
   setEmployerId: (storeId: string) => void;
   setDeletingEmployee: (deletingEmployee: Employee | null) => void;
@@ -25,6 +26,7 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   q: '',
   fopFilter: 'all',
   statusFilter: 'all',
+  noteFilter: 'all',
   storeId: '',
   employerId: '',
   sortBy: 'name',
@@ -38,6 +40,7 @@ export const useEmployeesStore = create<State & Actions>(set => ({
   setSearch: q => set(() => ({ q })),
   setFopFilter: fopFilter => set(() => ({ fopFilter })),
   setStatusFilter: statusFilter => set(() => ({ statusFilter })),
+  setNoteFilter: noteFilter => set(() => ({ noteFilter })),
   setStoreId: storeId => set(() => ({ storeId })),
   setEmployerId: employerId => set(() => ({ employerId })),
   setDeletingEmployee: deletingEmployee => set(() => ({ deletingEmployee })),

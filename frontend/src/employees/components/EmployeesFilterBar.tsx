@@ -19,9 +19,11 @@ export function EmployeesFilterBar() {
   const employerId = useEmployeesStore(s => s.employerId);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
   const statusFilter = useEmployeesStore(s => s.statusFilter);
+  const noteFilter = useEmployeesStore(s => s.noteFilter);
   const setSearch = useEmployeesStore(s => s.setSearch);
   const setFopFilter = useEmployeesStore(s => s.setFopFilter);
   const setStatusFilter = useEmployeesStore(s => s.setStatusFilter);
+  const setNoteFilter = useEmployeesStore(s => s.setNoteFilter);
   const setStoreId = useEmployeesStore(s => s.setStoreId);
   const setEmployerId = useEmployeesStore(s => s.setEmployerId);
   const setPage = useEmployeesStore(s => s.setPage);
@@ -101,12 +103,12 @@ export function EmployeesFilterBar() {
         </Select>
       </FormControl>
       <FormControl sx={{ width: '20%' }}>
-        <InputLabel id="demo-simple-select-label">Звільнення</InputLabel>
+        <InputLabel id="dismissal">Звільнення</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="dismissal"
+          id="dismissal-select"
           value={statusFilter}
-          label="Самозайнята особа"
+          label="Звільнення"
           onChange={e => {
             setStatusFilter(e.target.value as EmployeesSearchParams['statusFilter']);
             setPage(1);
@@ -117,6 +119,25 @@ export function EmployeesFilterBar() {
           <MenuItem value={'buhDeleted'}>Бух.звільнення</MenuItem>
           <MenuItem value={'allDeleted'}>Всі звільнення</MenuItem>
           <MenuItem value={'notDeleted'}>Без звільнень</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={{ width: '20%' }}>
+        <InputLabel id="notes">Нотатки</InputLabel>
+        <Select
+          labelId="notes"
+          id="notes-select"
+          value={noteFilter}
+          label="Нотатки"
+          onChange={e => {
+            setNoteFilter(e.target.value as EmployeesSearchParams['noteFilter']);
+            setPage(1);
+          }}
+        >
+          <MenuItem value={'all'}>Всі</MenuItem>
+          <MenuItem value={'notes'}>Всі нотатки</MenuItem>
+          <MenuItem value={'isDone'}>Виконані</MenuItem>
+          <MenuItem value={'notDone'}>Невиконані</MenuItem>
+          <MenuItem value={'isImportant'}>Важливі</MenuItem>
         </Select>
       </FormControl>
       <TextField

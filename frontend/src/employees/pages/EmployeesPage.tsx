@@ -15,6 +15,7 @@ export const EmployeesPage = () => {
   const search = useEmployeesStore(s => s.q);
   const fopFilter = useEmployeesStore(s => s.fopFilter);
   const statusFilter = useEmployeesStore(s => s.statusFilter);
+  const noteFilter = useEmployeesStore(s => s.noteFilter);
   const storeId = useEmployeesStore(s => s.storeId);
   const employerId = useEmployeesStore(s => s.employerId);
   const deletingEmployee = useEmployeesStore(s => s.deletingEmployee);
@@ -42,6 +43,7 @@ export const EmployeesPage = () => {
     q: debouncedSearch,
     fopFilter,
     statusFilter,
+    noteFilter,
     storeId,
     employerId,
     sortBy,
@@ -55,6 +57,7 @@ export const EmployeesPage = () => {
       q: debouncedSearch,
       fopFilter,
       statusFilter,
+      noteFilter,
       storeId,
       employerId,
       sortBy,
@@ -77,15 +80,6 @@ export const EmployeesPage = () => {
 
   return (
     <Stack spacing={3}>
-      {/* <EmployeeDialog
-        // isOpened={true}
-        isOpened={Boolean(deletingEmployee)}
-        isPending={isPending}
-        onSubmit={handleSubmit}
-        onReject={handleReject}
-        dialogTitle="Підтвердить видалення"
-        dialogContent={`Ви дійсно бажаєте видалити працівника: ${deletingEmployee?.name}?`}
-      /> */}
       <EmployeesFilterBar />
       <Typography flexDirection={'row'} gap={7} display={'flex'} variant="h6">
         <span>Штат:</span>

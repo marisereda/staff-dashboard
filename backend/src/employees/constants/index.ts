@@ -25,3 +25,15 @@ export const STATUS_FILTER_MAP: Record<StatusFilter, Prisma.EmployeeWhereInput> 
     ],
   },
 };
+
+export const NOTE_FILTER_KEYS = ['all', 'notes', 'isDone', 'notDone', 'isImportant'] as const;
+
+export type NoteFilter = (typeof NOTE_FILTER_KEYS)[number];
+
+export const NOTE_FILTER_MAP: Record<NoteFilter, Prisma.EmployeeWhereInput> = {
+  all: {},
+  notes: { note: { id: { not: '' } } },
+  isDone: { note: { isDone: true } },
+  notDone: { note: { isDone: false } },
+  isImportant: { note: { isImportant: true } },
+};

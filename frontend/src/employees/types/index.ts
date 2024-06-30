@@ -61,6 +61,7 @@ export type EmployeesSearchParams = {
   q: string;
   fopFilter: 'all' | 'true' | 'false';
   statusFilter: 'all' | 'hrDeleted' | 'buhDeleted' | 'allDeleted' | 'notDeleted';
+  noteFilter: 'all' | 'notes' | 'isDone' | 'notDone' | 'isImportant';
   storeId: string;
   employerId: string;
   sortBy: 'code1C' | 'inn' | 'isFop' | 'name' | 'phone';

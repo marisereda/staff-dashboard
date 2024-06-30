@@ -41,7 +41,6 @@ export const deleteBuhWorkplace = async (
   req: AppRequest<DeleteWorkplaceRequest>,
   res: Response
 ): Promise<void> => {
-  console.log('🚧 value:', req.state!.params.workplaceId);
   await employeesService.deleteBuhWorkplace(req.state!.params.workplaceId);
   res.status(204).end();
 };
