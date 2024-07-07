@@ -4,7 +4,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import { Grid, IconButton, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import { Grid, IconButton, Stack, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
 import { UpdateStatus } from '../../common/enums';
 import { makeShortName } from '../../common/utils/makeShortName';
 import { useNoteStore } from '../../notes/state';
@@ -45,10 +45,10 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
 
   let noteColor: NoteColor = 'default';
   if (note) {
-    noteColor = 'warning';
+    noteColor = 'primary';
   }
   if (note?.isImportant) {
-    noteColor = 'error';
+    noteColor = 'warning';
   }
   if (note?.isDone) {
     noteColor = 'success';
@@ -150,16 +150,17 @@ export const EmployeesTableRow = ({ employee }: EmployeesTableRowProps) => {
               <EditIcon />
             </IconButton>
           )}
-
-          <IconButton
-            color={noteColor}
-            disabled={isFormOpen}
-            onClick={() => {
-              setEmployeeIdToNote(employee.id);
-            }}
-          >
-            {note ? note.isDone ? <ChecklistRtlIcon /> : <DescriptionIcon /> : <NoteAddIcon />}
-          </IconButton>
+          <Tooltip title={employee.note?.content}>
+            <IconButton
+              color={noteColor}
+              disabled={isFormOpen}
+              onClick={() => {
+                setEmployeeIdToNote(employee.id);
+              }}
+            >
+              {note ? note.isDone ? <ChecklistRtlIcon /> : <DescriptionIcon /> : <NoteAddIcon />}
+            </IconButton>
+          </Tooltip>
         </Stack>
       </TableCell>
     </TableRow>
