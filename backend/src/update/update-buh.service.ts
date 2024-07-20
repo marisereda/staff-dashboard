@@ -49,7 +49,7 @@ class UpdateBuhService {
         }),
       ]);
 
-      await employeesService.markFiredEmployeesAsDeleted();
+      // await employeesService.markFiredEmployeesAsDeleted();
     });
   };
 

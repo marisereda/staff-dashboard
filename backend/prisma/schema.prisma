@@ -93,5 +93,5 @@ model Note {
   updatedAt DateTime @updatedAt
 
   ownerId String   @unique
-  owner   Employee @relation(fields: [ownerId], references: [id])
+  owner   Employee @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
