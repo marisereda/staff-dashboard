@@ -3,7 +3,7 @@ import { UpdateStatus } from '~/common/enums';
 import { prisma } from '~/common/services';
 import { dataParserService } from '~/data-parser/data-parser.service';
 import { BuhReportEmployee, BuhReportStore } from '~/data-parser/types';
-import { employeesService } from '~/employees/employees.service';
+// import { employeesService } from '~/employees/employees.service';
 
 class UpdateBuhService {
   updateFromReport = async (employerId: string, file: Buffer): Promise<void> => {
