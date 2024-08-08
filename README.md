@@ -1,6 +1,6 @@
 # Staff-dashboard
 
-# Description
+## Description
 
 The Staff Dashboard — an essential tool designed specifically for the HR department of a trade company. This application addresses critical HR functions, ensuring efficient management of employee-related processes. Here are the key features:
 
