@@ -1,6 +1,6 @@
 # Staff-dashboard
 
-# Introduction
+# Description
 
 The Staff Dashboard — an essential tool designed specifically for the HR department of a trade company. This application addresses critical HR functions, ensuring efficient management of employee-related processes. Here are the key features:
 
@@ -12,6 +12,16 @@ The Staff Dashboard — an essential tool designed specifically for the HR depar
 
   The app harmonizes information from databases of four distinct departments.
   By consolidating data, it provides a holistic view of the organization’s workforce.
+
+## Technology stack
+
+- TypeScript
+- React
+- React Query
+- MUI
+- Express
+- Prisma ORM
+- SQLite
 
 ## Make production build
 
